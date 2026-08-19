@@ -1,0 +1,10 @@
+{
+  "name":"Life RPG 2.0",
+  "short_name":"Life RPG",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#07101d",
+  "theme_color":"#0b1220",
+  "lang":"uk",
+  "icons":[]
+}
