@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07101d">
+<meta name="theme-color" content="#0b1220">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <title>Life RPG 3.0</title>
-
 <link rel="manifest" href="manifest.json">
 
 <style>
@@ -19,11 +18,11 @@
  --text:#eef5ff;
  --muted:#91a3bb;
  --accent:#69e5a4;
- --blue:#5aa9ff;
+ --accent2:#5aa9ff;
  --danger:#ff6577;
  --gold:#ffd166;
  --line:#21334b;
- --shadow:0 16px 45px rgba(0,0,0,.28);
+ --shadow:0 16px 45px rgba(0,0,0,.25);
 }
 
 *{box-sizing:border-box}
@@ -39,20 +38,6 @@ html,body{
  color:var(--text);
 }
 
-body.light{
- --bg:#eef4f8;
- --panel:#ffffff;
- --panel2:#f3f7fa;
- --text:#142235;
- --muted:#617286;
- --line:#d6e0e8;
- --shadow:0 12px 35px rgba(20,40,60,.12);
- background:
- radial-gradient(circle at 20% 0,#d9f5e8 0,transparent 35%),
- radial-gradient(circle at 100% 0,#dbeaff 0,transparent 30%),
- var(--bg);
-}
-
 button,input,select{font:inherit}
 
 button{
@@ -64,7 +49,7 @@ button{
 .app{
  max-width:1180px;
  margin:auto;
- padding:18px 18px 50px;
+ padding:18px 18px 40px;
 }
 
 .top{
@@ -72,7 +57,7 @@ button{
  justify-content:space-between;
  align-items:center;
  gap:12px;
- margin-bottom:15px;
+ margin-bottom:16px;
 }
 
 .brand{
@@ -106,8 +91,7 @@ button{
  display:flex;
  gap:7px;
  overflow:auto;
- padding-bottom:6px;
- margin-bottom:16px;
+ padding-bottom:4px;
 }
 
 .nav button{
@@ -142,24 +126,9 @@ button{
  backdrop-filter:blur(12px);
 }
 
-body.light .card{
- background:rgba(255,255,255,.9);
-}
-
 .hero{
  position:relative;
  overflow:hidden;
-}
-
-.hero:after{
- content:"";
- position:absolute;
- width:260px;
- height:260px;
- right:-110px;
- top:-110px;
- background:rgba(105,229,164,.12);
- border-radius:50%;
 }
 
 .heroRow{
@@ -203,12 +172,14 @@ body.light .card{
  display:block;
  height:100%;
  width:0;
- background:linear-gradient(90deg,var(--blue),var(--accent));
+ background:linear-gradient(90deg,var(--accent2),var(--accent));
  border-radius:99px;
  transition:width .3s;
 }
 
-.muted{color:var(--muted)}
+.muted{
+ color:var(--muted);
+}
 
 .statGrid{
  display:grid;
@@ -245,11 +216,6 @@ body.light .card{
  background:#182941;
  border:1px solid #29405d;
  text-align:left;
-}
-
-body.light .btn{
- background:#edf3f7;
- border-color:#d4e0e8;
 }
 
 .btn:hover{
@@ -325,6 +291,11 @@ body.light .btn{
  opacity:.5;
 }
 
+.quest.done button{
+ background:#304258;
+ color:#aebdd0;
+}
+
 .form{
  display:grid;
  grid-template-columns:repeat(2,1fr);
@@ -349,25 +320,21 @@ body.light .btn{
  outline:none;
 }
 
-body.light .field input,
-body.light .field select{
- background:#f6f9fb;
- color:#142235;
-}
-
 .form .full{
  grid-column:1/-1;
 }
 
 .shopGrid,
-.achGrid{
+.achGrid,
+.goalGrid{
  display:grid;
  grid-template-columns:repeat(3,1fr);
  gap:12px;
 }
 
 .shopItem,
-.achievement{
+.achievement,
+.goal{
  background:var(--panel2);
  border:1px solid var(--line);
  border-radius:14px;
@@ -375,13 +342,15 @@ body.light .field select{
 }
 
 .shopItem h3,
-.achievement h3{
+.achievement h3,
+.goal h3{
  margin:0 0 6px;
  font-size:15px;
 }
 
 .shopItem p,
-.achievement p{
+.achievement p,
+.goal p{
  margin:0 0 12px;
  color:var(--muted);
  font-size:13px;
@@ -401,7 +370,9 @@ body.light .field select{
  cursor:not-allowed;
 }
 
-.achievement.locked{opacity:.4}
+.achievement.locked{
+ opacity:.4;
+}
 
 .achievement.unlocked{
  border-color:rgba(255,209,102,.5);
@@ -442,387 +413,15 @@ body.light .field select{
  transform:translateY(0);
 }
 
-/* ==============================
-   CHARACTER
-================================ */
-
-.characterCard{
- min-height:500px;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- position:relative;
- overflow:hidden;
- cursor:pointer;
-}
-
-.characterCard:hover{
- border-color:rgba(105,229,164,.55);
-}
-
-.characterStage{
- width:300px;
- height:360px;
- position:relative;
- display:flex;
- align-items:flex-end;
- justify-content:center;
-}
-
-.characterShadow{
- position:absolute;
- bottom:12px;
- width:150px;
- height:25px;
- border-radius:50%;
- background:rgba(0,0,0,.25);
- filter:blur(6px);
-}
-
-.character{
- position:relative;
- width:170px;
- height:320px;
- animation:idleFloat 3s ease-in-out infinite;
-}
-
-@keyframes idleFloat{
- 0%,100%{transform:translateY(0)}
- 50%{transform:translateY(-3px)}
-}
-
-.charHead{
- position:absolute;
- top:25px;
- left:38px;
- width:95px;
- height:105px;
- border-radius:45% 45% 48% 48%;
- background:#f0b27a;
- border:4px solid #d88e5c;
- z-index:5;
-}
-
-.charHair{
- position:absolute;
- top:-7px;
- left:3px;
- width:89px;
- height:48px;
- background:#382719;
- border-radius:50% 50% 35% 35%;
- z-index:7;
-}
-
-.charEye{
- position:absolute;
- top:45px;
- width:10px;
- height:14px;
- background:#202a38;
- border-radius:50%;
- z-index:10;
-}
-
-.charEye.left{left:23px}
-.charEye.right{right:23px}
-
-.charBrow{
- position:absolute;
- top:34px;
- width:22px;
- height:4px;
- border-radius:5px;
- background:#382719;
- z-index:10;
-}
-
-.charBrow.left{left:17px}
-.charBrow.right{right:17px}
-
-.charNose{
- position:absolute;
- top:57px;
- left:43px;
- width:9px;
- height:15px;
- border-right:3px solid #c87d52;
- border-bottom:3px solid #c87d52;
- border-radius:0 0 7px 0;
- z-index:9;
-}
-
-.charMouth{
- position:absolute;
- top:78px;
- left:36px;
- width:25px;
- height:10px;
- border-bottom:3px solid #a54d52;
- border-radius:0 0 50% 50%;
- z-index:10;
-}
-
-.charBody{
- position:absolute;
- top:122px;
- left:32px;
- width:108px;
- height:125px;
- background:#4b8de8;
- border-radius:30px 30px 18px 18px;
- z-index:3;
-}
-
-.charArm{
- position:absolute;
- top:130px;
- width:28px;
- height:105px;
- border-radius:20px;
- background:#f0b27a;
- z-index:2;
-}
-
-.charArm.left{
- left:8px;
- transform:rotate(8deg);
-}
-
-.charArm.right{
- right:8px;
- transform:rotate(-8deg);
-}
-
-.charLeg{
- position:absolute;
- top:232px;
- width:38px;
- height:82px;
- background:#27364c;
- border-radius:10px 10px 20px 20px;
- z-index:2;
-}
-
-.charLeg.left{left:40px}
-.charLeg.right{right:40px}
-
-.charShoe{
- position:absolute;
- top:295px;
- width:52px;
- height:25px;
- border-radius:15px 18px 8px 8px;
- background:#f1f4f7;
- z-index:4;
-}
-
-.charShoe.left{left:28px}
-.charShoe.right{right:28px}
-
-.glasses{
- position:absolute;
- top:43px;
- left:14px;
- width:67px;
- height:22px;
- z-index:20;
- display:none;
-}
-
-.glasses:before,
-.glasses:after{
- content:"";
- position:absolute;
- width:25px;
- height:17px;
- border:3px solid #202b39;
- border-radius:7px;
-}
-
-.glasses:before{left:0}
-.glasses:after{right:0}
-
-.glasses span{
- position:absolute;
- left:25px;
- top:7px;
- width:18px;
- height:3px;
- background:#202b39;
-}
-
-.hat{
- position:absolute;
- z-index:30;
- display:none;
-}
-
-/* cap */
-
-.hat.cap{
- top:4px;
- left:24px;
- width:120px;
- height:42px;
- background:#e74b4b;
- border-radius:60px 60px 15px 15px;
-}
-
-.hat.cap:after{
- content:"";
- position:absolute;
- right:-22px;
- bottom:-3px;
- width:55px;
- height:14px;
- background:#fff;
- border-radius:50%;
- transform:rotate(8deg);
-}
-
-/* straw */
-
-.hat.straw{
- top:3px;
- left:20px;
- width:130px;
- height:30px;
- background:#d7ae4d;
- border-radius:50%;
-}
-
-.hat.straw:after{
- content:"";
- position:absolute;
- left:28px;
- top:-25px;
- width:74px;
- height:40px;
- background:#d7ae4d;
- border-radius:45px 45px 12px 12px;
-}
-
-/* samurai */
-
-.hat.samurai{
- top:-3px;
- left:13px;
- width:145px;
- height:58px;
- background:#272b35;
- border-radius:70% 70% 20% 20%;
- border-bottom:8px solid #a22b35;
-}
-
-.hat.wizard{
- top:-15px;
- left:34px;
- width:85px;
- height:95px;
- background:#7045a6;
- clip-path:polygon(50% 0,100% 100%,0 100%);
-}
-
-/* glasses accessories */
-
-.accessoryGlasses{
- position:absolute;
- top:43px;
- left:14px;
- width:67px;
- height:22px;
- z-index:40;
- display:none;
-}
-
-/* clothes */
-
-.charBody.shirtWhite{background:#f1f1ed}
-.charBody.tank{background:#4fd0b0}
-.charBody.coat{background:#222b3a}
-.charBody.hero{background:#db3e48}
-.charBody.suit{background:#1d2635}
-.charBody.ninja{background:#111}
-
-/* activity animations */
-
-.character.activityWorkout .charArm.left{
- animation:liftLeft 1.2s infinite alternate ease-in-out;
-}
-
-.character.activityWorkout .charArm.right{
- animation:liftRight 1.2s infinite alternate ease-in-out;
-}
-
-@keyframes liftLeft{
- from{transform:rotate(8deg)}
- to{transform:rotate(-55deg)}
-}
-
-@keyframes liftRight{
- from{transform:rotate(-8deg)}
- to{transform:rotate(55deg)}
-}
-
-.character.activityRead .charHead{
- transform:rotate(7deg);
-}
-
-.character.activityRun{
- animation:runMove .35s infinite alternate ease-in-out;
-}
-
-@keyframes runMove{
- from{transform:translateX(-4px)}
- to{transform:translateX(4px)}
-}
-
-.character.activityCode .charHead{
- transform:rotate(-3deg);
-}
-
-.character.activityDraw .charArm.right{
- animation:draw 1s infinite alternate ease-in-out;
-}
-
-@keyframes draw{
- from{transform:rotate(-8deg)}
- to{transform:rotate(40deg)}
-}
-
-.activityLabel{
- margin-top:10px;
- font-weight:800;
- color:var(--accent);
-}
-
-.characterName{
- font-size:20px;
- font-weight:900;
- margin-top:5px;
-}
-
-.characterHint{
- color:var(--muted);
- font-size:12px;
- margin-top:5px;
-}
-
-/* ==============================
-   CHARACTER MODAL
-================================ */
-
 .modal{
  position:fixed;
  inset:0;
- background:rgba(0,0,0,.72);
- z-index:200;
+ background:rgba(0,0,0,.7);
  display:none;
  align-items:center;
  justify-content:center;
- padding:15px;
+ z-index:200;
+ padding:18px;
 }
 
 .modal.show{
@@ -830,202 +429,176 @@ body.light .field select{
 }
 
 .modalBox{
- width:min(1000px,100%);
- max-height:92vh;
+ width:min(560px,100%);
+ max-height:90vh;
  overflow:auto;
  background:var(--panel);
  border:1px solid var(--line);
- border-radius:22px;
- box-shadow:0 30px 90px rgba(0,0,0,.5);
- padding:18px;
+ border-radius:20px;
+ padding:20px;
+ box-shadow:0 30px 80px rgba(0,0,0,.5);
 }
 
-.modalTop{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
- margin-bottom:15px;
+.modalBox h2{
+ margin-top:0;
 }
 
-.closeBtn{
- width:38px;
- height:38px;
- border-radius:50%;
- background:rgba(255,255,255,.08);
- font-size:20px;
-}
-
-.editorGrid{
+.choiceGrid{
  display:grid;
- grid-template-columns:340px 1fr;
- gap:18px;
-}
-
-.editorPreview{
- background:var(--panel2);
- border:1px solid var(--line);
- border-radius:18px;
- min-height:450px;
- display:flex;
- align-items:center;
- justify-content:center;
- flex-direction:column;
-}
-
-.editorTabs{
- display:flex;
- gap:7px;
- overflow:auto;
- margin-bottom:12px;
-}
-
-.editorTabs button{
- padding:9px 12px;
- border-radius:10px;
- background:var(--panel2);
- color:var(--muted);
- white-space:nowrap;
-}
-
-.editorTabs button.active{
- background:var(--accent);
- color:#06111c;
- font-weight:800;
-}
-
-.itemGrid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
+ grid-template-columns:repeat(2,1fr);
  gap:10px;
 }
 
-.item{
- position:relative;
- padding:12px;
- background:var(--panel2);
- border:1px solid var(--line);
+.choice{
+ padding:15px;
  border-radius:14px;
+ border:1px solid var(--line);
+ background:var(--panel2);
  cursor:pointer;
  text-align:center;
- transition:.15s;
 }
 
-.item:hover{
- transform:translateY(-2px);
+.choice.selected{
  border-color:var(--accent);
+ background:rgba(105,229,164,.12);
 }
 
-.item.selected{
- border-color:var(--accent);
- box-shadow:0 0 0 2px rgba(105,229,164,.16);
-}
-
-.item.locked{
- opacity:.7;
-}
-
-.itemIcon{
- font-size:34px;
- margin-bottom:5px;
-}
-
-.itemName{
- font-size:13px;
- font-weight:800;
-}
-
-.itemPrice{
- color:var(--gold);
- font-size:12px;
- margin-top:4px;
-}
-
-.buyPopup{
- position:fixed;
- z-index:300;
- background:var(--panel);
- border:1px solid var(--line);
- border-radius:15px;
- box-shadow:0 20px 60px rgba(0,0,0,.5);
- padding:13px;
- width:230px;
+.wizardStep{
  display:none;
 }
 
-.buyPopup.show{
+.wizardStep.active{
  display:block;
 }
 
-.buyPopup h3{
- margin:0 0 5px;
- font-size:15px;
-}
-
-.buyPopup p{
- margin:0 0 10px;
- color:var(--muted);
- font-size:12px;
-}
-
-.buyButtons{
+.modalActions{
  display:flex;
- gap:7px;
+ justify-content:space-between;
+ gap:10px;
+ margin-top:18px;
 }
 
-.buyButtons button{
- flex:1;
- padding:9px;
- border-radius:9px;
+.modalActions button{
+ padding:11px 15px;
+ border-radius:11px;
 }
 
-.buyCancel{
- background:rgba(255,101,119,.14);
-}
-
-.buyConfirm{
+.primary{
  background:var(--accent);
  color:#06111c;
  font-weight:900;
 }
 
-/* account */
-
-.accountBox{
- margin-top:14px;
- padding:14px;
- border-radius:14px;
- background:var(--panel2);
- border:1px solid var(--line);
+.secondary{
+ background:#182941;
 }
 
-.emailStatus{
- margin-top:8px;
- color:var(--muted);
+.difficulty{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:99px;
  font-size:12px;
+ font-weight:800;
 }
 
-/* responsive */
+.easy{
+ background:rgba(105,229,164,.15);
+ color:var(--accent);
+}
+
+.medium{
+ background:rgba(255,209,102,.15);
+ color:var(--gold);
+}
+
+.hard{
+ background:rgba(255,101,119,.15);
+ color:var(--danger);
+}
+
+.rewardPreview{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:8px;
+ margin-top:12px;
+}
+
+.rewardBox{
+ background:var(--panel2);
+ padding:10px;
+ border-radius:11px;
+ text-align:center;
+}
+
+.rewardBox b{
+ display:block;
+ font-size:18px;
+}
+
+.empty{
+ text-align:center;
+ padding:25px;
+ color:var(--muted);
+}
 
 @media(max-width:850px){
- .grid{grid-template-columns:1fr}
- .shopGrid,.achGrid{grid-template-columns:repeat(2,1fr)}
- .editorGrid{grid-template-columns:1fr}
- .editorPreview{min-height:400px}
+ .grid{
+  grid-template-columns:1fr;
+ }
+
+ .shopGrid,
+ .achGrid,
+ .goalGrid{
+  grid-template-columns:repeat(2,1fr);
+ }
 }
 
 @media(max-width:560px){
- .app{padding:12px 10px 30px}
- .top{align-items:flex-start}
- .brand h1{font-size:18px}
- .statGrid{grid-template-columns:repeat(2,1fr)}
- .actions{grid-template-columns:1fr}
- .shopGrid,.achGrid{grid-template-columns:1fr}
- .form{grid-template-columns:1fr}
- .form .full{grid-column:auto}
- .gm{font-size:31px}
- .card{padding:14px}
- .itemGrid{grid-template-columns:repeat(2,1fr)}
+ .app{
+  padding:12px 10px 30px;
+ }
+
+ .top{
+  align-items:flex-start;
+ }
+
+ .brand h1{
+  font-size:18px;
+ }
+
+ .statGrid{
+  grid-template-columns:repeat(2,1fr);
+ }
+
+ .actions{
+  grid-template-columns:1fr;
+ }
+
+ .shopGrid,
+ .achGrid,
+ .goalGrid{
+  grid-template-columns:1fr;
+ }
+
+ .form{
+  grid-template-columns:1fr;
+ }
+
+ .form .full{
+  grid-column:auto;
+ }
+
+ .gm{
+  font-size:31px;
+ }
+
+ .card{
+  padding:14px;
+ }
+
+ .choiceGrid{
+  grid-template-columns:1fr;
+ }
 }
 </style>
 </head>
@@ -1038,10 +611,12 @@ body.light .field select{
 
 <div class="brand">
 <div class="logo">⚔</div>
+
 <div>
 <h1>LIFE RPG</h1>
 <small>Прокачуй персонажа. Прокачуй життя.</small>
 </div>
+
 </div>
 
 <div class="streak" id="topStreak">🔥 0 DAYS</div>
@@ -1053,7 +628,7 @@ body.light .field select{
 <button data-page="home" class="active">🏠 Головна</button>
 <button data-page="quests">🎯 Квести</button>
 <button data-page="stats">🧬 Стати</button>
-<button data-page="shop">🎁 Нагороди</button>
+<button data-page="shop">🎁 Магазин</button>
 <button data-page="ach">🏆 Досягнення</button>
 <button data-page="history">📊 Історія</button>
 <button data-page="settings">⚙️ Налаштування</button>
@@ -1062,85 +637,33 @@ body.light .field select{
 
 <main>
 
-<!-- HOME -->
-
 <section id="home" class="page active">
 
 <div class="grid">
 
 <div>
 
-<div class="card characterCard" onclick="openCharacter()">
-
-<div class="eyebrow">ТВІЙ ПЕРСОНАЖ</div>
-
-<div class="characterStage">
-
-<div class="characterShadow"></div>
-
-<div id="character" class="character">
-
-<div id="hat" class="hat"></div>
-
-<div class="charHead">
-
-<div class="charHair"></div>
-
-<div class="charBrow left"></div>
-<div class="charBrow right"></div>
-
-<div class="charEye left"></div>
-<div class="charEye right"></div>
-
-<div class="charNose"></div>
-<div class="charMouth"></div>
-
-<div id="glasses" class="glasses">
-<span></span>
-</div>
-
-</div>
-
-<div id="charBody" class="charBody"></div>
-
-<div class="charArm left"></div>
-<div class="charArm right"></div>
-
-<div class="charLeg left"></div>
-<div class="charLeg right"></div>
-
-<div class="charShoe left"></div>
-<div class="charShoe right"></div>
-
-</div>
-
-</div>
-
-<div id="activityLabel" class="activityLabel">🧍 Стоїть</div>
-
-<div id="characterName" class="characterName">Yevhenii</div>
-
-<div class="characterHint">
-Натисни на персонажа, щоб змінити його
-</div>
-
-</div>
-
-
-<div class="card hero" style="margin-top:16px">
+<div class="card hero">
 
 <div class="heroRow">
 
 <div>
+
 <div class="eyebrow">GLOBAL MASTERY</div>
+
 <div class="gm" id="gm">0 GM</div>
+
 <div class="level" id="level">LEVEL 1</div>
+
 </div>
 
 <div style="text-align:right">
 
 <div class="eyebrow">HP</div>
-<div style="font-size:28px;font-weight:900" id="hp">100/100</div>
+
+<div style="font-size:28px;font-weight:900" id="hp">
+100/100
+</div>
 
 <div class="streak" id="streak">
 🔥 0 DAYS
@@ -1162,7 +685,6 @@ body.light .field select{
 
 </div>
 
-
 <div class="card" style="margin-top:16px">
 
 <div class="sectionTitle">
@@ -1175,7 +697,6 @@ body.light .field select{
 </div>
 
 </div>
-
 
 <div>
 
@@ -1190,7 +711,6 @@ body.light .field select{
 
 </div>
 
-
 <div class="card" style="margin-top:16px">
 
 <div class="sectionTitle">
@@ -1202,101 +722,44 @@ body.light .field select{
 
 </div>
 
-
-<div class="card" style="margin-top:16px">
-
-<div class="sectionTitle">
-<h2>📈 Прокачка акаунта</h2>
-<span class="pill">GLOBAL</span>
-</div>
-
-<div id="accountProgress"></div>
-
-</div>
-
 </div>
 
 </div>
 
 </section>
 
-
-<!-- QUESTS -->
 
 <section id="quests" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
-<h2>🎯 Daily Quests</h2>
-<span class="pill">оновлюються щодня</span>
+
+<h2>🎯 Твої завдання</h2>
+
+<button class="btn green" onclick="openTaskModal()">
+➕ Додати
+</button>
+
 </div>
 
 <div id="questList"></div>
 
 </div>
 
-
-<div class="card" style="margin-top:16px">
-
-<div class="sectionTitle">
-<h2>➕ Створити свій квест</h2>
-</div>
-
-<div class="form">
-
-<div class="field">
-<label>Назва</label>
-<input id="newQuestName" placeholder="Наприклад: 30 хв Blender">
-</div>
-
-<div class="field">
-<label>GM</label>
-<input id="newQuestGM" type="number" min="1" value="20">
-</div>
-
-<div class="field">
-<label>Стата</label>
-
-<select id="newQuestStat">
-
-<option value="INT">INT</option>
-<option value="STR">STR</option>
-<option value="LANG">LANG</option>
-<option value="TECH">TECH</option>
-<option value="WIS">WIS</option>
-<option value="DISC">DISC</option>
-
-</select>
-
-</div>
-
-<div class="field">
-
-<label>&nbsp;</label>
-
-<button class="btn green" onclick="addQuest()">
-➕ Додати квест
-</button>
-
-</div>
-
-</div>
-
-</div>
-
 </section>
 
-
-<!-- STATS -->
 
 <section id="stats" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>🧬 Character Stats</h2>
+
 <span class="pill">твій розвиток</span>
+
 </div>
 
 <div id="fullStats"></div>
@@ -1306,21 +769,21 @@ body.light .field select{
 </section>
 
 
-<!-- SHOP -->
-
 <section id="shop" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>🎁 Reward Shop</h2>
+
 <span class="pill" id="shopGM">0 GM</span>
+
 </div>
 
 <div class="notice" style="margin-bottom:12px">
 
-Нагороди за зароблений GM.
-Не витрачай GM, який ще не заробив.
+Купуй реальні нагороди за зароблений GM.
 
 </div>
 
@@ -1331,15 +794,16 @@ body.light .field select{
 </section>
 
 
-<!-- ACHIEVEMENTS -->
-
 <section id="ach" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>🏆 Achievements</h2>
+
 <span class="pill" id="achCount">0/0</span>
+
 </div>
 
 <div class="achGrid" id="achList"></div>
@@ -1349,8 +813,6 @@ body.light .field select{
 </section>
 
 
-<!-- HISTORY -->
-
 <section id="history" class="page">
 
 <div class="card">
@@ -1359,10 +821,8 @@ body.light .field select{
 
 <h2>📊 Activity Log</h2>
 
-<button class="btn red"
-style="padding:7px 10px"
-onclick="clearHistory()">
-Очистити історію
+<button class="btn red" onclick="clearHistory()">
+Очистити
 </button>
 
 </div>
@@ -1393,14 +853,14 @@ onclick="clearHistory()">
 </section>
 
 
-<!-- SETTINGS -->
-
 <section id="settings" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>⚙️ Налаштування</h2>
+
 </div>
 
 <div class="form">
@@ -1415,69 +875,23 @@ onclick="clearHistory()">
 
 <div class="field">
 
-<label>Gaming Pass хвилин</label>
+<label>Вік</label>
 
-<input id="gamingMinutes" type="number" min="0">
+<input id="playerAge" type="number" min="5" max="100">
 
-</div>
-
-</div>
-
-
-<div class="accountBox">
-
-<h3 style="margin-top:0">
-👤 Акаунт
-</h3>
-
-<div class="field">
-
-<label>Email</label>
-
-<input
-id="email"
-type="email"
-placeholder="your@email.com"
->
-
-</div>
-
-<button
-class="btn green"
-style="margin-top:9px;width:100%"
-onclick="saveEmail()">
-
-📧 Зберегти email
-
-</button>
-
-<div id="emailStatus" class="emailStatus">
-Акаунт ще не прив'язаний.
 </div>
 
 </div>
 
+<div style="margin-top:18px">
 
-<div class="accountBox">
+<b>🎯 Мої напрямки</b>
 
-<h3 style="margin-top:0">
-🌙 Тема
-</h3>
-
-<button
-class="btn"
-style="width:100%;text-align:center"
-onclick="toggleTheme()"
-id="themeButton">
-
-🌙 Темна тема
-
-</button>
+<div id="goalList" style="margin-top:10px"></div>
 
 </div>
 
-
-<div class="dangerBox" style="margin-top:14px">
+<div class="dangerBox" style="margin-top:18px">
 
 <b>⚠️ Скидання</b>
 
@@ -1485,12 +899,8 @@ id="themeButton">
 Видалить весь прогрес на цьому пристрої.
 </p>
 
-<button
-class="btn red"
-onclick="resetGame()">
-
+<button class="btn red" onclick="resetGame()">
 ☠️ RESET EVERYTHING
-
 </button>
 
 </div>
@@ -1504,149 +914,252 @@ onclick="resetGame()">
 </div>
 
 
-<!-- CHARACTER EDITOR -->
+<!-- FIRST START -->
 
-<div class="modal" id="characterModal">
+<div class="modal" id="setupModal">
 
 <div class="modalBox">
 
-<div class="modalTop">
+<div id="setup1" class="wizardStep active">
 
-<div>
+<h2>👋 Ласкаво просимо в Life RPG</h2>
 
-<h2 style="margin:0">
-🧍 Мій персонаж
-</h2>
-
-<small class="muted">
-Зміни зовнішність. Все зберігається автоматично.
-</small>
-
-</div>
-
-<button class="closeBtn" onclick="closeCharacter()">✕</button>
-
-</div>
-
-
-<div class="editorGrid">
-
-
-<div class="editorPreview">
-
-<div class="eyebrow">
-ПЕРЕГЛЯД
-</div>
-
-<div class="characterStage">
-
-<div class="characterShadow"></div>
-
-<div id="editorCharacter" class="character">
-
-<div id="editorHat" class="hat"></div>
-
-<div class="charHead">
-
-<div class="charHair"></div>
-
-<div class="charBrow left"></div>
-<div class="charBrow right"></div>
-
-<div class="charEye left"></div>
-<div class="charEye right"></div>
-
-<div class="charNose"></div>
-<div class="charMouth"></div>
-
-<div id="editorGlasses" class="glasses">
-<span></span>
-</div>
-
-</div>
-
-<div id="editorBody" class="charBody"></div>
-
-<div class="charArm left"></div>
-<div class="charArm right"></div>
-
-<div class="charLeg left"></div>
-<div class="charLeg right"></div>
-
-<div class="charShoe left"></div>
-<div class="charShoe right"></div>
-
-</div>
-
-</div>
-
-<div id="editorPreviewName" class="characterName">
-Yevhenii
-</div>
-
-</div>
-
-
-<div>
-
-<div class="editorTabs">
-
-<button
-class="active"
-onclick="editorTab('body',this)">
-🧍 Тіло
-</button>
-
-<button
-onclick="editorTab('clothes',this)">
-👕 Одяг
-</button>
-
-<button
-onclick="editorTab('hats',this)">
-🎩 Головні убори
-</button>
-
-<button
-onclick="editorTab('items',this)">
-👓 Предмети
-</button>
-
-</div>
-
-
-<div id="editorItems" class="itemGrid"></div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- BUY POPUP -->
-
-<div class="buyPopup" id="buyPopup">
-
-<h3 id="buyName">
-Предмет
-</h3>
-
-<p id="buyDescription">
-Опис
+<p class="muted">
+Спочатку створимо твого персонажа.
 </p>
 
-<div class="buyButtons">
+<h3>Яка твоя стать?</h3>
 
-<button class="buyCancel" onclick="closeBuy()">
-✕
+<div class="choiceGrid">
+
+<div class="choice" onclick="chooseGender('male',this)">
+👨<br>Чоловік
+</div>
+
+<div class="choice" onclick="chooseGender('female',this)">
+👩<br>Жінка
+</div>
+
+</div>
+
+<div class="modalActions">
+
+<span></span>
+
+<button class="primary" onclick="setupNext(2)">
+Далі →
 </button>
 
-<button class="buyConfirm" onclick="confirmBuy()">
-🟢 Купити <span id="buyPrice"></span>
+</div>
+
+</div>
+
+
+<div id="setup2" class="wizardStep">
+
+<h2>🎂 Скільки тобі років?</h2>
+
+<input
+id="setupAge"
+type="number"
+min="5"
+max="100"
+placeholder="Наприклад: 17"
+style="width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#081322;color:white"
+>
+
+<div class="modalActions">
+
+<button class="secondary" onclick="setupNext(1)">
+← Назад
 </button>
+
+<button class="primary" onclick="setupNext(3)">
+Далі →
+</button>
+
+</div>
+
+</div>
+
+
+<div id="setup3" class="wizardStep">
+
+<h2>🎯 Що хочеш прокачувати?</h2>
+
+<p class="muted">
+Вибери один або декілька напрямків.
+</p>
+
+<div class="choiceGrid">
+
+<div class="choice goalChoice" data-goal="sport" onclick="toggleGoal(this)">
+💪<br>Спорт
+</div>
+
+<div class="choice goalChoice" data-goal="development" onclick="toggleGoal(this)">
+🧠<br>Розвиток
+</div>
+
+<div class="choice goalChoice" data-goal="work" onclick="toggleGoal(this)">
+💼<br>Робота / навчання
+</div>
+
+<div class="choice goalChoice" data-goal="selfcare" onclick="toggleGoal(this)">
+🧼<br>Догляд за собою
+</div>
+
+<div class="choice goalChoice" data-goal="reading" onclick="toggleGoal(this)">
+📚<br>Читання
+</div>
+
+<div class="choice goalChoice" data-goal="creativity" onclick="toggleGoal(this)">
+🎨<br>Творчість
+</div>
+
+<div class="choice goalChoice" data-goal="discipline" onclick="toggleGoal(this)">
+⚔️<br>Дисципліна
+</div>
+
+</div>
+
+<div class="modalActions">
+
+<button class="secondary" onclick="setupNext(2)">
+← Назад
+</button>
+
+<button class="primary" onclick="finishSetup()">
+🚀 Почати
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CREATE TASK -->
+
+<div class="modal" id="taskModal">
+
+<div class="modalBox">
+
+<h2>➕ Нове завдання</h2>
+
+<div class="field">
+
+<label>Яке завдання?</label>
+
+<input
+id="taskName"
+placeholder="Наприклад: 30 хвилин читання"
+oninput="previewTask()"
+>
+
+</div>
+
+<div class="form" style="margin-top:10px">
+
+<div class="field">
+
+<label>📅 Дата</label>
+
+<input id="taskDate" type="date">
+
+</div>
+
+<div class="field">
+
+<label>⏰ Час</label>
+
+<input id="taskTime" type="time">
+
+</div>
+
+<div class="field">
+
+<label>⏱ Тривалість, хв</label>
+
+<input
+id="taskDuration"
+type="number"
+min="1"
+value="30"
+oninput="previewTask()"
+>
+
+</div>
+
+<div class="field">
+
+<label>🔄 Повторення</label>
+
+<select id="taskRepeat">
+
+<option value="once">Один раз</option>
+<option value="daily">Щодня</option>
+<option value="weekdays">По буднях</option>
+<option value="weekly">Щотижня</option>
+<option value="custom">Вибрані дні</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>🧬 Стата</label>
+
+<select id="taskStat">
+
+<option value="STR">💪 STR</option>
+<option value="INT">🧠 INT</option>
+<option value="LANG">🇩🇪 LANG</option>
+<option value="TECH">💻 TECH</option>
+<option value="WIS">📖 WIS</option>
+<option value="DISC">⚔️ DISC</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>🏷 Категорія</label>
+
+<select id="taskCategory">
+
+<option value="sport">💪 Спорт</option>
+<option value="development">🧠 Розвиток</option>
+<option value="work">💼 Робота</option>
+<option value="selfcare">🧼 Догляд</option>
+<option value="reading">📚 Читання</option>
+<option value="creativity">🎨 Творчість</option>
+<option value="discipline">⚔️ Дисципліна</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div id="taskPreview" style="margin-top:15px"></div>
+
+<div class="modalActions">
+
+<button class="secondary" onclick="closeTaskModal()">
+✕ Скасувати
+</button>
+
+<button class="primary" onclick="createTask()">
+➕ Створити
+</button>
+
+</div>
 
 </div>
 
@@ -1660,123 +1173,64 @@ onclick="editorTab('items',this)">
 
 'use strict';
 
-
-/* ==========================================
-   STORAGE
-========================================== */
-
 const KEY='life_rpg_v3';
 
-
-const DEFAULT={
-
-name:'Yevhenii',
-
-email:'',
-
-theme:'dark',
-
-gm:0,
-
-hp:100,
-
-streak:0,
-
-lastDaily:null,
-
-lastDate:null,
-
-gamingMinutes:0,
-
-stats:{
-STR:0,
-INT:0,
-LANG:0,
-TECH:0,
-WIS:0,
-DISC:0
-},
-
-quests:[
-
-{
-id:'push',
-name:'10 віджимань',
-gm:5,
-stat:'STR',
-daily:true
-},
-
-{
-id:'squat',
-name:'20 присідань',
-gm:5,
-stat:'STR',
-daily:true
-},
-
-{
-id:'book',
-name:'2 сторінки книги',
-gm:5,
-stat:'WIS',
-daily:true
-},
-
-{
-id:'german',
-name:'10 хвилин німецької',
-gm:5,
-stat:'LANG',
-daily:true
-},
-
-{
-id:'tech',
-name:'10 хвилин навчання / Blender',
-gm:5,
-stat:'TECH',
-daily:true
-},
-
-{
-id:'music',
-name:'10 хвилин музики',
-gm:5,
-stat:'DISC',
-daily:true
-}
-
-],
-
-completed:{},
-
-history:[],
-
-shopPurchases:[],
-
-achievements:{},
-
-
-character:{
-
-body:'default',
-
-clothes:'default',
-
-hat:'none',
-
-item:'none'
-
-}
-
+const STATS={
+ STR:'💪 STR',
+ INT:'🧠 INT',
+ LANG:'🇩🇪 LANG',
+ TECH:'💻 TECH',
+ WIS:'📖 WIS',
+ DISC:'⚔️ DISC'
 };
 
+const GOALS={
+ sport:'💪 Спорт',
+ development:'🧠 Розвиток',
+ work:'💼 Робота / навчання',
+ selfcare:'🧼 Догляд за собою',
+ reading:'📚 Читання',
+ creativity:'🎨 Творчість',
+ discipline:'⚔️ Дисципліна'
+};
+
+const DEFAULT={
+ setupDone:false,
+ name:'Yevhenii',
+ age:17,
+ gender:null,
+ goals:[],
+ gm:0,
+ hp:100,
+ streak:0,
+ lastDaily:null,
+ lastDate:null,
+
+ stats:{
+  STR:0,
+  INT:0,
+  LANG:0,
+  TECH:0,
+  WIS:0,
+  DISC:0
+ },
+
+ quests:[],
+
+ completed:{},
+
+ history:[],
+
+ achievements:{},
+
+ shopPurchases:[]
+};
+
+let state=loadState();
 
 function clone(x){
  return JSON.parse(JSON.stringify(x));
 }
-
 
 function merge(base,src){
 
@@ -1804,14 +1258,15 @@ function merge(base,src){
  return base;
 }
 
-
 function loadState(){
 
  try{
 
   const raw=localStorage.getItem(KEY);
 
-  if(!raw)return clone(DEFAULT);
+  if(!raw){
+   return clone(DEFAULT);
+  }
 
   return merge(clone(DEFAULT),JSON.parse(raw));
 
@@ -1823,72 +1278,17 @@ function loadState(){
 
 }
 
-
-let state=loadState();
-
-
 function save(){
-
  localStorage.setItem(KEY,JSON.stringify(state));
-
 }
-
-
-/* ==========================================
-   BASIC
-========================================== */
-
-const STATS={
-
- STR:'💪 STR',
- INT:'🧠 INT',
- LANG:'🇩🇪 LANG',
- TECH:'💻 TECH',
- WIS:'📖 WIS',
- DISC:'⚔️ DISC'
-
-};
-
 
 function today(){
-
  return new Date().toISOString().slice(0,10);
-
 }
-
 
 function fmt(n){
-
  return Math.round(n).toLocaleString('uk-UA');
-
 }
-
-
-function levelForGM(gm){
-
- return Math.max(
-  1,
-  Math.floor(Math.sqrt(Math.max(0,gm)/100))+1
- );
-
-}
-
-
-function levelStart(level){
-
- return level<=1
- ?0
- :100*(level-1)*(level-1);
-
-}
-
-
-function nextLevelGM(level){
-
- return 100*level*level;
-
-}
-
 
 function toast(msg){
 
@@ -1900,914 +1300,32 @@ function toast(msg){
 
  clearTimeout(window.__toast);
 
- window.__toast=setTimeout(
-  ()=>el.classList.remove('show'),
-  2200
+ window.__toast=setTimeout(()=>{
+  el.classList.remove('show');
+ },2400);
+
+}
+
+function levelForGM(gm){
+
+ return Math.max(
+  1,
+  Math.floor(Math.sqrt(Math.max(0,gm)/100))+1
  );
 
 }
 
+function levelStart(level){
 
-/* ==========================================
-   CHARACTER
-========================================== */
-
-const CLOTHES=[
-
- {
-  id:'default',
-  name:'Базова футболка',
-  icon:'👕',
-  price:0,
-  class:'default'
- },
-
- {
-  id:'white',
-  name:'Біла футболка',
-  icon:'🤍',
-  price:0,
-  class:'shirtWhite'
- },
-
- {
-  id:'tank',
-  name:'Спортивна майка',
-  icon:'🏃',
-  price:0,
-  class:'tank'
- },
-
- {
-  id:'coat',
-  name:'Темний плащ',
-  icon:'🧥',
-  price:0,
-  class:'coat'
- },
-
- {
-  id:'blue',
-  name:'Синя футболка',
-  icon:'🔵',
-  price:0,
-  class:'default'
- },
-
- {
-  id:'hero',
-  name:'Супергерой',
-  icon:'🦸',
-  price:500,
-  class:'hero'
- },
-
- {
-  id:'suit',
-  name:'Стильний костюм',
-  icon:'🤵',
-  price:750,
-  class:'suit'
- },
-
- {
-  id:'ninja',
-  name:'Костюм ніндзя',
-  icon:'🥷',
-  price:900,
-  class:'ninja'
- },
-
- {
-  id:'space',
-  name:'Космічний костюм',
-  icon:'🚀',
-  price:1200,
-  class:'suit'
- },
-
- {
-  id:'king',
-  name:'Королівський костюм',
-  icon:'👑',
-  price:1500,
-  class:'hero'
- },
-
- {
-  id:'cyber',
-  name:'Cyber Suit',
-  icon:'🤖',
-  price:2000,
-  class:'ninja'
- }
-
-];
-
-
-const HATS=[
-
- {
-  id:'none',
-  name:'Без головного убору',
-  icon:'🚫',
-  price:0,
-  class:''
- },
-
- {
-  id:'cap',
-  name:'Біло-червона кепка',
-  icon:'🧢',
-  price:0,
-  class:'cap'
- },
-
- {
-  id:'straw',
-  name:'Соломʼяна шляпа',
-  icon:'👒',
-  price:0,
-  class:'straw'
- },
-
- {
-  id:'samurai',
-  name:'Шолом самурая',
-  icon:'🥷',
-  price:700,
-  class:'samurai'
- },
-
- {
-  id:'wizard',
-  name:'Шляпа мага',
-  icon:'🧙',
-  price:650,
-  class:'wizard'
- },
-
- {
-  id:'redhat',
-  name:'Червона шляпа',
-  icon:'🎩',
-  price:450,
-  class:'cap'
- },
-
- {
-  id:'cowboy',
-  name:'Ковбойський капелюх',
-  icon:'🤠',
-  price:550,
-  class:'straw'
- },
-
- {
-  id:'crown',
-  name:'Корона',
-  icon:'👑',
-  price:1200,
-  class:'crown'
- },
-
- {
-  id:'viking',
-  name:'Шолом вікінга',
-  icon:'⚔️',
-  price:1000,
-  class:'samurai'
- },
-
- {
-  id:'space',
-  name:'Космічний шолом',
-  icon:'🪐',
-  price:1800,
-  class:'samurai'
- },
-
- {
-  id:'detective',
-  name:'Капелюх детектива',
-  icon:'🕵️',
-  price:850,
-  class:'straw'
- },
-
- {
-  id:'pirate',
-  name:'Піратський капелюх',
-  icon:'🏴‍☠️',
-  price:950,
-  class:'cap'
- }
-
-];
-
-
-const ITEMS=[
-
- {
-  id:'none',
-  name:'Без предмета',
-  icon:'🚫',
-  price:0
- },
-
- {
-  id:'glasses',
-  name:'Окуляри',
-  icon:'👓',
-  price:0
- },
-
- {
-  id:'sunglasses',
-  name:'Сонцезахисні окуляри',
-  icon:'🕶️',
-  price:400
- },
-
- {
-  id:'goldGlasses',
-  name:'Золоті окуляри',
-  icon:'🥸',
-  price:900
- },
-
- {
-  id:'headphones',
-  name:'Навушники',
-  icon:'🎧',
-  price:600
- },
-
- {
-  id:'backpack',
-  name:'Рюкзак',
-  icon:'🎒',
-  price:500
- },
-
- {
-  id:'sword',
-  name:'Меч героя',
-  icon:'⚔️',
-  price:1300
- },
-
- {
-  id:'guitar',
-  name:'Гітара',
-  icon:'🎸',
-  price:1000
- },
-
- {
-  id:'book',
-  name:'Книга мудрості',
-  icon:'📚',
-  price:700
- },
-
- {
-  id:'laptop',
-  name:'Cyber ноутбук',
-  icon:'💻',
-  price:1500
- },
-
- {
-  id:'camera',
-  name:'Камера',
-  icon:'📷',
-  price:850
- },
-
- {
-  id:'medal',
-  name:'Золота медаль',
-  icon:'🏅',
-  price:2000
- }
-
-];
-
-
-function owns(type,id){
-
- if(
-  type==='clothes' &&
-  CLOTHES.find(x=>x.id===id)?.price===0
- )return true;
-
- if(
-  type==='hats' &&
-  HATS.find(x=>x.id===id)?.price===0
- )return true;
-
- if(
-  type==='items' &&
-  ITEMS.find(x=>x.id===id)?.price===0
- )return true;
-
- return state.shopPurchases.some(
-  x=>x.type===type&&x.id===id
- );
+ return level<=1
+  ?0
+  :100*(level-1)*(level-1);
 
 }
 
-
-function equip(type,id){
-
- if(!owns(type,id)){
-
-  openBuy(type,id);
-
-  return;
-
- }
-
- state.character[type]=id;
-
- save();
-
- renderCharacter();
-
- renderEditor();
-
- toast('✨ Предмет одягнено');
-
+function nextLevelGM(level){
+ return 100*level*level;
 }
-
-
-/* ==========================================
-   BUY SYSTEM
-========================================== */
-
-let pendingBuy=null;
-
-
-function openBuy(type,id){
-
- const list=
-  type==='clothes'
-  ?CLOTHES
-  :type==='hats'
-  ?HATS
-  :ITEMS;
-
- const item=list.find(x=>x.id===id);
-
- if(!item)return;
-
- pendingBuy={type,id};
-
- /* тимчасова примірка */
-
- if(type==='clothes'){
-  state.character.previewClothes=id;
- }
-
- if(type==='hats'){
-  state.character.previewHat=id;
- }
-
- if(type==='items'){
-  state.character.previewItem=id;
- }
-
- renderCharacter(true);
-
- const popup=document.getElementById('buyPopup');
-
- document.getElementById('buyName').textContent=
-  item.icon+' '+item.name;
-
- document.getElementById('buyDescription').textContent=
-  'Предмет буде доданий до твого гардеробу після покупки.';
-
- document.getElementById('buyPrice').textContent=
-  item.price+' GM';
-
- popup.classList.add('show');
-
- popup.style.left='50%';
- popup.style.top='50%';
- popup.style.transform='translate(-50%,-50%)';
-
-}
-
-
-function closeBuy(){
-
- pendingBuy=null;
-
- delete state.character.previewClothes;
- delete state.character.previewHat;
- delete state.character.previewItem;
-
- document.getElementById('buyPopup')
- .classList.remove('show');
-
- renderCharacter();
-
-}
-
-
-function confirmBuy(){
-
- if(!pendingBuy)return;
-
- const type=pendingBuy.type;
- const id=pendingBuy.id;
-
- const list=
-  type==='clothes'
-  ?CLOTHES
-  :type==='hats'
-  ?HATS
-  :ITEMS;
-
- const item=list.find(x=>x.id===id);
-
- if(!item)return;
-
- if(state.gm<item.price){
-
-  toast('❌ Недостатньо GM');
-
-  return;
-
- }
-
- state.gm-=item.price;
-
- state.shopPurchases.push({
-  type,
-  id,
-  date:today()
- });
-
- state.character[type]=id;
-
- delete state.character.previewClothes;
- delete state.character.previewHat;
- delete state.character.previewItem;
-
- state.history.unshift({
-  date:today(),
-  amount:-item.price,
-  stat:'-',
-  reason:'🛍️ Куплено: '+item.name
- });
-
- save();
-
- document.getElementById('buyPopup')
- .classList.remove('show');
-
- pendingBuy=null;
-
- render();
-
- renderCharacter();
-
- renderEditor();
-
- toast('🛍️ Куплено! '+item.name);
-
-}
-
-
-/* ==========================================
-   RENDER CHARACTER
-========================================== */
-
-function getClothes(){
-
- const id=
-  state.character.previewClothes||
-  state.character.clothes;
-
- return CLOTHES.find(x=>x.id===id)||CLOTHES[0];
-
-}
-
-
-function getHat(){
-
- const id=
-  state.character.previewHat||
-  state.character.hat;
-
- return HATS.find(x=>x.id===id)||HATS[0];
-
-}
-
-
-function getItem(){
-
- const id=
-  state.character.previewItem||
-  state.character.item;
-
- return ITEMS.find(x=>x.id===id)||ITEMS[0];
-
-}
-
-
-function applyCharacter(prefix){
-
- const character=document.getElementById(prefix+'Character');
-
- const body=document.getElementById(prefix+'Body');
-
- const hat=document.getElementById(prefix+'Hat');
-
- const glasses=document.getElementById(prefix+'Glasses');
-
- if(!character)return;
-
- const clothes=getClothes();
-
- const hatData=getHat();
-
- const item=getItem();
-
- body.className='charBody '+clothes.class;
-
- hat.className='hat '+hatData.class;
-
- hat.style.display=
-  hatData.id==='none'
-  ?'none'
-  :'block';
-
- glasses.style.display=
-  item.id==='glasses'||
-  item.id==='sunglasses'||
-  item.id==='goldGlasses'
-  ?'block'
-  :'none';
-
-}
-
-
-function renderCharacter(preview=false){
-
- applyCharacter('');
-
- applyCharacter('editor');
-
- const name=
-  state.name||
-  'Yevhenii';
-
- document.getElementById('characterName').textContent=name;
-
- document.getElementById('editorPreviewName').textContent=name;
-
-}
-
-
-/* ==========================================
-   CHARACTER MODAL
-========================================== */
-
-function openCharacter(){
-
- document.getElementById('characterModal')
- .classList.add('show');
-
- renderEditor();
-
-}
-
-
-function closeCharacter(){
-
- document.getElementById('characterModal')
- .classList.remove('show');
-
- closeBuy();
-
-}
-
-
-function editorTab(tab,button){
-
- document
- .querySelectorAll('.editorTabs button')
- .forEach(x=>x.classList.remove('active'));
-
- button.classList.add('active');
-
- renderEditor(tab);
-
-}
-
-
-function renderEditor(tab='body'){
-
- const container=document.getElementById('editorItems');
-
- let list=[];
-
- let type='clothes';
-
- if(tab==='body'){
-
-  list=[
-   {
-    id:'default',
-    name:'Стандарт',
-    icon:'🧍',
-    price:0
-   }
-  ];
-
-  type='body';
-
- }else if(tab==='clothes'){
-
-  list=CLOTHES;
-
-  type='clothes';
-
- }else if(tab==='hats'){
-
-  list=HATS;
-
-  type='hats';
-
- }else if(tab==='items'){
-
-  list=ITEMS;
-
-  type='items';
-
- }
-
- container.innerHTML=list.map(item=>{
-
-  const selected=
-   state.character[type]===item.id;
-
-  const owned=
-   type==='body'
-   ?true
-   :owns(type,item.id);
-
-  return `
-
-  <div
-   class="item ${selected?'selected':''} ${owned?'':'locked'}"
-   onclick="equip('${type}','${item.id}')"
-  >
-
-   <div class="itemIcon">
-    ${item.icon}
-   </div>
-
-   <div class="itemName">
-    ${item.name}
-   </div>
-
-   <div class="itemPrice">
-
-    ${
-     owned
-     ?(selected?'✓ Надягнено':'Відкрити')
-     :item.price+' GM'
-    }
-
-   </div>
-
-  </div>
-
-  `;
-
- }).join('');
-
- renderCharacter();
-
-}
-
-
-/* ==========================================
-   AUTO CHARACTER ACTIONS
-========================================== */
-
-const ACTIVITIES=[
-
- {
-  id:'idle',
-  label:'🧍 Просто відпочиває',
-  duration:30
- },
-
- {
-  id:'read',
-  label:'📖 Читає книгу',
-  duration:40
- },
-
- {
-  id:'workout',
-  label:'🏋️ Тренується',
-  duration:35
- },
-
- {
-  id:'run',
-  label:'🏃 Бігає',
-  duration:40
- },
-
- {
-  id:'code',
-  label:'💻 Пише код',
-  duration:45
- },
-
- {
-  id:'draw',
-  label:'🎨 Малює',
-  duration:35
- },
-
- {
-  id:'music',
-  label:'🎸 Грає музику',
-  duration:35
- },
-
- {
-  id:'sing',
-  label:'🎤 Співає',
-  duration:30
- }
-
-];
-
-
-function randomActivity(){
-
- const activity=
-  ACTIVITIES[
-   Math.floor(Math.random()*ACTIVITIES.length)
-  ];
-
- const character=
-  document.getElementById('character');
-
- character.classList.remove(
-  'activityWorkout',
-  'activityRead',
-  'activityRun',
-  'activityCode',
-  'activityDraw'
- );
-
- if(activity.id==='workout')
-  character.classList.add('activityWorkout');
-
- if(activity.id==='read')
-  character.classList.add('activityRead');
-
- if(activity.id==='run')
-  character.classList.add('activityRun');
-
- if(activity.id==='code')
-  character.classList.add('activityCode');
-
- if(activity.id==='draw')
-  character.classList.add('activityDraw');
-
-
- document.getElementById('activityLabel')
- .textContent=activity.label;
-
- /* окуляри автоматично */
-
- const glasses=
-  document.getElementById('glasses');
-
- if(
-  activity.id==='read'||
-  activity.id==='code'||
-  activity.id==='draw'
- ){
-
-  glasses.style.display='block';
-
- }else{
-
-  applyCharacter('');
-
- }
-
-}
-
-
-const EXPRESSIONS=[
-
- {
-  name:'🙂 Задоволений',
-  mouth:'happy'
- },
-
- {
-  name:'😐 Спокійний',
-  mouth:'normal'
- },
-
- {
-  name:'🤔 Задумався',
-  mouth:'think'
- },
-
- {
-  name:'😮 Здивований',
-  mouth:'surprise'
- },
-
- {
-  name:'😄 Радісний',
-  mouth:'happy'
- }
-
-];
-
-
-function randomExpression(){
-
- const e=
-  EXPRESSIONS[
-   Math.floor(Math.random()*EXPRESSIONS.length)
-  ];
-
- const mouth=
-  document.querySelector('#character .charMouth');
-
- if(!mouth)return;
-
- if(e.mouth==='happy'){
-
-  mouth.style.borderBottom='3px solid #a54d52';
-  mouth.style.borderRadius='0 0 50% 50%';
-
- }else if(e.mouth==='think'){
-
-  mouth.style.borderBottom='0';
-  mouth.style.borderTop='3px solid #a54d52';
-
- }else if(e.mouth==='surprise'){
-
-  mouth.style.width='14px';
-  mouth.style.height='14px';
-  mouth.style.border='3px solid #a54d52';
-  mouth.style.borderRadius='50%';
-
- }else{
-
-  mouth.style.borderBottom='3px solid #a54d52';
-  mouth.style.borderRadius='0';
-
- }
-
-}
-
-
-/* змінюємо діяльність */
-
-setInterval(
- randomActivity,
- 35000
-);
-
-
-/* змінюємо емоцію */
-
-setInterval(
- randomExpression,
- 12000
-);
-
-
-/* перша дія */
-
-setTimeout(
- randomActivity,
- 5000
-);
-
-
-/* ==========================================
-   GAME SYSTEM
-========================================== */
 
 function normalizeDay(){
 
@@ -2819,24 +1337,25 @@ function normalizeDay(){
  ){
 
   const prev=new Date(state.lastDate);
-
   const cur=new Date(t);
 
-  const diff=
-   Math.round((cur-prev)/86400000);
+  const diff=Math.round(
+   (cur-prev)/86400000
+  );
 
-  if(diff>1)
+  if(diff>1){
    state.streak=0;
+  }
 
  }
 
  state.lastDate=t;
 
- Object.keys(state.completed)
- .forEach(id=>{
+ Object.keys(state.completed).forEach(id=>{
 
-  if(state.completed[id]!==t)
+  if(state.completed[id]!==t){
    delete state.completed[id];
+  }
 
  });
 
@@ -2844,28 +1363,487 @@ function normalizeDay(){
 
 }
 
+function chooseGender(gender,el){
 
-function addXP(amount,stat,reason,opts={}){
+ state.gender=gender;
+
+ document
+  .querySelectorAll('#setup1 .choice')
+  .forEach(x=>x.classList.remove('selected'));
+
+ el.classList.add('selected');
+
+}
+
+function setupNext(step){
+
+ document
+  .querySelectorAll('.wizardStep')
+  .forEach(x=>x.classList.remove('active'));
+
+ document
+  .getElementById('setup'+step)
+  .classList.add('active');
+
+}
+
+function toggleGoal(el){
+
+ el.classList.toggle('selected');
+
+}
+
+function selectedGoals(){
+
+ return [...document.querySelectorAll('.goalChoice.selected')]
+  .map(x=>x.dataset.goal);
+
+}
+
+function finishSetup(){
+
+ const age=Number(
+  document.getElementById('setupAge').value
+ );
+
+ if(!state.gender){
+
+  toast('Вибери стать');
+
+  setupNext(1);
+
+  return;
+
+ }
+
+ if(!age || age<5 || age>100){
+
+  toast('Введи правильний вік');
+
+  setupNext(2);
+
+  return;
+
+ }
+
+ const goals=selectedGoals();
+
+ if(!goals.length){
+
+  toast('Вибери хоча б один напрямок');
+
+  setupNext(3);
+
+  return;
+
+ }
+
+ state.age=age;
+ state.goals=goals;
+ state.setupDone=true;
+
+ generatePersonalQuests();
+
+ save();
+
+ document
+  .getElementById('setupModal')
+  .classList.remove('show');
+
+ render();
+
+ toast('🚀 Твоя Life RPG створена!');
+
+}
+
+function generatePersonalQuests(){
+
+ const quests=[];
+
+ // ОБОВ'ЯЗКОВИЙ СПОРТ
+ quests.push({
+  id:'daily_sport',
+  name:'💪 Щоденне тренування',
+  description:'Віджимання, присідання, турнік або інша фізична активність',
+  gm:20,
+  stat:'STR',
+  category:'sport',
+  daily:true,
+  mandatory:true
+ });
+
+ // ОБОВ'ЯЗКОВЕ ЧИТАННЯ
+ quests.push({
+  id:'daily_reading',
+  name:'📖 Читання 30 хвилин',
+  description:'Прочитати книгу мінімум 30 хвилин',
+  gm:25,
+  stat:'WIS',
+  category:'reading',
+  daily:true,
+  mandatory:true
+ });
+
+ if(state.goals.includes('sport')){
+
+  quests.push({
+   id:'sport_pushups',
+   name:'💪 15 віджимань',
+   gm:10,
+   stat:'STR',
+   category:'sport',
+   daily:true
+  });
+
+  quests.push({
+   id:'sport_squats',
+   name:'🦵 30 присідань',
+   gm:10,
+   stat:'STR',
+   category:'sport',
+   daily:true
+  });
+
+ }
+
+ if(state.goals.includes('development')){
+
+  quests.push({
+   id:'dev_learning',
+   name:'🧠 30 хвилин навчання',
+   gm:20,
+   stat:'INT',
+   category:'development',
+   daily:true
+  });
+
+ }
+
+ if(state.goals.includes('work')){
+
+  quests.push({
+   id:'work_focus',
+   name:'💼 45 хвилин роботи / навчання',
+   gm:25,
+   stat:'TECH',
+   category:'work',
+   daily:true
+  });
+
+ }
+
+ if(state.goals.includes('selfcare')){
+
+  quests.push({
+   id:'selfcare',
+   name:'🧼 Догляд за собою',
+   gm:10,
+   stat:'DISC',
+   category:'selfcare',
+   daily:true
+  });
+
+ }
+
+ if(state.goals.includes('creativity')){
+
+  quests.push({
+   id:'creative',
+   name:'🎨 30 хвилин творчості',
+   gm:20,
+   stat:'INT',
+   category:'creativity',
+   daily:true
+  });
+
+ }
+
+ if(state.goals.includes('discipline')){
+
+  quests.push({
+   id:'discipline',
+   name:'⚔️ 30 хвилин без відволікань',
+   gm:20,
+   stat:'DISC',
+   category:'discipline',
+   daily:true
+  });
+
+ }
+
+ state.quests=quests;
+
+}
+
+function difficultyForTask(name,duration){
+
+ const text=name.toLowerCase();
+
+ let score=1;
+
+ if(duration>=15)score+=1;
+ if(duration>=30)score+=1;
+ if(duration>=60)score+=1;
+
+ const hardWords=[
+  'біг',
+  'бігати',
+  'турнік',
+  'підтяг',
+  'віджим',
+  'присід',
+  'трен',
+  'код',
+  'програм',
+  'іспит',
+  'екзамен',
+  'проєкт',
+  'проект'
+ ];
+
+ const mediumWords=[
+  'чит',
+  'книга',
+  'навч',
+  'німець',
+  'англій',
+  'blender',
+  'робота',
+  'малю',
+  'музик'
+ ];
+
+ if(hardWords.some(w=>text.includes(w)))score+=1;
+
+ if(mediumWords.some(w=>text.includes(w)))score+=.5;
+
+ score=Math.max(1,Math.min(5,score));
+
+ if(score<=2)return'easy';
+
+ if(score<=3.5)return'medium';
+
+ return'hard';
+
+}
+
+function rewardForTask(name,duration){
+
+ const difficulty=difficultyForTask(name,duration);
+
+ let base=5;
+
+ if(duration>=15)base+=5;
+
+ if(duration>=30)base+=10;
+
+ if(duration>=60)base+=15;
+
+ if(duration>=90)base+=10;
+
+ if(difficulty==='medium')base+=5;
+
+ if(difficulty==='hard')base+=15;
+
+ // Захист від накрутки
+ base=Math.min(base,100);
+
+ return{
+  difficulty,
+  gm:base,
+  xp:base
+ };
+
+}
+
+function previewTask(){
+
+ const name=document
+  .getElementById('taskName')
+  .value
+  .trim();
+
+ const duration=Number(
+  document.getElementById('taskDuration').value
+ )||1;
+
+ const el=document.getElementById('taskPreview');
+
+ if(!name){
+
+  el.innerHTML=
+   '<div class="notice">Напиши завдання — система автоматично оцінить його складність.</div>';
+
+  return;
+
+ }
+
+ const r=rewardForTask(name,duration);
+
+ const labels={
+  easy:'Легке',
+  medium:'Середнє',
+  hard:'Складне'
+ };
+
+ el.innerHTML=`
+
+ <div class="notice">
+
+ <b>🤖 Оцінка завдання</b>
+
+ <div style="margin-top:8px">
+
+ <span class="difficulty ${r.difficulty}">
+ ${labels[r.difficulty]}
+ </span>
+
+ </div>
+
+ <div class="rewardPreview">
+
+ <div class="rewardBox">
+ <b>⭐ ${r.xp}</b>
+ XP
+ </div>
+
+ <div class="rewardBox">
+ <b>💰 ${r.gm}</b>
+ GM
+ </div>
+
+ <div class="rewardBox">
+ <b>⏱ ${duration}</b>
+ хв
+ </div>
+
+ </div>
+
+ </div>
+
+ `;
+
+}
+
+function openTaskModal(){
+
+ document
+  .getElementById('taskModal')
+  .classList.add('show');
+
+ const d=new Date();
+
+ document.getElementById('taskDate').value=
+  d.toISOString().slice(0,10);
+
+ document.getElementById('taskTime').value=
+  d.toTimeString().slice(0,5);
+
+ previewTask();
+
+}
+
+function closeTaskModal(){
+
+ document
+  .getElementById('taskModal')
+  .classList.remove('show');
+
+}
+
+function createTask(){
+
+ const name=document
+  .getElementById('taskName')
+  .value
+  .trim();
+
+ const date=document
+  .getElementById('taskDate')
+  .value;
+
+ const time=document
+  .getElementById('taskTime')
+  .value;
+
+ const duration=Number(
+  document.getElementById('taskDuration').value
+ )||1;
+
+ const repeat=document
+  .getElementById('taskRepeat')
+  .value;
+
+ const stat=document
+  .getElementById('taskStat')
+  .value;
+
+ const category=document
+  .getElementById('taskCategory')
+  .value;
+
+ if(!name){
+
+  toast('Напиши назву завдання');
+
+  return;
+
+ }
+
+ const reward=rewardForTask(name,duration);
+
+ state.quests.push({
+
+  id:'custom_'+Date.now(),
+
+  name,
+
+  description:'Власне завдання',
+
+  gm:reward.gm,
+
+  xp:reward.xp,
+
+  stat,
+
+  category,
+
+  daily:repeat==='daily',
+
+  custom:true,
+
+  date,
+
+  time,
+
+  duration,
+
+  repeat
+
+ });
+
+ save();
+
+ closeTaskModal();
+
+ render();
+
+ toast('🎯 Завдання створено · +'+reward.gm+' GM');
+
+}
+
+function addXP(amount,stat,reason){
 
  const old=levelForGM(state.gm);
 
- state.gm=Math.max(
-  0,
-  state.gm+amount
- );
+ state.gm=Math.max(0,state.gm+amount);
 
- if(
-  stat &&
-  amount>0
- ){
+ if(stat && amount>0){
 
   state.stats[stat]=
    (state.stats[stat]||0)+amount;
 
  }
-
- if(opts.gaming)
-  state.gamingMinutes+=opts.gaming;
 
  state.history.unshift({
 
@@ -2887,9 +1865,7 @@ function addXP(amount,stat,reason,opts={}){
 
  if(nw>old){
 
-  toast(
-   '🆙 LEVEL UP! Рівень '+nw+'!'
-  );
+  toast('🆙 LEVEL UP! Рівень '+nw);
 
  }else{
 
@@ -2902,30 +1878,30 @@ function addXP(amount,stat,reason,opts={}){
 
  }
 
- checkAchievements();
-
 }
-
 
 function completeQuest(id){
 
  normalizeDay();
 
- const q=
-  state.quests.find(x=>x.id===id);
+ const q=state.quests.find(x=>x.id===id);
 
- if(
-  !q||
-  state.completed[id]===today()
- )return;
+ if(!q)return;
+
+ if(state.completed[id]===today()){
+
+  toast('Це завдання вже виконано сьогодні');
+
+  return;
+
+ }
 
  state.completed[id]=today();
 
  addXP(
   q.gm,
   q.stat,
-  q.name,
-  {gaming:q.gm*2}
+  q.name
  );
 
  save();
@@ -2934,66 +1910,210 @@ function completeQuest(id){
 
 }
 
+function render(){
 
-function addQuest(){
+ normalizeDay();
 
- const name=
-  document
-  .getElementById('newQuestName')
-  .value
-  .trim();
+ const lvl=levelForGM(state.gm);
 
- const gm=Math.max(
-  1,
-  Number(
-   document.getElementById('newQuestGM').value
-  )||1
+ const start=levelStart(lvl);
+
+ const next=nextLevelGM(lvl);
+
+ const pct=Math.max(
+  0,
+  Math.min(
+   100,
+   ((state.gm-start)/(next-start))*100
+  )
  );
 
- const stat=
-  document.getElementById('newQuestStat')
-  .value;
+ document.getElementById('gm').textContent=
+  fmt(state.gm)+' GM';
 
- if(!name){
+ document.getElementById('level').textContent=
+  'LEVEL '+lvl;
 
-  toast('Введи назву квесту');
+ document.getElementById('streak').textContent=
+  '🔥 '+state.streak+' DAYS';
 
-  return;
+ document.getElementById('topStreak').textContent=
+  '🔥 '+state.streak+' DAYS';
 
- }
+ document.getElementById('hp').textContent=
+  Math.round(state.hp)+'/100';
 
- state.quests.push({
+ document.getElementById('xpBar').style.width=
+  pct+'%';
 
-  id:'q_'+Date.now(),
+ document.getElementById('xpText').textContent=
+  fmt(Math.max(0,state.gm-start))+
+  ' / '+
+  fmt(next-start)+
+  ' GM до наступного рівня';
 
-  name,
+ renderStats();
 
-  gm,
+ renderQuests();
 
-  stat,
+ renderHistory();
 
-  daily:true
+ renderGoals();
+
+}
+
+function renderStats(){
+
+ const mini=document.getElementById('miniStats');
+
+ mini.innerHTML='';
+
+ Object.entries(STATS).forEach(([k,v])=>{
+
+  mini.insertAdjacentHTML(
+   'beforeend',
+   `<div class="stat">
+    <b>${v}</b>
+    <strong>${fmt(state.stats[k])}</strong>
+   </div>`
+  );
 
  });
 
- save();
+ const full=document.getElementById('fullStats');
 
- render();
+ full.innerHTML=
+  Object.entries(STATS).map(([k,v])=>{
 
- document.getElementById('newQuestName')
- .value='';
+   const val=state.stats[k];
 
- toast('🎯 Квест створено');
+   const pct=Math.min(
+    100,
+    (val/1000)*100
+   );
+
+   return `
+
+   <div style="margin:13px 0">
+
+    <div style="display:flex;justify-content:space-between">
+
+     <b>${v}</b>
+
+     <b>${fmt(val)} XP</b>
+
+    </div>
+
+    <div class="bar">
+
+     <span style="width:${pct}%"></span>
+
+    </div>
+
+   </div>
+
+   `;
+
+  }).join('');
 
 }
 
+function renderQuests(){
+
+ const list=document.getElementById('questList');
+
+ const daily=state.quests.filter(q=>{
+
+  if(q.daily)return true;
+
+  if(q.custom && q.date===today())return true;
+
+  return false;
+
+ });
+
+ if(!daily.length){
+
+  list.innerHTML=
+   '<div class="empty">На сьогодні немає завдань.</div>';
+
+ }else{
+
+  list.innerHTML=daily
+   .map(questHTML)
+   .join('');
+
+ }
+
+ const done=daily.filter(
+  q=>state.completed[q.id]===today()
+ ).length;
+
+ document.getElementById('dailyCount').textContent=
+  done+'/'+daily.length;
+
+ document.getElementById('dailyHome').innerHTML=
+  daily.slice(0,5)
+   .map(questHTML)
+   .join('')+
+
+  `<button
+   class="btn green"
+   style="width:100%;margin-top:10px;text-align:center"
+   onclick="openTaskModal()">
+   ➕ Додати власне завдання
+  </button>`;
+
+}
+
+function questHTML(q){
+
+ const done=
+  state.completed[q.id]===today();
+
+ return `
+
+ <div class="quest ${done?'done':''}">
+
+ <div class="qtext">
+
+ <b>${escapeHTML(q.name)}</b>
+
+ <small>
+ +${q.gm} GM · ${STATS[q.stat]||q.stat}
+ </small>
+
+ </div>
+
+ <button
+  ${done?'disabled':''}
+  onclick="completeQuest('${q.id}')">
+
+ ${done?'✓ DONE':'COMPLETE'}
+
+ </button>
+
+ ${q.custom?`
+
+ <button
+  class="btn red"
+  style="padding:7px"
+  onclick="deleteQuest('${q.id}')">
+  ✕
+ </button>
+
+ `:''}
+
+ </div>
+
+ `;
+
+}
 
 function deleteQuest(id){
 
  state.quests=
-  state.quests.filter(
-   q=>q.id!==id
-  );
+  state.quests.filter(q=>q.id!==id);
 
  delete state.completed[id];
 
@@ -3001,81 +2121,63 @@ function deleteQuest(id){
 
  render();
 
-}
-
-
-function penalty(amount,reason){
-
- addXP(
-  -amount,
-  null,
-  reason
- );
-
- state.hp=
-  Math.max(
-   0,
-   state.hp-amount/5
-  );
-
- save();
-
- render();
+ toast('🗑 Завдання видалено');
 
 }
 
+function renderGoals(){
 
-function completeDaily(){
+ const el=document.getElementById('goalList');
 
- normalizeDay();
+ el.innerHTML=
+  state.goals.map(g=>`
 
- if(state.lastDaily===today()){
+  <span
+   class="pill"
+   style="display:inline-block;margin:3px">
+   ${GOALS[g]}
+  </span>
 
-  toast('Daily уже виконаний 🔥');
-
-  return;
-
- }
-
- const yesterday=
-  new Date(
-   Date.now()-86400000
-  )
-  .toISOString()
-  .slice(0,10);
-
- state.streak=
-  state.lastDaily===yesterday
-  ?state.streak+1
-  :1;
-
- state.lastDaily=today();
-
- const bonus=
-  100+
-  (state.streak%7===0?50:0);
-
- addXP(
-  bonus,
-  'DISC',
-  '🎯 Daily Quest',
-  {gaming:30}
- );
-
- save();
-
- render();
+  `).join('');
 
 }
 
+function renderHistory(){
+
+ const body=
+  document.getElementById('historyBody');
+
+ body.innerHTML=
+  state.history
+   .slice(0,100)
+   .map(h=>`
+
+   <tr>
+
+   <td>${h.date}</td>
+
+   <td>${h.amount>=0?'+':''}${fmt(h.amount)}</td>
+
+   <td>${escapeHTML(h.stat)}</td>
+
+   <td>${escapeHTML(h.reason)}</td>
+
+   </tr>
+
+   `)
+   .join('') ||
+
+  `<tr>
+   <td colspan="4" class="muted">
+   Ще немає активності.
+   </td>
+   </tr>`;
+
+}
 
 function clearHistory(){
 
- if(
-  confirm(
-   'Очистити історію? GM не зміниться.'
-  )
- ){
+ if(confirm('Очистити історію?')){
 
   state.history=[];
 
@@ -3087,907 +2189,37 @@ function clearHistory(){
 
 }
 
-
 function resetGame(){
 
- if(
-  confirm(
-   'Точно видалити весь прогрес?'
-  )
- ){
+ if(confirm('Точно видалити весь прогрес?')){
 
   state=clone(DEFAULT);
 
   save();
 
-  render();
-
-  toast('Прогрес скинуто');
+  location.reload();
 
  }
 
 }
 
+function escapeHTML(s){
 
-/* ==========================================
-   ACHIEVEMENTS
-========================================== */
-
-const ACH=[
-
- ['first','🩸 First Blood','Зробити першу корисну дію'],
-
- ['hundred','💯 100 GM','Набрати 100 GM'],
-
- ['thousand','🔥 1K GM','Набрати 1 000 GM'],
-
- ['tenk','👑 10K GM','Набрати 10 000 GM'],
-
- ['streak7','🔥 7 Day Streak','7 днів поспіль'],
-
- ['book100','📚 Bookworm','100 WIS XP'],
-
- ['strong100','💪 Strong','100 STR XP'],
-
- ['tech100','💻 Builder','100 TECH XP']
-
-];
-
-
-function checkAchievements(){
-
- const tests={
-
-  first:
-   state.history.length>0,
-
-  hundred:
-   state.gm>=100,
-
-  thousand:
-   state.gm>=1000,
-
-  tenk:
-   state.gm>=10000,
-
-  streak7:
-   state.streak>=7,
-
-  book100:
-   state.stats.WIS>=100,
-
-  strong100:
-   state.stats.STR>=100,
-
-  tech100:
-   state.stats.TECH>=100
-
- };
-
- Object.keys(tests).forEach(id=>{
-
-  if(
-   tests[id] &&
-   !state.achievements[id]
-  ){
-
-   state.achievements[id]=true;
-
-  }
-
- });
-
- save();
-
-}
-
-
-/* ==========================================
-   REWARD SHOP
-========================================== */
-
-const SHOP=[
-
- ['🎮 Gaming Pass 30 min',120,30],
-
- ['🎮 Gaming Pass 60 min',220,60],
-
- ['🍫 Маленька смаколика',150,0],
-
- ['🎬 1 фільм без почуття провини',300,0],
-
- ['🎮 Gaming Pass 2 hours',400,120],
-
- ['🏆 Особлива нагорода',1000,0]
-
-];
-
-
-function buyReward(cost,name,minutes){
-
- if(state.gm<cost){
-
-  toast('❌ Не вистачає GM');
-
-  return;
-
- }
-
- state.gm-=cost;
-
- state.gamingMinutes+=minutes||0;
-
- state.history.unshift({
-
-  date:today(),
-
-  amount:-cost,
-
-  stat:'-',
-
-  reason:'🎁 '+name
-
- });
-
- state.shopPurchases.unshift({
-
-  date:today(),
-
-  name,
-
-  cost
-
- });
-
- save();
-
- render();
-
- toast(
-  '🎁 Нагороду куплено: '+name
+ return String(s).replace(
+  /[&<>'"]/g,
+  c=>({
+   '&':'&amp;',
+   '<':'&lt;',
+   '>':'&gt;',
+   "'":'&#39;',
+   '"':'&quot;'
+  }[c])
  );
 
 }
 
 
-/* ==========================================
-   RENDER
-========================================== */
-
-function render(){
-
- normalizeDay();
-
- const lvl=
-  levelForGM(state.gm);
-
- const start=
-  levelStart(lvl);
-
- const next=
-  nextLevelGM(lvl);
-
- const pct=
-  Math.max(
-   0,
-   Math.min(
-    100,
-    ((state.gm-start)/(next-start))*100
-   )
-  );
-
-
- document.getElementById('gm')
- .textContent=
-  fmt(state.gm)+' GM';
-
- document.getElementById('level')
- .textContent=
-  'LEVEL '+lvl;
-
- document.getElementById('streak')
- .textContent=
-  '🔥 '+state.streak+' DAYS';
-
- document.getElementById('topStreak')
- .textContent=
-  '🔥 '+state.streak+' DAYS';
-
- document.getElementById('hp')
- .textContent=
-  Math.round(state.hp)+'/100';
-
- document.getElementById('xpBar')
- .style.width=
-  pct+'%';
-
- document.getElementById('xpText')
- .textContent=
-  fmt(Math.max(0,state.gm-start))+
-  ' / '+
-  fmt(next-start)+
-  ' GM до наступного рівня';
-
-
- const mini=
-  document.getElementById('miniStats');
-
- mini.innerHTML='';
-
- Object.entries(STATS)
- .forEach(([k,v])=>{
-
-  mini.insertAdjacentHTML(
-
-   'beforeend',
-
-   `
-   <div class="stat">
-    <b>${v}</b>
-    <strong>${fmt(state.stats[k])}</strong>
-   </div>
-   `
-
-  );
-
- });
-
-
- const qa=[
-
-  ['💪 10 віджимань',5,'STR'],
-
-  ['📖 2 сторінки',5,'WIS'],
-
-  ['🇩🇪 10 хв німецької',5,'LANG'],
-
-  ['💻 10 хв IT/Blender',5,'TECH'],
-
-  ['🥁 10 хв музики',5,'DISC'],
-
-  ['🚶 1 км ходьби',20,'STR']
-
- ];
-
-
- document.getElementById('quickActions')
- .innerHTML=
-
- qa.map(x=>`
-
- <button
- class="btn green"
- onclick="addXP(
-  ${x[1]},
-  '${x[2]}',
-  '${x[0]}',
-  {gaming:${x[1]*2}}
- )">
-
- ${x[0]}
- <b>+${x[1]} GM</b>
-
- </button>
-
- `).join('');
-
-
- renderQuests();
-
- renderStats();
-
- renderShop();
-
- renderAchievements();
-
- renderHistory();
-
- renderBoss();
-
- renderAccountProgress();
-
- renderCharacter();
-
-
- document.getElementById('shopGM')
- .textContent=
-  fmt(state.gm)+' GM';
-
- document.getElementById('playerName')
- .value=
-  state.name;
-
- document.getElementById('gamingMinutes')
- .value=
-  state.gamingMinutes;
-
- document.getElementById('email')
- .value=
-  state.email||'';
-
- document.getElementById('emailStatus')
- .textContent=
-  state.email
-  ?'📧 Акаунт привʼязаний до: '+state.email
-  :'Акаунт ще не привʼязаний.';
-
- document.body.classList.toggle(
-  'light',
-  state.theme==='light'
- );
-
- document.getElementById('themeButton')
- .textContent=
-  state.theme==='light'
-  ?'☀️ Світла тема'
-  :'🌙 Темна тема';
-
-}
-
-
-/* ==========================================
-   QUEST RENDER
-========================================== */
-
-function questHTML(q){
-
- const done=
-  state.completed[q.id]===today();
-
- return `
-
- <div class="quest ${done?'done':''}">
-
-  <div class="qtext">
-
-   <b>${escapeHTML(q.name)}</b>
-
-   <small>
-    +${q.gm} GM · ${STATS[q.stat]}
-   </small>
-
-  </div>
-
-  <button
-   ${done?'disabled':''}
-   onclick="completeQuest('${q.id}')">
-
-   ${done?'✓ DONE':'COMPLETE'}
-
-  </button>
-
- </div>
-
- `;
-
-}
-
-
-function renderQuests(){
-
- const daily=
-  state.quests.filter(q=>q.daily);
-
- document.getElementById('questList')
- .innerHTML=
-
- daily.map(questHTML).join('')+
-
- `
-
- <div class="quest">
-
-  <div class="qtext">
-
-   <b>
-    ☠️ TikTok / ігри замість важливої справи
-   </b>
-
-   <small>
-    -20 GM · мінус за свідому прокрастинацію
-   </small>
-
-  </div>
-
-  <button
-   class="btn red"
-   onclick="penalty(20,'📱 Лінь / TikTok')">
-
-   -20 GM
-
-  </button>
-
- </div>
-
- `;
-
-
- const done=
-  daily.filter(
-   q=>state.completed[q.id]===today()
-  ).length;
-
- document.getElementById('dailyCount')
- .textContent=
-  done+'/'+daily.length;
-
-
- document.getElementById('dailyHome')
- .innerHTML=
-
- daily.slice(0,5)
- .map(questHTML)
- .join('')+
-
- `
-
- <button
-  class="btn gold"
-  style="width:100%;margin-top:10px;text-align:center"
-  onclick="completeDaily()">
-
-  🎯 COMPLETE DAILY · +100 GM
-
- </button>
-
- `;
-
-}
-
-
-/* ==========================================
-   STATS
-========================================== */
-
-function renderStats(){
-
- const el=
-  document.getElementById('fullStats');
-
- el.innerHTML=
-  Object.entries(STATS)
-  .map(([k,v])=>{
-
-   const val=
-    state.stats[k];
-
-   const pct=
-    Math.min(
-     100,
-     val/1000*100
-    );
-
-   return `
-
-   <div style="margin:13px 0">
-
-    <div style="
-     display:flex;
-     justify-content:space-between">
-
-     <b>${v}</b>
-
-     <b>${fmt(val)} XP</b>
-
-    </div>
-
-    <div class="bar">
-
-     <span
-      style="width:${pct}%">
-     </span>
-
-    </div>
-
-   </div>
-
-   `;
-
-  })
-  .join('');
-
-}
-
-
-/* ==========================================
-   SHOP RENDER
-========================================== */
-
-function renderShop(){
-
- document.getElementById('shopList')
- .innerHTML=
-
- SHOP.map(x=>`
-
- <div class="shopItem">
-
-  <h3>${x[0]}</h3>
-
-  <p>
-
-   Ціна:
-   <b>${x[1]} GM</b>
-
-   ${x[2]
-    ?' · Gaming Pass +'+x[2]+' хв'
-    :''
-   }
-
-  </p>
-
-  <button
-   ${state.gm<x[1]?'disabled':''}
-   onclick="buyReward(
-    ${x[1]},
-    '${x[0]}',
-    ${x[2]}
-   )">
-
-   КУПИТИ
-
-  </button>
-
- </div>
-
- `).join('');
-
-}
-
-
-/* ==========================================
-   ACHIEVEMENTS RENDER
-========================================== */
-
-function renderAchievements(){
-
- checkAchievements();
-
- document.getElementById('achList')
- .innerHTML=
-
- ACH.map(x=>`
-
- <div
-  class="achievement ${
-   state.achievements[x[0]]
-   ?'unlocked'
-   :'locked'
-  }">
-
-  <h3>
-
-   ${x[1]}
-
-   ${
-    state.achievements[x[0]]
-    ?'✓'
-    :'🔒'
-   }
-
-  </h3>
-
-  <p>${x[2]}</p>
-
- </div>
-
- `).join('');
-
-
- document.getElementById('achCount')
- .textContent=
-
- Object.values(
-  state.achievements
- )
- .filter(Boolean)
- .length+
- '/'+
- ACH.length;
-
-}
-
-
-/* ==========================================
-   HISTORY
-========================================== */
-
-function renderHistory(){
-
- document.getElementById('historyBody')
- .innerHTML=
-
- state.history
- .slice(0,100)
- .map(h=>`
-
- <tr>
-
-  <td style="padding:9px">
-   ${h.date}
-  </td>
-
-  <td style="
-   padding:9px;
-   color:${h.amount>=0?'var(--accent)':'var(--danger)'}">
-
-   ${h.amount>=0?'+':''}${fmt(h.amount)}
-
-  </td>
-
-  <td style="padding:9px">
-   ${escapeHTML(h.stat)}
-  </td>
-
-  <td style="padding:9px">
-   ${escapeHTML(h.reason)}
-  </td>
-
- </tr>
-
- `)
- .join('')
-
- ||
-
- `
-
- <tr>
-
-  <td
-   colspan="4"
-   class="muted"
-   style="padding:15px">
-
-   Ще немає активності.
-
-  </td>
-
- </tr>
-
- `;
-
-}
-
-
-/* ==========================================
-   BOSS
-========================================== */
-
-function renderBoss(){
-
- const target=1000;
-
- const start=
-  new Date();
-
- start.setDate(
-  start.getDate()-
-  start.getDay()
- );
-
- start.setHours(0,0,0,0);
-
- const earned=
-  state.history
-  .filter(h=>
-   h.amount>0 &&
-   new Date(h.date)>=start
-  )
-  .reduce(
-   (a,h)=>a+h.amount,
-   0
-  );
-
- const pct=
-  Math.min(
-   100,
-   Math.round(
-    earned/target*100
-   )
-  );
-
- document.getElementById('bossStatus')
- .textContent=
-  pct+'%';
-
-
- document.getElementById('bossHome')
- .innerHTML=
-
- `
-
- <b>👹 Defeat Laziness</b>
-
- <p class="muted">
-  Зароби ${fmt(target)} GM цього тижня.
- </p>
-
- <div class="bar">
-
-  <span
-   style="width:${pct}%">
-  </span>
-
- </div>
-
- <small class="muted">
-
-  ${fmt(
-   Math.min(earned,target)
-  )}
-  /
-  ${fmt(target)}
-  GM
-
- </small>
-
- `;
-
-}
-
-
-/* ==========================================
-   ACCOUNT PROGRESS
-========================================== */
-
-function renderAccountProgress(){
-
- const lvl=
-  levelForGM(state.gm);
-
- const percent=
-  Math.min(
-   100,
-   (state.gm/10000)*100
-  );
-
- document.getElementById(
-  'accountProgress'
- )
- .innerHTML=
-
- `
-
- <div style="
-  display:flex;
-  justify-content:space-between">
-
-  <b>LEVEL ${lvl}</b>
-
-  <b>${fmt(state.gm)} GM</b>
-
- </div>
-
- <div class="bar">
-
-  <span
-   style="width:${percent}%">
-  </span>
-
- </div>
-
- <p class="muted">
-  Загальний розвиток акаунта.
-  Чим більше корисних дій — тим сильніший твій персонаж.
- </p>
-
- `;
-
-}
-
-
-/* ==========================================
-   SETTINGS
-========================================== */
-
-document
- .getElementById('playerName')
- .addEventListener(
-  'change',
-  e=>{
-
-   state.name=
-    e.target.value.trim()
-    ||'Yevhenii';
-
-   save();
-
-   renderCharacter();
-
-   toast('Імʼя збережено');
-
-  }
- );
-
-
-document
- .getElementById('gamingMinutes')
- .addEventListener(
-  'change',
-  e=>{
-
-   state.gamingMinutes=
-    Math.max(
-     0,
-     Number(e.target.value)||0
-    );
-
-   save();
-
-   render();
-
-  }
- );
-
-
-function saveEmail(){
-
- const email=
-  document.getElementById('email')
-  .value
-  .trim();
-
- if(
-  email &&
-  !email.includes('@')
- ){
-
-  toast('❌ Введи правильний email');
-
-  return;
-
- }
-
- state.email=email;
-
- save();
-
- render();
-
- toast(
-  email
-  ?'📧 Email збережено'
-  :'Email видалено'
- );
-
-}
-
-
-function toggleTheme(){
-
- state.theme=
-  state.theme==='dark'
-  ?'light'
-  :'dark';
-
- save();
-
- document.body.classList.add('themeChanging');
-
- setTimeout(
-  ()=>{
-   document.body.classList.remove(
-    'themeChanging'
-   );
-  },
-  250
- );
-
- render();
-
- toast(
-  state.theme==='light'
-  ?'☀️ Світла тема'
-  :'🌙 Темна тема'
- );
-
-}
-
-
-/* ==========================================
-   NAVIGATION
-========================================== */
+/* NAVIGATION */
 
 document
  .querySelectorAll('#nav button')
@@ -3999,22 +2231,20 @@ document
 
     document
      .querySelectorAll('.nav button')
-     .forEach(
-      b=>b.classList.remove('active')
+     .forEach(b=>
+      b.classList.remove('active')
      );
 
     btn.classList.add('active');
 
     document
      .querySelectorAll('.page')
-     .forEach(
-      p=>p.classList.remove('active')
+     .forEach(p=>
+      p.classList.remove('active')
      );
 
     document
-     .getElementById(
-      btn.dataset.page
-     )
+     .getElementById(btn.dataset.page)
      .classList.add('active');
 
    }
@@ -4023,52 +2253,61 @@ document
  });
 
 
-/* ==========================================
-   ESCAPE HTML
-========================================== */
+/* SETTINGS */
 
-function escapeHTML(s){
+document
+ .getElementById('playerName')
+ .addEventListener(
+  'change',
+  e=>{
 
- return String(s)
- .replace(
-  /[&<>'"]/g,
-  c=>({
+   state.name=
+    e.target.value.trim()||
+    'Yevhenii';
 
-   '&':'&amp;',
-   '<':'&lt;',
-   '>':'&gt;',
-   "'":'&#39;',
-   '"':'&quot;'
+   save();
 
-  }[c])
- );
+   toast('Імʼя збережено');
 
-}
-
-
-/* ==========================================
-   SERVICE WORKER
-========================================== */
-
-if('serviceWorker' in navigator){
-
- window.addEventListener(
-  'load',
-  ()=>{
-   navigator.serviceWorker
-   .register('./sw.js')
-   .catch(()=>{});
   }
  );
 
+document
+ .getElementById('playerAge')
+ .addEventListener(
+  'change',
+  e=>{
+
+   state.age=
+    Math.max(
+     5,
+     Math.min(
+      100,
+      Number(e.target.value)||17
+     )
+    );
+
+   save();
+
+  }
+ );
+
+
+/* START */
+
+if(!state.setupDone){
+
+ document
+  .getElementById('setupModal')
+  .classList.add('show');
+
 }
 
+document.getElementById('playerName').value=
+ state.name;
 
-/* ==========================================
-   START
-========================================== */
-
-checkAchievements();
+document.getElementById('playerAge').value=
+ state.age;
 
 render();
 
