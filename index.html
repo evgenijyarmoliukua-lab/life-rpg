@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<title>Life RPG 2.0</title>
+<title>Life RPG 3.0</title>
 
 <link rel="manifest" href="manifest.json">
 
@@ -19,11 +19,11 @@
  --text:#eef5ff;
  --muted:#91a3bb;
  --accent:#69e5a4;
- --accent2:#5aa9ff;
- --gold:#ffd166;
+ --blue:#5aa9ff;
  --danger:#ff6577;
+ --gold:#ffd166;
  --line:#21334b;
- --shadow:0 16px 45px rgba(0,0,0,.25);
+ --shadow:0 16px 45px rgba(0,0,0,.28);
 }
 
 *{box-sizing:border-box}
@@ -37,20 +37,19 @@ html,body{
  radial-gradient(circle at 100% 0,#25451d 0,transparent 30%),
  var(--bg);
  color:var(--text);
- transition:background .45s,color .45s;
 }
 
 body.light{
  --bg:#eef4f8;
  --panel:#ffffff;
  --panel2:#f3f7fa;
- --text:#172131;
- --muted:#657487;
- --line:#d7e0e8;
- --shadow:0 12px 35px rgba(30,50,70,.12);
+ --text:#142235;
+ --muted:#617286;
+ --line:#d6e0e8;
+ --shadow:0 12px 35px rgba(20,40,60,.12);
  background:
- radial-gradient(circle at 20% 0,#d8f5e8 0,transparent 35%),
- radial-gradient(circle at 100% 0,#dcecff 0,transparent 30%),
+ radial-gradient(circle at 20% 0,#d9f5e8 0,transparent 35%),
+ radial-gradient(circle at 100% 0,#dbeaff 0,transparent 30%),
  var(--bg);
 }
 
@@ -73,7 +72,7 @@ button{
  justify-content:space-between;
  align-items:center;
  gap:12px;
- margin-bottom:16px;
+ margin-bottom:15px;
 }
 
 .brand{
@@ -107,7 +106,7 @@ button{
  display:flex;
  gap:7px;
  overflow:auto;
- padding-bottom:5px;
+ padding-bottom:6px;
  margin-bottom:16px;
 }
 
@@ -136,7 +135,6 @@ button{
 
 .card{
  background:rgba(13,24,40,.9);
- background:var(--panel);
  border:1px solid var(--line);
  border-radius:18px;
  padding:18px;
@@ -144,9 +142,24 @@ button{
  backdrop-filter:blur(12px);
 }
 
+body.light .card{
+ background:rgba(255,255,255,.9);
+}
+
 .hero{
  position:relative;
  overflow:hidden;
+}
+
+.hero:after{
+ content:"";
+ position:absolute;
+ width:260px;
+ height:260px;
+ right:-110px;
+ top:-110px;
+ background:rgba(105,229,164,.12);
+ border-radius:50%;
 }
 
 .heroRow{
@@ -190,10 +203,12 @@ button{
  display:block;
  height:100%;
  width:0;
- background:linear-gradient(90deg,var(--accent2),var(--accent));
+ background:linear-gradient(90deg,var(--blue),var(--accent));
  border-radius:99px;
- transition:width .4s;
+ transition:width .3s;
 }
+
+.muted{color:var(--muted)}
 
 .statGrid{
  display:grid;
@@ -232,6 +247,11 @@ button{
  text-align:left;
 }
 
+body.light .btn{
+ background:#edf3f7;
+ border-color:#d4e0e8;
+}
+
 .btn:hover{
  filter:brightness(1.12);
 }
@@ -241,14 +261,14 @@ button{
  border-color:rgba(105,229,164,.4);
 }
 
-.btn.gold{
- background:rgba(255,209,102,.12);
- border-color:rgba(255,209,102,.4);
-}
-
 .btn.red{
  background:rgba(255,101,119,.12);
  border-color:rgba(255,101,119,.4);
+}
+
+.btn.gold{
+ background:rgba(255,209,102,.12);
+ border-color:rgba(255,209,102,.4);
 }
 
 .sectionTitle{
@@ -324,234 +344,19 @@ button{
  padding:11px;
  border-radius:11px;
  border:1px solid var(--line);
- background:var(--panel2);
+ background:#081322;
  color:var(--text);
  outline:none;
 }
 
-.full{
+body.light .field input,
+body.light .field select{
+ background:#f6f9fb;
+ color:#142235;
+}
+
+.form .full{
  grid-column:1/-1;
-}
-
-.characterCard{
- text-align:center;
- min-height:390px;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- position:relative;
- overflow:hidden;
-}
-
-.character{
- width:190px;
- height:240px;
- position:relative;
- margin:10px auto;
- cursor:pointer;
- animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
- 0%,100%{transform:translateY(0)}
- 50%{transform:translateY(-5px)}
-}
-
-.character.blink .eye{
- transform:scaleY(.1);
-}
-
-.character.wave .arm.right{
- transform:rotate(-55deg);
-}
-
-.character.read .book{
- transform:translateY(-8px) rotate(-4deg);
-}
-
-.character.exercise .arm{
- animation:pump .55s infinite alternate;
-}
-
-@keyframes pump{
- from{transform:rotate(20deg)}
- to{transform:rotate(-30deg)}
-}
-
-.head{
- position:absolute;
- width:100px;
- height:105px;
- left:45px;
- top:18px;
- background:#ffd0a6;
- border-radius:45% 45% 42% 42%;
- border:4px solid #182941;
-}
-
-.hair{
- position:absolute;
- left:43px;
- top:10px;
- width:105px;
- height:43px;
- background:#39291f;
- border-radius:55px 55px 20px 20px;
- z-index:3;
-}
-
-.eye{
- position:absolute;
- width:10px;
- height:13px;
- background:#172131;
- border-radius:50%;
- top:52px;
- transition:.15s;
-}
-
-.eye.left{left:25px}
-.eye.right{right:25px}
-
-.brow{
- position:absolute;
- width:18px;
- height:4px;
- background:#39291f;
- top:43px;
- border-radius:5px;
-}
-
-.brow.left{left:21px}
-.brow.right{right:21px}
-
-.nose{
- position:absolute;
- left:47px;
- top:61px;
- width:8px;
- height:12px;
- border-right:3px solid #c58f6d;
- border-bottom:3px solid #c58f6d;
- border-radius:0 0 7px 0;
-}
-
-.mouth{
- position:absolute;
- left:39px;
- top:78px;
- width:22px;
- height:8px;
- border-bottom:3px solid #8f4d4d;
- border-radius:0 0 15px 15px;
-}
-
-.bodyChar{
- position:absolute;
- left:50px;
- top:118px;
- width:90px;
- height:80px;
- background:#5aa9ff;
- border:4px solid #182941;
- border-radius:30px 30px 20px 20px;
-}
-
-.arm{
- position:absolute;
- width:20px;
- height:70px;
- background:#ffd0a6;
- border:4px solid #182941;
- border-radius:20px;
- top:122px;
- transition:.3s;
- transform-origin:top center;
-}
-
-.arm.left{
- left:30px;
- transform:rotate(20deg);
-}
-
-.arm.right{
- right:30px;
- transform:rotate(-20deg);
-}
-
-.leg{
- position:absolute;
- width:25px;
- height:65px;
- background:#243650;
- border:4px solid #182941;
- border-radius:10px;
- top:188px;
-}
-
-.leg.left{left:60px}
-.leg.right{right:60px}
-
-.book{
- position:absolute;
- left:68px;
- top:148px;
- width:55px;
- height:38px;
- background:#ffd166;
- border:4px solid #182941;
- border-radius:5px;
- z-index:5;
- transition:.3s;
-}
-
-.dumbbell{
- position:absolute;
- right:3px;
- top:130px;
- font-size:35px;
- opacity:0;
- transition:.3s;
-}
-
-.character.exercise .dumbbell{
- opacity:1;
-}
-
-.characterInfo{
- margin-top:5px;
-}
-
-.characterName{
- font-size:22px;
- font-weight:900;
-}
-
-.characterHint{
- color:var(--muted);
- font-size:13px;
- margin-top:4px;
-}
-
-.avatarTabs{
- display:flex;
- gap:7px;
- overflow:auto;
- margin-bottom:15px;
-}
-
-.avatarTabs button{
- padding:9px 12px;
- border-radius:10px;
- background:var(--panel2);
- color:var(--muted);
-}
-
-.avatarTabs button.active{
- background:var(--accent);
- color:#06111c;
- font-weight:800;
 }
 
 .shopGrid,
@@ -596,6 +401,12 @@ button{
  cursor:not-allowed;
 }
 
+.achievement.locked{opacity:.4}
+
+.achievement.unlocked{
+ border-color:rgba(255,209,102,.5);
+}
+
 .notice{
  padding:12px;
  border-radius:12px;
@@ -605,50 +416,18 @@ button{
  font-size:13px;
 }
 
-.themeSwitch{
- width:66px;
- height:34px;
- border-radius:50px;
- padding:4px;
- background:#182941;
- border:1px solid var(--line);
- display:flex;
- align-items:center;
- transition:.4s;
-}
-
-.themeSwitch span{
- width:26px;
- height:26px;
- border-radius:50%;
- background:#ffd166;
- display:grid;
- place-items:center;
- transition:.4s;
-}
-
-body.light .themeSwitch{
- background:#b9d8ff;
-}
-
-body.light .themeSwitch span{
- transform:translateX(30px);
- background:#fff;
-}
-
-.accountBox{
- padding:15px;
- border-radius:14px;
- background:var(--panel2);
- border:1px solid var(--line);
- margin-top:14px;
+.dangerBox{
+ padding:12px;
+ border-radius:12px;
+ background:rgba(255,101,119,.08);
+ border:1px solid rgba(255,101,119,.25);
 }
 
 .toast{
  position:fixed;
  right:18px;
  bottom:18px;
- z-index:50;
+ z-index:100;
  background:#edf7ff;
  color:#081321;
  padding:12px 15px;
@@ -663,16 +442,387 @@ body.light .themeSwitch span{
  transform:translateY(0);
 }
 
+/* ==============================
+   CHARACTER
+================================ */
+
+.characterCard{
+ min-height:500px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ position:relative;
+ overflow:hidden;
+ cursor:pointer;
+}
+
+.characterCard:hover{
+ border-color:rgba(105,229,164,.55);
+}
+
+.characterStage{
+ width:300px;
+ height:360px;
+ position:relative;
+ display:flex;
+ align-items:flex-end;
+ justify-content:center;
+}
+
+.characterShadow{
+ position:absolute;
+ bottom:12px;
+ width:150px;
+ height:25px;
+ border-radius:50%;
+ background:rgba(0,0,0,.25);
+ filter:blur(6px);
+}
+
+.character{
+ position:relative;
+ width:170px;
+ height:320px;
+ animation:idleFloat 3s ease-in-out infinite;
+}
+
+@keyframes idleFloat{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-3px)}
+}
+
+.charHead{
+ position:absolute;
+ top:25px;
+ left:38px;
+ width:95px;
+ height:105px;
+ border-radius:45% 45% 48% 48%;
+ background:#f0b27a;
+ border:4px solid #d88e5c;
+ z-index:5;
+}
+
+.charHair{
+ position:absolute;
+ top:-7px;
+ left:3px;
+ width:89px;
+ height:48px;
+ background:#382719;
+ border-radius:50% 50% 35% 35%;
+ z-index:7;
+}
+
+.charEye{
+ position:absolute;
+ top:45px;
+ width:10px;
+ height:14px;
+ background:#202a38;
+ border-radius:50%;
+ z-index:10;
+}
+
+.charEye.left{left:23px}
+.charEye.right{right:23px}
+
+.charBrow{
+ position:absolute;
+ top:34px;
+ width:22px;
+ height:4px;
+ border-radius:5px;
+ background:#382719;
+ z-index:10;
+}
+
+.charBrow.left{left:17px}
+.charBrow.right{right:17px}
+
+.charNose{
+ position:absolute;
+ top:57px;
+ left:43px;
+ width:9px;
+ height:15px;
+ border-right:3px solid #c87d52;
+ border-bottom:3px solid #c87d52;
+ border-radius:0 0 7px 0;
+ z-index:9;
+}
+
+.charMouth{
+ position:absolute;
+ top:78px;
+ left:36px;
+ width:25px;
+ height:10px;
+ border-bottom:3px solid #a54d52;
+ border-radius:0 0 50% 50%;
+ z-index:10;
+}
+
+.charBody{
+ position:absolute;
+ top:122px;
+ left:32px;
+ width:108px;
+ height:125px;
+ background:#4b8de8;
+ border-radius:30px 30px 18px 18px;
+ z-index:3;
+}
+
+.charArm{
+ position:absolute;
+ top:130px;
+ width:28px;
+ height:105px;
+ border-radius:20px;
+ background:#f0b27a;
+ z-index:2;
+}
+
+.charArm.left{
+ left:8px;
+ transform:rotate(8deg);
+}
+
+.charArm.right{
+ right:8px;
+ transform:rotate(-8deg);
+}
+
+.charLeg{
+ position:absolute;
+ top:232px;
+ width:38px;
+ height:82px;
+ background:#27364c;
+ border-radius:10px 10px 20px 20px;
+ z-index:2;
+}
+
+.charLeg.left{left:40px}
+.charLeg.right{right:40px}
+
+.charShoe{
+ position:absolute;
+ top:295px;
+ width:52px;
+ height:25px;
+ border-radius:15px 18px 8px 8px;
+ background:#f1f4f7;
+ z-index:4;
+}
+
+.charShoe.left{left:28px}
+.charShoe.right{right:28px}
+
+.glasses{
+ position:absolute;
+ top:43px;
+ left:14px;
+ width:67px;
+ height:22px;
+ z-index:20;
+ display:none;
+}
+
+.glasses:before,
+.glasses:after{
+ content:"";
+ position:absolute;
+ width:25px;
+ height:17px;
+ border:3px solid #202b39;
+ border-radius:7px;
+}
+
+.glasses:before{left:0}
+.glasses:after{right:0}
+
+.glasses span{
+ position:absolute;
+ left:25px;
+ top:7px;
+ width:18px;
+ height:3px;
+ background:#202b39;
+}
+
+.hat{
+ position:absolute;
+ z-index:30;
+ display:none;
+}
+
+/* cap */
+
+.hat.cap{
+ top:4px;
+ left:24px;
+ width:120px;
+ height:42px;
+ background:#e74b4b;
+ border-radius:60px 60px 15px 15px;
+}
+
+.hat.cap:after{
+ content:"";
+ position:absolute;
+ right:-22px;
+ bottom:-3px;
+ width:55px;
+ height:14px;
+ background:#fff;
+ border-radius:50%;
+ transform:rotate(8deg);
+}
+
+/* straw */
+
+.hat.straw{
+ top:3px;
+ left:20px;
+ width:130px;
+ height:30px;
+ background:#d7ae4d;
+ border-radius:50%;
+}
+
+.hat.straw:after{
+ content:"";
+ position:absolute;
+ left:28px;
+ top:-25px;
+ width:74px;
+ height:40px;
+ background:#d7ae4d;
+ border-radius:45px 45px 12px 12px;
+}
+
+/* samurai */
+
+.hat.samurai{
+ top:-3px;
+ left:13px;
+ width:145px;
+ height:58px;
+ background:#272b35;
+ border-radius:70% 70% 20% 20%;
+ border-bottom:8px solid #a22b35;
+}
+
+.hat.wizard{
+ top:-15px;
+ left:34px;
+ width:85px;
+ height:95px;
+ background:#7045a6;
+ clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+
+/* glasses accessories */
+
+.accessoryGlasses{
+ position:absolute;
+ top:43px;
+ left:14px;
+ width:67px;
+ height:22px;
+ z-index:40;
+ display:none;
+}
+
+/* clothes */
+
+.charBody.shirtWhite{background:#f1f1ed}
+.charBody.tank{background:#4fd0b0}
+.charBody.coat{background:#222b3a}
+.charBody.hero{background:#db3e48}
+.charBody.suit{background:#1d2635}
+.charBody.ninja{background:#111}
+
+/* activity animations */
+
+.character.activityWorkout .charArm.left{
+ animation:liftLeft 1.2s infinite alternate ease-in-out;
+}
+
+.character.activityWorkout .charArm.right{
+ animation:liftRight 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes liftLeft{
+ from{transform:rotate(8deg)}
+ to{transform:rotate(-55deg)}
+}
+
+@keyframes liftRight{
+ from{transform:rotate(-8deg)}
+ to{transform:rotate(55deg)}
+}
+
+.character.activityRead .charHead{
+ transform:rotate(7deg);
+}
+
+.character.activityRun{
+ animation:runMove .35s infinite alternate ease-in-out;
+}
+
+@keyframes runMove{
+ from{transform:translateX(-4px)}
+ to{transform:translateX(4px)}
+}
+
+.character.activityCode .charHead{
+ transform:rotate(-3deg);
+}
+
+.character.activityDraw .charArm.right{
+ animation:draw 1s infinite alternate ease-in-out;
+}
+
+@keyframes draw{
+ from{transform:rotate(-8deg)}
+ to{transform:rotate(40deg)}
+}
+
+.activityLabel{
+ margin-top:10px;
+ font-weight:800;
+ color:var(--accent);
+}
+
+.characterName{
+ font-size:20px;
+ font-weight:900;
+ margin-top:5px;
+}
+
+.characterHint{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:5px;
+}
+
+/* ==============================
+   CHARACTER MODAL
+================================ */
+
 .modal{
  position:fixed;
  inset:0;
- background:rgba(0,0,0,.65);
- backdrop-filter:blur(8px);
+ background:rgba(0,0,0,.72);
+ z-index:200;
  display:none;
  align-items:center;
  justify-content:center;
- padding:20px;
- z-index:40;
+ padding:15px;
 }
 
 .modal.show{
@@ -680,26 +830,188 @@ body.light .themeSwitch span{
 }
 
 .modalBox{
- width:min(650px,100%);
- max-height:90vh;
+ width:min(1000px,100%);
+ max-height:92vh;
  overflow:auto;
  background:var(--panel);
  border:1px solid var(--line);
- border-radius:20px;
- padding:20px;
- box-shadow:var(--shadow);
+ border-radius:22px;
+ box-shadow:0 30px 90px rgba(0,0,0,.5);
+ padding:18px;
 }
 
-.close{
- float:right;
- background:var(--panel2);
- padding:8px 12px;
- border-radius:10px;
+.modalTop{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:15px;
 }
+
+.closeBtn{
+ width:38px;
+ height:38px;
+ border-radius:50%;
+ background:rgba(255,255,255,.08);
+ font-size:20px;
+}
+
+.editorGrid{
+ display:grid;
+ grid-template-columns:340px 1fr;
+ gap:18px;
+}
+
+.editorPreview{
+ background:var(--panel2);
+ border:1px solid var(--line);
+ border-radius:18px;
+ min-height:450px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ flex-direction:column;
+}
+
+.editorTabs{
+ display:flex;
+ gap:7px;
+ overflow:auto;
+ margin-bottom:12px;
+}
+
+.editorTabs button{
+ padding:9px 12px;
+ border-radius:10px;
+ background:var(--panel2);
+ color:var(--muted);
+ white-space:nowrap;
+}
+
+.editorTabs button.active{
+ background:var(--accent);
+ color:#06111c;
+ font-weight:800;
+}
+
+.itemGrid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+}
+
+.item{
+ position:relative;
+ padding:12px;
+ background:var(--panel2);
+ border:1px solid var(--line);
+ border-radius:14px;
+ cursor:pointer;
+ text-align:center;
+ transition:.15s;
+}
+
+.item:hover{
+ transform:translateY(-2px);
+ border-color:var(--accent);
+}
+
+.item.selected{
+ border-color:var(--accent);
+ box-shadow:0 0 0 2px rgba(105,229,164,.16);
+}
+
+.item.locked{
+ opacity:.7;
+}
+
+.itemIcon{
+ font-size:34px;
+ margin-bottom:5px;
+}
+
+.itemName{
+ font-size:13px;
+ font-weight:800;
+}
+
+.itemPrice{
+ color:var(--gold);
+ font-size:12px;
+ margin-top:4px;
+}
+
+.buyPopup{
+ position:fixed;
+ z-index:300;
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:15px;
+ box-shadow:0 20px 60px rgba(0,0,0,.5);
+ padding:13px;
+ width:230px;
+ display:none;
+}
+
+.buyPopup.show{
+ display:block;
+}
+
+.buyPopup h3{
+ margin:0 0 5px;
+ font-size:15px;
+}
+
+.buyPopup p{
+ margin:0 0 10px;
+ color:var(--muted);
+ font-size:12px;
+}
+
+.buyButtons{
+ display:flex;
+ gap:7px;
+}
+
+.buyButtons button{
+ flex:1;
+ padding:9px;
+ border-radius:9px;
+}
+
+.buyCancel{
+ background:rgba(255,101,119,.14);
+}
+
+.buyConfirm{
+ background:var(--accent);
+ color:#06111c;
+ font-weight:900;
+}
+
+/* account */
+
+.accountBox{
+ margin-top:14px;
+ padding:14px;
+ border-radius:14px;
+ background:var(--panel2);
+ border:1px solid var(--line);
+}
+
+.emailStatus{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:12px;
+}
+
+/* responsive */
 
 @media(max-width:850px){
  .grid{grid-template-columns:1fr}
  .shopGrid,.achGrid{grid-template-columns:repeat(2,1fr)}
+ .editorGrid{grid-template-columns:1fr}
+ .editorPreview{min-height:400px}
 }
 
 @media(max-width:560px){
@@ -710,9 +1022,10 @@ body.light .themeSwitch span{
  .actions{grid-template-columns:1fr}
  .shopGrid,.achGrid{grid-template-columns:1fr}
  .form{grid-template-columns:1fr}
- .full{grid-column:auto}
+ .form .full{grid-column:auto}
  .gm{font-size:31px}
  .card{padding:14px}
+ .itemGrid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
@@ -739,9 +1052,8 @@ body.light .themeSwitch span{
 
 <button data-page="home" class="active">🏠 Головна</button>
 <button data-page="quests">🎯 Квести</button>
-<button data-page="character">🧍 Персонаж</button>
 <button data-page="stats">🧬 Стати</button>
-<button data-page="shop">🎁 Магазин</button>
+<button data-page="shop">🎁 Нагороди</button>
 <button data-page="ach">🏆 Досягнення</button>
 <button data-page="history">📊 Історія</button>
 <button data-page="settings">⚙️ Налаштування</button>
@@ -750,13 +1062,72 @@ body.light .themeSwitch span{
 
 <main>
 
+<!-- HOME -->
+
 <section id="home" class="page active">
 
 <div class="grid">
 
 <div>
 
-<div class="card hero">
+<div class="card characterCard" onclick="openCharacter()">
+
+<div class="eyebrow">ТВІЙ ПЕРСОНАЖ</div>
+
+<div class="characterStage">
+
+<div class="characterShadow"></div>
+
+<div id="character" class="character">
+
+<div id="hat" class="hat"></div>
+
+<div class="charHead">
+
+<div class="charHair"></div>
+
+<div class="charBrow left"></div>
+<div class="charBrow right"></div>
+
+<div class="charEye left"></div>
+<div class="charEye right"></div>
+
+<div class="charNose"></div>
+<div class="charMouth"></div>
+
+<div id="glasses" class="glasses">
+<span></span>
+</div>
+
+</div>
+
+<div id="charBody" class="charBody"></div>
+
+<div class="charArm left"></div>
+<div class="charArm right"></div>
+
+<div class="charLeg left"></div>
+<div class="charLeg right"></div>
+
+<div class="charShoe left"></div>
+<div class="charShoe right"></div>
+
+</div>
+
+</div>
+
+<div id="activityLabel" class="activityLabel">🧍 Стоїть</div>
+
+<div id="characterName" class="characterName">Yevhenii</div>
+
+<div class="characterHint">
+Натисни на персонажа, щоб змінити його
+</div>
+
+</div>
+
+
+<div class="card hero" style="margin-top:16px">
 
 <div class="heroRow">
 
@@ -769,10 +1140,7 @@ body.light .themeSwitch span{
 <div style="text-align:right">
 
 <div class="eyebrow">HP</div>
-
-<div style="font-size:28px;font-weight:900" id="hp">
-100/100
-</div>
+<div style="font-size:28px;font-weight:900" id="hp">100/100</div>
 
 <div class="streak" id="streak">
 🔥 0 DAYS
@@ -794,6 +1162,7 @@ body.light .themeSwitch span{
 
 </div>
 
+
 <div class="card" style="margin-top:16px">
 
 <div class="sectionTitle">
@@ -807,56 +1176,41 @@ body.light .themeSwitch span{
 
 </div>
 
+
 <div>
 
-<div class="card characterCard">
+<div class="card">
 
-<div class="sectionTitle" style="width:100%">
-<h2>🧍 Твій персонаж</h2>
-<span class="pill">натисни</span>
+<div class="sectionTitle">
+<h2>🎯 Сьогодні</h2>
+<span class="pill" id="dailyCount">0/0</span>
 </div>
 
-<div class="character" id="characterMini" onclick="openCharacter()">
-
-<div class="hair"></div>
-
-<div class="head">
-
-<div class="brow left"></div>
-<div class="brow right"></div>
-
-<div class="eye left"></div>
-<div class="eye right"></div>
-
-<div class="nose"></div>
-<div class="mouth"></div>
+<div id="dailyHome"></div>
 
 </div>
 
-<div class="bodyChar"></div>
 
-<div class="arm left"></div>
-<div class="arm right"></div>
+<div class="card" style="margin-top:16px">
 
-<div class="leg left"></div>
-<div class="leg right"></div>
+<div class="sectionTitle">
+<h2>👹 Weekly Boss</h2>
+<span class="pill" id="bossStatus">0%</span>
+</div>
 
-<div class="book"></div>
-<div class="dumbbell">🏋️</div>
+<div id="bossHome"></div>
 
 </div>
 
-<div class="characterInfo">
 
-<div class="characterName" id="characterName">
-Yevhenii
+<div class="card" style="margin-top:16px">
+
+<div class="sectionTitle">
+<h2>📈 Прокачка акаунта</h2>
+<span class="pill">GLOBAL</span>
 </div>
 
-<div class="characterHint">
-Натисни на мене 👆
-</div>
-
-</div>
+<div id="accountProgress"></div>
 
 </div>
 
@@ -866,6 +1220,8 @@ Yevhenii
 
 </section>
 
+
+<!-- QUESTS -->
 
 <section id="quests" class="page">
 
@@ -873,110 +1229,66 @@ Yevhenii
 
 <div class="sectionTitle">
 <h2>🎯 Daily Quests</h2>
-<span class="pill" id="dailyCount">0/0</span>
+<span class="pill">оновлюються щодня</span>
 </div>
 
 <div id="questList"></div>
 
 </div>
 
-</section>
-
-
-<section id="character" class="page">
-
-<div class="card">
-
-<div class="sectionTitle">
-
-<h2>🧍 Мій персонаж</h2>
-
-<button class="btn green" onclick="randomCharacter()">
-🎲 Випадковий
-</button>
-
-</div>
-
-<div style="text-align:center">
-
-<div class="character" id="characterBig">
-
-<div class="hair"></div>
-
-<div class="head">
-
-<div class="brow left"></div>
-<div class="brow right"></div>
-
-<div class="eye left"></div>
-<div class="eye right"></div>
-
-<div class="nose"></div>
-<div class="mouth"></div>
-
-</div>
-
-<div class="bodyChar"></div>
-
-<div class="arm left"></div>
-<div class="arm right"></div>
-
-<div class="leg left"></div>
-<div class="leg right"></div>
-
-<div class="book"></div>
-<div class="dumbbell">🏋️</div>
-
-</div>
-
-<div class="characterName" id="characterBigName">
-Yevhenii
-</div>
-
-<p class="muted">
-Твій персонаж росте разом із тобою.
-</p>
-
-</div>
-
-</div>
 
 <div class="card" style="margin-top:16px">
 
 <div class="sectionTitle">
-<h2>🎨 Налаштування аватара</h2>
+<h2>➕ Створити свій квест</h2>
 </div>
 
-<div class="avatarTabs">
+<div class="form">
 
-<button class="active" onclick="avatarTab('body',this)">
-🧍 Тіло
-</button>
+<div class="field">
+<label>Назва</label>
+<input id="newQuestName" placeholder="Наприклад: 30 хв Blender">
+</div>
 
-<button onclick="avatarTab('face',this)">
-🙂 Обличчя
-</button>
+<div class="field">
+<label>GM</label>
+<input id="newQuestGM" type="number" min="1" value="20">
+</div>
 
-<button onclick="avatarTab('clothes',this)">
-👕 Одяг
-</button>
+<div class="field">
+<label>Стата</label>
 
-<button onclick="avatarTab('items',this)">
-🎒 Предмети
-</button>
+<select id="newQuestStat">
 
-<button onclick="avatarTab('emotions',this)">
-😎 Емоції
+<option value="INT">INT</option>
+<option value="STR">STR</option>
+<option value="LANG">LANG</option>
+<option value="TECH">TECH</option>
+<option value="WIS">WIS</option>
+<option value="DISC">DISC</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>&nbsp;</label>
+
+<button class="btn green" onclick="addQuest()">
+➕ Додати квест
 </button>
 
 </div>
 
-<div id="avatarOptions"></div>
+</div>
 
 </div>
 
 </section>
 
+
+<!-- STATS -->
 
 <section id="stats" class="page">
 
@@ -994,24 +1306,21 @@ Yevhenii
 </section>
 
 
+<!-- SHOP -->
+
 <section id="shop" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
-
 <h2>🎁 Reward Shop</h2>
-
-<span class="pill" id="shopGM">
-0 GM
-</span>
-
+<span class="pill" id="shopGM">0 GM</span>
 </div>
 
 <div class="notice" style="margin-bottom:12px">
 
-💰 Тут ти витрачаєш зароблені GM на нагороди,
-одяг та предмети для персонажа.
+Нагороди за зароблений GM.
+Не витрачай GM, який ще не заробив.
 
 </div>
 
@@ -1022,18 +1331,15 @@ Yevhenii
 </section>
 
 
+<!-- ACHIEVEMENTS -->
+
 <section id="ach" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
-
 <h2>🏆 Achievements</h2>
-
-<span class="pill" id="achCount">
-0/0
-</span>
-
+<span class="pill" id="achCount">0/0</span>
 </div>
 
 <div class="achGrid" id="achList"></div>
@@ -1043,6 +1349,8 @@ Yevhenii
 </section>
 
 
+<!-- HISTORY -->
+
 <section id="history" class="page">
 
 <div class="card">
@@ -1051,18 +1359,41 @@ Yevhenii
 
 <h2>📊 Activity Log</h2>
 
-<button class="btn red" onclick="clearHistory()">
-Очистити
+<button class="btn red"
+style="padding:7px 10px"
+onclick="clearHistory()">
+Очистити історію
 </button>
 
 </div>
 
-<div id="historyBody"></div>
+<div style="overflow:auto">
+
+<table style="width:100%;border-collapse:collapse">
+
+<thead>
+
+<tr>
+<th style="padding:9px;text-align:left">Дата</th>
+<th style="padding:9px;text-align:left">GM</th>
+<th style="padding:9px;text-align:left">Стата</th>
+<th style="padding:9px;text-align:left">Причина</th>
+</tr>
+
+</thead>
+
+<tbody id="historyBody"></tbody>
+
+</table>
+
+</div>
 
 </div>
 
 </section>
 
+
+<!-- SETTINGS -->
 
 <section id="settings" class="page">
 
@@ -1078,15 +1409,15 @@ Yevhenii
 
 <label>Ім'я персонажа</label>
 
-<input id="playerName" placeholder="Твоє ім'я">
+<input id="playerName">
 
 </div>
 
 <div class="field">
 
-<label>Email акаунта</label>
+<label>Gaming Pass хвилин</label>
 
-<input id="playerEmail" type="email" placeholder="example@email.com">
+<input id="gamingMinutes" type="number" min="0">
 
 </div>
 
@@ -1095,73 +1426,71 @@ Yevhenii
 
 <div class="accountBox">
 
-<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+<h3 style="margin-top:0">
+👤 Акаунт
+</h3>
 
-<div>
+<div class="field">
 
-<b>👤 LIFE RPG ACCOUNT</b>
+<label>Email</label>
 
-<div class="muted" id="accountStatus">
-Акаунт ще не підключений
+<input
+id="email"
+type="email"
+placeholder="your@email.com"
+>
+
+</div>
+
+<button
+class="btn green"
+style="margin-top:9px;width:100%"
+onclick="saveEmail()">
+
+📧 Зберегти email
+
+</button>
+
+<div id="emailStatus" class="emailStatus">
+Акаунт ще не прив'язаний.
 </div>
 
 </div>
 
-<span>🔐</span>
+
+<div class="accountBox">
+
+<h3 style="margin-top:0">
+🌙 Тема
+</h3>
+
+<button
+class="btn"
+style="width:100%;text-align:center"
+onclick="toggleTheme()"
+id="themeButton">
+
+🌙 Темна тема
+
+</button>
 
 </div>
 
-<p class="muted" style="font-size:13px">
 
-Поки що email зберігається тільки на цьому пристрої.
-Справжню синхронізацію ПК ↔ телефон підключимо окремим етапом.
+<div class="dangerBox" style="margin-top:14px">
 
+<b>⚠️ Скидання</b>
+
+<p class="muted">
+Видалить весь прогрес на цьому пристрої.
 </p>
 
-<button class="btn green" style="width:100%" onclick="saveAccount()">
-📧 Зберегти акаунт
-</button>
+<button
+class="btn red"
+onclick="resetGame()">
 
-</div>
-
-
-<div class="accountBox">
-
-<div style="display:flex;justify-content:space-between;align-items:center">
-
-<div>
-<b>🌙 Тема</b>
-<div class="muted">Темна / світла</div>
-</div>
-
-<button class="themeSwitch" onclick="toggleTheme()">
-<span id="themeIcon">🌙</span>
-</button>
-
-</div>
-
-</div>
-
-
-<div class="accountBox">
-
-<b>🎮 Gaming Pass</b>
-
-<div class="muted" id="gamingText">
-0 хвилин
-</div>
-
-</div>
-
-
-<div style="margin-top:16px">
-
-<div class="sectionTitle">
-<h2>⚠️ Небезпечна зона</h2>
-</div>
-
-<button class="btn red" onclick="resetGame()">
 ☠️ RESET EVERYTHING
+
 </button>
 
 </div>
@@ -1175,66 +1504,189 @@ Yevhenii
 </div>
 
 
-<div class="toast" id="toast"></div>
-
+<!-- CHARACTER EDITOR -->
 
 <div class="modal" id="characterModal">
 
 <div class="modalBox">
 
-<button class="close" onclick="closeCharacter()">
+<div class="modalTop">
+
+<div>
+
+<h2 style="margin:0">
+🧍 Мій персонаж
+</h2>
+
+<small class="muted">
+Зміни зовнішність. Все зберігається автоматично.
+</small>
+
+</div>
+
+<button class="closeBtn" onclick="closeCharacter()">✕</button>
+
+</div>
+
+
+<div class="editorGrid">
+
+
+<div class="editorPreview">
+
+<div class="eyebrow">
+ПЕРЕГЛЯД
+</div>
+
+<div class="characterStage">
+
+<div class="characterShadow"></div>
+
+<div id="editorCharacter" class="character">
+
+<div id="editorHat" class="hat"></div>
+
+<div class="charHead">
+
+<div class="charHair"></div>
+
+<div class="charBrow left"></div>
+<div class="charBrow right"></div>
+
+<div class="charEye left"></div>
+<div class="charEye right"></div>
+
+<div class="charNose"></div>
+<div class="charMouth"></div>
+
+<div id="editorGlasses" class="glasses">
+<span></span>
+</div>
+
+</div>
+
+<div id="editorBody" class="charBody"></div>
+
+<div class="charArm left"></div>
+<div class="charArm right"></div>
+
+<div class="charLeg left"></div>
+<div class="charLeg right"></div>
+
+<div class="charShoe left"></div>
+<div class="charShoe right"></div>
+
+</div>
+
+</div>
+
+<div id="editorPreviewName" class="characterName">
+Yevhenii
+</div>
+
+</div>
+
+
+<div>
+
+<div class="editorTabs">
+
+<button
+class="active"
+onclick="editorTab('body',this)">
+🧍 Тіло
+</button>
+
+<button
+onclick="editorTab('clothes',this)">
+👕 Одяг
+</button>
+
+<button
+onclick="editorTab('hats',this)">
+🎩 Головні убори
+</button>
+
+<button
+onclick="editorTab('items',this)">
+👓 Предмети
+</button>
+
+</div>
+
+
+<div id="editorItems" class="itemGrid"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BUY POPUP -->
+
+<div class="buyPopup" id="buyPopup">
+
+<h3 id="buyName">
+Предмет
+</h3>
+
+<p id="buyDescription">
+Опис
+</p>
+
+<div class="buyButtons">
+
+<button class="buyCancel" onclick="closeBuy()">
 ✕
 </button>
 
-<h2>🧍 <span id="modalName">Персонаж</span></h2>
-
-<p class="muted">
-Твій персонаж відображає твій реальний розвиток.
-</p>
-
-<div id="modalStats"></div>
+<button class="buyConfirm" onclick="confirmBuy()">
+🟢 Купити <span id="buyPrice"></span>
+</button>
 
 </div>
 
 </div>
+
+
+<div class="toast" id="toast"></div>
 
 
 <script>
 
 'use strict';
 
-const KEY='life_rpg_v2';
 
-const STATS={
-STR:'💪 STR',
-INT:'🧠 INT',
-LANG:'🇩🇪 LANG',
-TECH:'💻 TECH',
-WIS:'📖 WIS',
-DISC:'⚔️ DISC'
-};
+/* ==========================================
+   STORAGE
+========================================== */
+
+const KEY='life_rpg_v3';
+
 
 const DEFAULT={
+
 name:'Yevhenii',
+
 email:'',
-gm:0,
-hp:100,
-streak:0,
-lastDaily:null,
-lastDate:null,
-gamingMinutes:0,
 
 theme:'dark',
 
-avatar:{
-body:'normal',
-skin:'light',
-hair:'brown',
-eyes:'blue',
-clothes:'blue',
-emotion:'normal',
-item:'none'
-},
+gm:0,
+
+hp:100,
+
+streak:0,
+
+lastDaily:null,
+
+lastDate:null,
+
+gamingMinutes:0,
 
 stats:{
 STR:0,
@@ -1247,29 +1699,78 @@ DISC:0
 
 quests:[
 
-{id:'push',name:'10 віджимань',gm:5,stat:'STR',daily:true},
+{
+id:'push',
+name:'10 віджимань',
+gm:5,
+stat:'STR',
+daily:true
+},
 
-{id:'squat',name:'20 присідань',gm:5,stat:'STR',daily:true},
+{
+id:'squat',
+name:'20 присідань',
+gm:5,
+stat:'STR',
+daily:true
+},
 
-{id:'book',name:'2 сторінки книги',gm:5,stat:'WIS',daily:true},
+{
+id:'book',
+name:'2 сторінки книги',
+gm:5,
+stat:'WIS',
+daily:true
+},
 
-{id:'german',name:'10 хвилин німецької',gm:5,stat:'LANG',daily:true},
+{
+id:'german',
+name:'10 хвилин німецької',
+gm:5,
+stat:'LANG',
+daily:true
+},
 
-{id:'tech',name:'10 хвилин навчання / Blender',gm:5,stat:'TECH',daily:true},
+{
+id:'tech',
+name:'10 хвилин навчання / Blender',
+gm:5,
+stat:'TECH',
+daily:true
+},
 
-{id:'music',name:'10 хвилин музики',gm:5,stat:'DISC',daily:true}
+{
+id:'music',
+name:'10 хвилин музики',
+gm:5,
+stat:'DISC',
+daily:true
+}
 
 ],
 
 completed:{},
+
 history:[],
+
 shopPurchases:[],
-achievements:{}
+
+achievements:{},
+
+
+character:{
+
+body:'default',
+
+clothes:'default',
+
+hat:'none',
+
+item:'none'
+
+}
 
 };
-
-
-let state=loadState();
 
 
 function clone(x){
@@ -1310,8 +1811,7 @@ function loadState(){
 
   const raw=localStorage.getItem(KEY);
 
-  if(!raw)
-   return clone(DEFAULT);
+  if(!raw)return clone(DEFAULT);
 
   return merge(clone(DEFAULT),JSON.parse(raw));
 
@@ -1324,6 +1824,9 @@ function loadState(){
 }
 
 
+let state=loadState();
+
+
 function save(){
 
  localStorage.setItem(KEY,JSON.stringify(state));
@@ -1331,9 +1834,32 @@ function save(){
 }
 
 
+/* ==========================================
+   BASIC
+========================================== */
+
+const STATS={
+
+ STR:'💪 STR',
+ INT:'🧠 INT',
+ LANG:'🇩🇪 LANG',
+ TECH:'💻 TECH',
+ WIS:'📖 WIS',
+ DISC:'⚔️ DISC'
+
+};
+
+
 function today(){
 
  return new Date().toISOString().slice(0,10);
+
+}
+
+
+function fmt(n){
+
+ return Math.round(n).toLocaleString('uk-UA');
 
 }
 
@@ -1351,8 +1877,8 @@ function levelForGM(gm){
 function levelStart(level){
 
  return level<=1
-  ?0
-  :100*(level-1)*(level-1);
+ ?0
+ :100*(level-1)*(level-1);
 
 }
 
@@ -1360,13 +1886,6 @@ function levelStart(level){
 function nextLevelGM(level){
 
  return 100*level*level;
-
-}
-
-
-function fmt(n){
-
- return Math.round(n).toLocaleString('uk-UA');
 
 }
 
@@ -1389,6 +1908,907 @@ function toast(msg){
 }
 
 
+/* ==========================================
+   CHARACTER
+========================================== */
+
+const CLOTHES=[
+
+ {
+  id:'default',
+  name:'Базова футболка',
+  icon:'👕',
+  price:0,
+  class:'default'
+ },
+
+ {
+  id:'white',
+  name:'Біла футболка',
+  icon:'🤍',
+  price:0,
+  class:'shirtWhite'
+ },
+
+ {
+  id:'tank',
+  name:'Спортивна майка',
+  icon:'🏃',
+  price:0,
+  class:'tank'
+ },
+
+ {
+  id:'coat',
+  name:'Темний плащ',
+  icon:'🧥',
+  price:0,
+  class:'coat'
+ },
+
+ {
+  id:'blue',
+  name:'Синя футболка',
+  icon:'🔵',
+  price:0,
+  class:'default'
+ },
+
+ {
+  id:'hero',
+  name:'Супергерой',
+  icon:'🦸',
+  price:500,
+  class:'hero'
+ },
+
+ {
+  id:'suit',
+  name:'Стильний костюм',
+  icon:'🤵',
+  price:750,
+  class:'suit'
+ },
+
+ {
+  id:'ninja',
+  name:'Костюм ніндзя',
+  icon:'🥷',
+  price:900,
+  class:'ninja'
+ },
+
+ {
+  id:'space',
+  name:'Космічний костюм',
+  icon:'🚀',
+  price:1200,
+  class:'suit'
+ },
+
+ {
+  id:'king',
+  name:'Королівський костюм',
+  icon:'👑',
+  price:1500,
+  class:'hero'
+ },
+
+ {
+  id:'cyber',
+  name:'Cyber Suit',
+  icon:'🤖',
+  price:2000,
+  class:'ninja'
+ }
+
+];
+
+
+const HATS=[
+
+ {
+  id:'none',
+  name:'Без головного убору',
+  icon:'🚫',
+  price:0,
+  class:''
+ },
+
+ {
+  id:'cap',
+  name:'Біло-червона кепка',
+  icon:'🧢',
+  price:0,
+  class:'cap'
+ },
+
+ {
+  id:'straw',
+  name:'Соломʼяна шляпа',
+  icon:'👒',
+  price:0,
+  class:'straw'
+ },
+
+ {
+  id:'samurai',
+  name:'Шолом самурая',
+  icon:'🥷',
+  price:700,
+  class:'samurai'
+ },
+
+ {
+  id:'wizard',
+  name:'Шляпа мага',
+  icon:'🧙',
+  price:650,
+  class:'wizard'
+ },
+
+ {
+  id:'redhat',
+  name:'Червона шляпа',
+  icon:'🎩',
+  price:450,
+  class:'cap'
+ },
+
+ {
+  id:'cowboy',
+  name:'Ковбойський капелюх',
+  icon:'🤠',
+  price:550,
+  class:'straw'
+ },
+
+ {
+  id:'crown',
+  name:'Корона',
+  icon:'👑',
+  price:1200,
+  class:'crown'
+ },
+
+ {
+  id:'viking',
+  name:'Шолом вікінга',
+  icon:'⚔️',
+  price:1000,
+  class:'samurai'
+ },
+
+ {
+  id:'space',
+  name:'Космічний шолом',
+  icon:'🪐',
+  price:1800,
+  class:'samurai'
+ },
+
+ {
+  id:'detective',
+  name:'Капелюх детектива',
+  icon:'🕵️',
+  price:850,
+  class:'straw'
+ },
+
+ {
+  id:'pirate',
+  name:'Піратський капелюх',
+  icon:'🏴‍☠️',
+  price:950,
+  class:'cap'
+ }
+
+];
+
+
+const ITEMS=[
+
+ {
+  id:'none',
+  name:'Без предмета',
+  icon:'🚫',
+  price:0
+ },
+
+ {
+  id:'glasses',
+  name:'Окуляри',
+  icon:'👓',
+  price:0
+ },
+
+ {
+  id:'sunglasses',
+  name:'Сонцезахисні окуляри',
+  icon:'🕶️',
+  price:400
+ },
+
+ {
+  id:'goldGlasses',
+  name:'Золоті окуляри',
+  icon:'🥸',
+  price:900
+ },
+
+ {
+  id:'headphones',
+  name:'Навушники',
+  icon:'🎧',
+  price:600
+ },
+
+ {
+  id:'backpack',
+  name:'Рюкзак',
+  icon:'🎒',
+  price:500
+ },
+
+ {
+  id:'sword',
+  name:'Меч героя',
+  icon:'⚔️',
+  price:1300
+ },
+
+ {
+  id:'guitar',
+  name:'Гітара',
+  icon:'🎸',
+  price:1000
+ },
+
+ {
+  id:'book',
+  name:'Книга мудрості',
+  icon:'📚',
+  price:700
+ },
+
+ {
+  id:'laptop',
+  name:'Cyber ноутбук',
+  icon:'💻',
+  price:1500
+ },
+
+ {
+  id:'camera',
+  name:'Камера',
+  icon:'📷',
+  price:850
+ },
+
+ {
+  id:'medal',
+  name:'Золота медаль',
+  icon:'🏅',
+  price:2000
+ }
+
+];
+
+
+function owns(type,id){
+
+ if(
+  type==='clothes' &&
+  CLOTHES.find(x=>x.id===id)?.price===0
+ )return true;
+
+ if(
+  type==='hats' &&
+  HATS.find(x=>x.id===id)?.price===0
+ )return true;
+
+ if(
+  type==='items' &&
+  ITEMS.find(x=>x.id===id)?.price===0
+ )return true;
+
+ return state.shopPurchases.some(
+  x=>x.type===type&&x.id===id
+ );
+
+}
+
+
+function equip(type,id){
+
+ if(!owns(type,id)){
+
+  openBuy(type,id);
+
+  return;
+
+ }
+
+ state.character[type]=id;
+
+ save();
+
+ renderCharacter();
+
+ renderEditor();
+
+ toast('✨ Предмет одягнено');
+
+}
+
+
+/* ==========================================
+   BUY SYSTEM
+========================================== */
+
+let pendingBuy=null;
+
+
+function openBuy(type,id){
+
+ const list=
+  type==='clothes'
+  ?CLOTHES
+  :type==='hats'
+  ?HATS
+  :ITEMS;
+
+ const item=list.find(x=>x.id===id);
+
+ if(!item)return;
+
+ pendingBuy={type,id};
+
+ /* тимчасова примірка */
+
+ if(type==='clothes'){
+  state.character.previewClothes=id;
+ }
+
+ if(type==='hats'){
+  state.character.previewHat=id;
+ }
+
+ if(type==='items'){
+  state.character.previewItem=id;
+ }
+
+ renderCharacter(true);
+
+ const popup=document.getElementById('buyPopup');
+
+ document.getElementById('buyName').textContent=
+  item.icon+' '+item.name;
+
+ document.getElementById('buyDescription').textContent=
+  'Предмет буде доданий до твого гардеробу після покупки.';
+
+ document.getElementById('buyPrice').textContent=
+  item.price+' GM';
+
+ popup.classList.add('show');
+
+ popup.style.left='50%';
+ popup.style.top='50%';
+ popup.style.transform='translate(-50%,-50%)';
+
+}
+
+
+function closeBuy(){
+
+ pendingBuy=null;
+
+ delete state.character.previewClothes;
+ delete state.character.previewHat;
+ delete state.character.previewItem;
+
+ document.getElementById('buyPopup')
+ .classList.remove('show');
+
+ renderCharacter();
+
+}
+
+
+function confirmBuy(){
+
+ if(!pendingBuy)return;
+
+ const type=pendingBuy.type;
+ const id=pendingBuy.id;
+
+ const list=
+  type==='clothes'
+  ?CLOTHES
+  :type==='hats'
+  ?HATS
+  :ITEMS;
+
+ const item=list.find(x=>x.id===id);
+
+ if(!item)return;
+
+ if(state.gm<item.price){
+
+  toast('❌ Недостатньо GM');
+
+  return;
+
+ }
+
+ state.gm-=item.price;
+
+ state.shopPurchases.push({
+  type,
+  id,
+  date:today()
+ });
+
+ state.character[type]=id;
+
+ delete state.character.previewClothes;
+ delete state.character.previewHat;
+ delete state.character.previewItem;
+
+ state.history.unshift({
+  date:today(),
+  amount:-item.price,
+  stat:'-',
+  reason:'🛍️ Куплено: '+item.name
+ });
+
+ save();
+
+ document.getElementById('buyPopup')
+ .classList.remove('show');
+
+ pendingBuy=null;
+
+ render();
+
+ renderCharacter();
+
+ renderEditor();
+
+ toast('🛍️ Куплено! '+item.name);
+
+}
+
+
+/* ==========================================
+   RENDER CHARACTER
+========================================== */
+
+function getClothes(){
+
+ const id=
+  state.character.previewClothes||
+  state.character.clothes;
+
+ return CLOTHES.find(x=>x.id===id)||CLOTHES[0];
+
+}
+
+
+function getHat(){
+
+ const id=
+  state.character.previewHat||
+  state.character.hat;
+
+ return HATS.find(x=>x.id===id)||HATS[0];
+
+}
+
+
+function getItem(){
+
+ const id=
+  state.character.previewItem||
+  state.character.item;
+
+ return ITEMS.find(x=>x.id===id)||ITEMS[0];
+
+}
+
+
+function applyCharacter(prefix){
+
+ const character=document.getElementById(prefix+'Character');
+
+ const body=document.getElementById(prefix+'Body');
+
+ const hat=document.getElementById(prefix+'Hat');
+
+ const glasses=document.getElementById(prefix+'Glasses');
+
+ if(!character)return;
+
+ const clothes=getClothes();
+
+ const hatData=getHat();
+
+ const item=getItem();
+
+ body.className='charBody '+clothes.class;
+
+ hat.className='hat '+hatData.class;
+
+ hat.style.display=
+  hatData.id==='none'
+  ?'none'
+  :'block';
+
+ glasses.style.display=
+  item.id==='glasses'||
+  item.id==='sunglasses'||
+  item.id==='goldGlasses'
+  ?'block'
+  :'none';
+
+}
+
+
+function renderCharacter(preview=false){
+
+ applyCharacter('');
+
+ applyCharacter('editor');
+
+ const name=
+  state.name||
+  'Yevhenii';
+
+ document.getElementById('characterName').textContent=name;
+
+ document.getElementById('editorPreviewName').textContent=name;
+
+}
+
+
+/* ==========================================
+   CHARACTER MODAL
+========================================== */
+
+function openCharacter(){
+
+ document.getElementById('characterModal')
+ .classList.add('show');
+
+ renderEditor();
+
+}
+
+
+function closeCharacter(){
+
+ document.getElementById('characterModal')
+ .classList.remove('show');
+
+ closeBuy();
+
+}
+
+
+function editorTab(tab,button){
+
+ document
+ .querySelectorAll('.editorTabs button')
+ .forEach(x=>x.classList.remove('active'));
+
+ button.classList.add('active');
+
+ renderEditor(tab);
+
+}
+
+
+function renderEditor(tab='body'){
+
+ const container=document.getElementById('editorItems');
+
+ let list=[];
+
+ let type='clothes';
+
+ if(tab==='body'){
+
+  list=[
+   {
+    id:'default',
+    name:'Стандарт',
+    icon:'🧍',
+    price:0
+   }
+  ];
+
+  type='body';
+
+ }else if(tab==='clothes'){
+
+  list=CLOTHES;
+
+  type='clothes';
+
+ }else if(tab==='hats'){
+
+  list=HATS;
+
+  type='hats';
+
+ }else if(tab==='items'){
+
+  list=ITEMS;
+
+  type='items';
+
+ }
+
+ container.innerHTML=list.map(item=>{
+
+  const selected=
+   state.character[type]===item.id;
+
+  const owned=
+   type==='body'
+   ?true
+   :owns(type,item.id);
+
+  return `
+
+  <div
+   class="item ${selected?'selected':''} ${owned?'':'locked'}"
+   onclick="equip('${type}','${item.id}')"
+  >
+
+   <div class="itemIcon">
+    ${item.icon}
+   </div>
+
+   <div class="itemName">
+    ${item.name}
+   </div>
+
+   <div class="itemPrice">
+
+    ${
+     owned
+     ?(selected?'✓ Надягнено':'Відкрити')
+     :item.price+' GM'
+    }
+
+   </div>
+
+  </div>
+
+  `;
+
+ }).join('');
+
+ renderCharacter();
+
+}
+
+
+/* ==========================================
+   AUTO CHARACTER ACTIONS
+========================================== */
+
+const ACTIVITIES=[
+
+ {
+  id:'idle',
+  label:'🧍 Просто відпочиває',
+  duration:30
+ },
+
+ {
+  id:'read',
+  label:'📖 Читає книгу',
+  duration:40
+ },
+
+ {
+  id:'workout',
+  label:'🏋️ Тренується',
+  duration:35
+ },
+
+ {
+  id:'run',
+  label:'🏃 Бігає',
+  duration:40
+ },
+
+ {
+  id:'code',
+  label:'💻 Пише код',
+  duration:45
+ },
+
+ {
+  id:'draw',
+  label:'🎨 Малює',
+  duration:35
+ },
+
+ {
+  id:'music',
+  label:'🎸 Грає музику',
+  duration:35
+ },
+
+ {
+  id:'sing',
+  label:'🎤 Співає',
+  duration:30
+ }
+
+];
+
+
+function randomActivity(){
+
+ const activity=
+  ACTIVITIES[
+   Math.floor(Math.random()*ACTIVITIES.length)
+  ];
+
+ const character=
+  document.getElementById('character');
+
+ character.classList.remove(
+  'activityWorkout',
+  'activityRead',
+  'activityRun',
+  'activityCode',
+  'activityDraw'
+ );
+
+ if(activity.id==='workout')
+  character.classList.add('activityWorkout');
+
+ if(activity.id==='read')
+  character.classList.add('activityRead');
+
+ if(activity.id==='run')
+  character.classList.add('activityRun');
+
+ if(activity.id==='code')
+  character.classList.add('activityCode');
+
+ if(activity.id==='draw')
+  character.classList.add('activityDraw');
+
+
+ document.getElementById('activityLabel')
+ .textContent=activity.label;
+
+ /* окуляри автоматично */
+
+ const glasses=
+  document.getElementById('glasses');
+
+ if(
+  activity.id==='read'||
+  activity.id==='code'||
+  activity.id==='draw'
+ ){
+
+  glasses.style.display='block';
+
+ }else{
+
+  applyCharacter('');
+
+ }
+
+}
+
+
+const EXPRESSIONS=[
+
+ {
+  name:'🙂 Задоволений',
+  mouth:'happy'
+ },
+
+ {
+  name:'😐 Спокійний',
+  mouth:'normal'
+ },
+
+ {
+  name:'🤔 Задумався',
+  mouth:'think'
+ },
+
+ {
+  name:'😮 Здивований',
+  mouth:'surprise'
+ },
+
+ {
+  name:'😄 Радісний',
+  mouth:'happy'
+ }
+
+];
+
+
+function randomExpression(){
+
+ const e=
+  EXPRESSIONS[
+   Math.floor(Math.random()*EXPRESSIONS.length)
+  ];
+
+ const mouth=
+  document.querySelector('#character .charMouth');
+
+ if(!mouth)return;
+
+ if(e.mouth==='happy'){
+
+  mouth.style.borderBottom='3px solid #a54d52';
+  mouth.style.borderRadius='0 0 50% 50%';
+
+ }else if(e.mouth==='think'){
+
+  mouth.style.borderBottom='0';
+  mouth.style.borderTop='3px solid #a54d52';
+
+ }else if(e.mouth==='surprise'){
+
+  mouth.style.width='14px';
+  mouth.style.height='14px';
+  mouth.style.border='3px solid #a54d52';
+  mouth.style.borderRadius='50%';
+
+ }else{
+
+  mouth.style.borderBottom='3px solid #a54d52';
+  mouth.style.borderRadius='0';
+
+ }
+
+}
+
+
+/* змінюємо діяльність */
+
+setInterval(
+ randomActivity,
+ 35000
+);
+
+
+/* змінюємо емоцію */
+
+setInterval(
+ randomExpression,
+ 12000
+);
+
+
+/* перша дія */
+
+setTimeout(
+ randomActivity,
+ 5000
+);
+
+
+/* ==========================================
+   GAME SYSTEM
+========================================== */
+
 function normalizeDay(){
 
  const t=today();
@@ -1399,11 +2819,11 @@ function normalizeDay(){
  ){
 
   const prev=new Date(state.lastDate);
+
   const cur=new Date(t);
 
-  const diff=Math.round(
-   (cur-prev)/86400000
-  );
+  const diff=
+   Math.round((cur-prev)/86400000);
 
   if(diff>1)
    state.streak=0;
@@ -1412,7 +2832,8 @@ function normalizeDay(){
 
  state.lastDate=t;
 
- Object.keys(state.completed).forEach(id=>{
+ Object.keys(state.completed)
+ .forEach(id=>{
 
   if(state.completed[id]!==t)
    delete state.completed[id];
@@ -1424,7 +2845,7 @@ function normalizeDay(){
 }
 
 
-function addXP(amount,stat,reason){
+function addXP(amount,stat,reason,opts={}){
 
  const old=levelForGM(state.gm);
 
@@ -1433,18 +2854,27 @@ function addXP(amount,stat,reason){
   state.gm+amount
  );
 
- if(stat && amount>0){
+ if(
+  stat &&
+  amount>0
+ ){
 
   state.stats[stat]=
    (state.stats[stat]||0)+amount;
 
  }
 
+ if(opts.gaming)
+  state.gamingMinutes+=opts.gaming;
+
  state.history.unshift({
 
   date:today(),
+
   amount,
+
   stat:stat||'-',
+
   reason
 
  });
@@ -1452,22 +2882,27 @@ function addXP(amount,stat,reason){
  const nw=levelForGM(state.gm);
 
  save();
+
  render();
 
  if(nw>old){
 
   toast(
-   '🆙 LEVEL UP! Ти досяг рівня '+nw+'!'
+   '🆙 LEVEL UP! Рівень '+nw+'!'
   );
 
  }else{
 
   toast(
    (amount>=0?'+':'')+
-   fmt(amount)+' GM · '+reason
+   fmt(amount)+
+   ' GM · '+
+   reason
   );
 
  }
+
+ checkAchievements();
 
 }
 
@@ -1476,33 +2911,115 @@ function completeQuest(id){
 
  normalizeDay();
 
- const q=state.quests.find(
-  x=>x.id===id
- );
+ const q=
+  state.quests.find(x=>x.id===id);
 
- if(!q)
-  return;
-
- if(state.completed[id]===today()){
-
-  toast('Цей квест вже виконаний 🔥');
-  return;
-
- }
+ if(
+  !q||
+  state.completed[id]===today()
+ )return;
 
  state.completed[id]=today();
 
  addXP(
   q.gm,
   q.stat,
-  q.name
- );
-
- animateCharacter(
-  q.stat
+  q.name,
+  {gaming:q.gm*2}
  );
 
  save();
+
+ render();
+
+}
+
+
+function addQuest(){
+
+ const name=
+  document
+  .getElementById('newQuestName')
+  .value
+  .trim();
+
+ const gm=Math.max(
+  1,
+  Number(
+   document.getElementById('newQuestGM').value
+  )||1
+ );
+
+ const stat=
+  document.getElementById('newQuestStat')
+  .value;
+
+ if(!name){
+
+  toast('Введи назву квесту');
+
+  return;
+
+ }
+
+ state.quests.push({
+
+  id:'q_'+Date.now(),
+
+  name,
+
+  gm,
+
+  stat,
+
+  daily:true
+
+ });
+
+ save();
+
+ render();
+
+ document.getElementById('newQuestName')
+ .value='';
+
+ toast('🎯 Квест створено');
+
+}
+
+
+function deleteQuest(id){
+
+ state.quests=
+  state.quests.filter(
+   q=>q.id!==id
+  );
+
+ delete state.completed[id];
+
+ save();
+
+ render();
+
+}
+
+
+function penalty(amount,reason){
+
+ addXP(
+  -amount,
+  null,
+  reason
+ );
+
+ state.hp=
+  Math.max(
+   0,
+   state.hp-amount/5
+  );
+
+ save();
+
  render();
 
 }
@@ -1515,6 +3032,7 @@ function completeDaily(){
  if(state.lastDaily===today()){
 
   toast('Daily уже виконаний 🔥');
+
   return;
 
  }
@@ -1522,59 +3040,31 @@ function completeDaily(){
  const yesterday=
   new Date(
    Date.now()-86400000
-  ).toISOString().slice(0,10);
+  )
+  .toISOString()
+  .slice(0,10);
 
  state.streak=
   state.lastDaily===yesterday
-   ?state.streak+1
-   :1;
+  ?state.streak+1
+  :1;
 
  state.lastDaily=today();
 
+ const bonus=
+  100+
+  (state.streak%7===0?50:0);
+
  addXP(
-  100,
+  bonus,
   'DISC',
-  '🎯 Daily Quest'
+  '🎯 Daily Quest',
+  {gaming:30}
  );
 
  save();
+
  render();
-
-}
-
-
-function buyReward(cost,name){
-
- if(state.gm<cost){
-
-  toast('❌ Не вистачає GM');
-  return;
-
- }
-
- state.gm-=cost;
-
- state.history.unshift({
-
-  date:today(),
-  amount:-cost,
-  stat:'-',
-  reason:'🎁 '+name
-
- });
-
- state.shopPurchases.unshift({
-
-  date:today(),
-  name,
-  cost
-
- });
-
- save();
- render();
-
- toast('🎁 Куплено: '+name);
 
 }
 
@@ -1582,12 +3072,15 @@ function buyReward(cost,name){
 function clearHistory(){
 
  if(
-  confirm('Очистити історію?')
+  confirm(
+   'Очистити історію? GM не зміниться.'
+  )
  ){
 
   state.history=[];
 
   save();
+
   render();
 
  }
@@ -1606,6 +3099,7 @@ function resetGame(){
   state=clone(DEFAULT);
 
   save();
+
   render();
 
   toast('Прогрес скинуто');
@@ -1615,423 +3109,150 @@ function resetGame(){
 }
 
 
-function toggleTheme(){
-
- state.theme=
-  state.theme==='dark'
-   ?'light'
-   :'dark';
-
- applyTheme();
-
- save();
-
- toast(
-  state.theme==='dark'
-   ?'🌙 Темна тема'
-   :'☀️ Світла тема'
- );
-
-}
-
-
-function applyTheme(){
-
- document.body.classList.toggle(
-  'light',
-  state.theme==='light'
- );
-
- document.getElementById(
-  'themeIcon'
- ).textContent=
-  state.theme==='dark'
-   ?'🌙'
-   :'☀️';
-
-}
-
-
-function saveAccount(){
-
- const name=
-  document.getElementById(
-   'playerName'
-  ).value.trim();
-
- const email=
-  document.getElementById(
-   'playerEmail'
-  ).value.trim();
-
- state.name=
-  name||'Yevhenii';
-
- state.email=email;
-
- save();
-
- render();
-
- toast(
-  email
-   ?'📧 Дані акаунта збережено'
-   :'👤 Імʼя збережено'
- );
-
-}
-
-
-function openCharacter(){
-
- document.getElementById(
-  'characterModal'
- ).classList.add('show');
-
- document.getElementById(
-  'modalName'
- ).textContent=state.name;
-
- renderModalStats();
-
-}
-
-
-function closeCharacter(){
-
- document.getElementById(
-  'characterModal'
- ).classList.remove('show');
-
-}
-
-
-function renderModalStats(){
-
- const el=
-  document.getElementById(
-   'modalStats'
-  );
-
- el.innerHTML=
-  Object.entries(STATS)
-  .map(([k,v])=>{
-
-   return `
-
-   <div style="
-    margin:12px 0;
-    padding:12px;
-    background:var(--panel2);
-    border-radius:12px;
-   ">
-
-   <div style="
-    display:flex;
-    justify-content:space-between;
-   ">
-
-   <b>${v}</b>
-
-   <b>${fmt(state.stats[k])} XP</b>
-
-   </div>
-
-   </div>
-
-   `;
-
-  }).join('');
-
-}
-
-
-function openCharacterPage(){
-
- document.querySelector(
-  '[data-page="character"]'
- ).click();
-
-}
-
-
-function animateCharacter(stat){
-
- const chars=[
-  document.getElementById('characterMini'),
-  document.getElementById('characterBig')
- ];
-
- chars.forEach(ch=>{
-
-  if(!ch)return;
-
-  ch.classList.remove(
-   'exercise',
-   'read',
-   'wave'
-  );
-
-  if(stat==='STR')
-   ch.classList.add('exercise');
-
-  else if(stat==='WIS')
-   ch.classList.add('read');
-
-  else
-   ch.classList.add('wave');
-
-  setTimeout(()=>{
-
-   ch.classList.remove(
-    'exercise',
-    'read',
-    'wave'
-   );
-
-  },3000);
-
- });
-
-}
-
-
-function blinkCharacter(){
-
- const chars=[
-  document.getElementById('characterMini'),
-  document.getElementById('characterBig')
- ];
-
- chars.forEach(ch=>{
-
-  if(!ch)return;
-
-  ch.classList.add('blink');
-
-  setTimeout(
-   ()=>ch.classList.remove('blink'),
-   180
-  );
-
- });
-
-}
-
-
-function randomCharacter(){
-
- const skins=[
-  'light',
-  'tan'
- ];
-
- const hairs=[
-  'brown',
-  'black',
-  'blonde'
- ];
-
- const eyes=[
-  'blue',
-  'green',
-  'brown'
- ];
-
- state.avatar.skin=
-  skins[
-   Math.floor(
-    Math.random()*skins.length
-   )
-  ];
-
- state.avatar.hair=
-  hairs[
-   Math.floor(
-    Math.random()*hairs.length
-   )
-  ];
-
- state.avatar.eyes=
-  eyes[
-   Math.floor(
-    Math.random()*eyes.length
-   )
-  ];
-
- save();
-
- toast('🎲 Персонажа змінено');
-
-}
-
-
-function avatarTab(type,button){
-
- document
-  .querySelectorAll('.avatarTabs button')
-  .forEach(
-   b=>b.classList.remove('active')
-  );
-
- button.classList.add('active');
-
- const options=
-  document.getElementById(
-   'avatarOptions'
-  );
-
- const data={
-
-  body:[
-   ['normal','🧍 Звичайне тіло'],
-   ['athletic','💪 Спортивне тіло']
-  ],
-
-  face:[
-   ['normal','🙂 Звичайне обличчя'],
-   ['happy','😄 Щасливе'],
-   ['cool','😎 Круте']
-  ],
-
-  clothes:[
-   ['blue','🔵 Синя футболка'],
-   ['green','🟢 Зелена футболка'],
-   ['black','⚫ Чорна футболка']
-  ],
-
-  items:[
-   ['none','❌ Нічого'],
-   ['book','📖 Книга'],
-   ['dumbbell','🏋️ Гантеля']
-  ],
-
-  emotions:[
-   ['normal','🙂 Нормальний'],
-   ['happy','😄 Радісний'],
-   ['cool','😎 Крутий']
-  ]
-
- };
-
- options.innerHTML=
-  data[type].map(x=>`
-
-   <button
-    class="btn"
-    style="margin:5px"
-    onclick="setAvatar('${type}','${x[0]}')"
-   >
-   ${x[1]}
-   </button>
-
-  `).join('');
-
-}
-
-
-function setAvatar(type,value){
-
- state.avatar[type]=value;
-
- save();
-
- toast('🎨 Персонажа оновлено');
-
-}
-
-
-const SHOP=[
-
- ['👕 Зелена футболка',100],
- ['🧢 Кепка',150],
- ['🎧 Навушники',250],
- ['👓 Окуляри',300],
- ['🏋️ Гантеля',400],
- ['📖 Книга',200],
- ['😎 Круті окуляри',500],
- ['👑 Корона',1000]
-
-];
-
+/* ==========================================
+   ACHIEVEMENTS
+========================================== */
 
 const ACH=[
 
- ['first','🩸 First Blood','Перша корисна дія'],
+ ['first','🩸 First Blood','Зробити першу корисну дію'],
 
  ['hundred','💯 100 GM','Набрати 100 GM'],
 
  ['thousand','🔥 1K GM','Набрати 1 000 GM'],
 
+ ['tenk','👑 10K GM','Набрати 10 000 GM'],
+
  ['streak7','🔥 7 Day Streak','7 днів поспіль'],
 
  ['book100','📚 Bookworm','100 WIS XP'],
 
- ['strong100','💪 Strong','100 STR XP']
+ ['strong100','💪 Strong','100 STR XP'],
+
+ ['tech100','💻 Builder','100 TECH XP']
 
 ];
 
 
 function checkAchievements(){
 
- if(
-  state.gm>0 &&
-  !state.achievements.first
- ){
+ const tests={
 
-  state.achievements.first=true;
+  first:
+   state.history.length>0,
 
- }
+  hundred:
+   state.gm>=100,
 
- if(
-  state.gm>=100 &&
-  !state.achievements.hundred
- ){
+  thousand:
+   state.gm>=1000,
 
-  state.achievements.hundred=true;
+  tenk:
+   state.gm>=10000,
 
- }
+  streak7:
+   state.streak>=7,
 
- if(
-  state.gm>=1000 &&
-  !state.achievements.thousand
- ){
+  book100:
+   state.stats.WIS>=100,
 
-  state.achievements.thousand=true;
+  strong100:
+   state.stats.STR>=100,
 
- }
+  tech100:
+   state.stats.TECH>=100
 
- if(
-  state.streak>=7 &&
-  !state.achievements.streak7
- ){
+ };
 
-  state.achievements.streak7=true;
+ Object.keys(tests).forEach(id=>{
 
- }
+  if(
+   tests[id] &&
+   !state.achievements[id]
+  ){
 
- if(
-  state.stats.WIS>=100 &&
-  !state.achievements.book100
- ){
+   state.achievements[id]=true;
 
-  state.achievements.book100=true;
+  }
 
- }
-
- if(
-  state.stats.STR>=100 &&
-  !state.achievements.strong100
- ){
-
-  state.achievements.strong100=true;
-
- }
+ });
 
  save();
 
 }
 
+
+/* ==========================================
+   REWARD SHOP
+========================================== */
+
+const SHOP=[
+
+ ['🎮 Gaming Pass 30 min',120,30],
+
+ ['🎮 Gaming Pass 60 min',220,60],
+
+ ['🍫 Маленька смаколика',150,0],
+
+ ['🎬 1 фільм без почуття провини',300,0],
+
+ ['🎮 Gaming Pass 2 hours',400,120],
+
+ ['🏆 Особлива нагорода',1000,0]
+
+];
+
+
+function buyReward(cost,name,minutes){
+
+ if(state.gm<cost){
+
+  toast('❌ Не вистачає GM');
+
+  return;
+
+ }
+
+ state.gm-=cost;
+
+ state.gamingMinutes+=minutes||0;
+
+ state.history.unshift({
+
+  date:today(),
+
+  amount:-cost,
+
+  stat:'-',
+
+  reason:'🎁 '+name
+
+ });
+
+ state.shopPurchases.unshift({
+
+  date:today(),
+
+  name,
+
+  cost
+
+ });
+
+ save();
+
+ render();
+
+ toast(
+  '🎁 Нагороду куплено: '+name
+ );
+
+}
+
+
+/* ==========================================
+   RENDER
+========================================== */
 
 function render(){
 
@@ -2051,88 +3272,45 @@ function render(){
    0,
    Math.min(
     100,
-    ((state.gm-start)/
-    (next-start))*100
+    ((state.gm-start)/(next-start))*100
    )
   );
 
- document.getElementById(
-  'gm'
- ).textContent=
+
+ document.getElementById('gm')
+ .textContent=
   fmt(state.gm)+' GM';
 
- document.getElementById(
-  'level'
- ).textContent=
+ document.getElementById('level')
+ .textContent=
   'LEVEL '+lvl;
 
- document.getElementById(
-  'hp'
- ).textContent=
+ document.getElementById('streak')
+ .textContent=
+  '🔥 '+state.streak+' DAYS';
+
+ document.getElementById('topStreak')
+ .textContent=
+  '🔥 '+state.streak+' DAYS';
+
+ document.getElementById('hp')
+ .textContent=
   Math.round(state.hp)+'/100';
 
- document.getElementById(
-  'streak'
- ).textContent=
-  '🔥 '+state.streak+' DAYS';
-
- document.getElementById(
-  'topStreak'
- ).textContent=
-  '🔥 '+state.streak+' DAYS';
-
- document.getElementById(
-  'xpBar'
- ).style.width=
+ document.getElementById('xpBar')
+ .style.width=
   pct+'%';
 
- document.getElementById(
-  'xpText'
- ).textContent=
-  fmt(Math.max(
-   0,
-   state.gm-start
-  ))+
+ document.getElementById('xpText')
+ .textContent=
+  fmt(Math.max(0,state.gm-start))+
   ' / '+
   fmt(next-start)+
   ' GM до наступного рівня';
 
- document.getElementById(
-  'characterName'
- ).textContent=
-  state.name;
-
- document.getElementById(
-  'characterBigName'
- ).textContent=
-  state.name;
-
- document.getElementById(
-  'playerName'
- ).value=
-  state.name;
-
- document.getElementById(
-  'playerEmail'
- ).value=
-  state.email||'';
-
- document.getElementById(
-  'gamingText'
- ).textContent=
-  state.gamingMinutes+' хвилин';
-
- document.getElementById(
-  'accountStatus'
- ).textContent=
-  state.email
-   ?state.email
-   :'Акаунт ще не підключений';
 
  const mini=
-  document.getElementById(
-   'miniStats'
-  );
+  document.getElementById('miniStats');
 
  mini.innerHTML='';
 
@@ -2140,16 +3318,20 @@ function render(){
  .forEach(([k,v])=>{
 
   mini.insertAdjacentHTML(
+
    'beforeend',
 
-   `<div class="stat">
+   `
+   <div class="stat">
     <b>${v}</b>
     <strong>${fmt(state.stats[k])}</strong>
-   </div>`
+   </div>
+   `
 
   );
 
  });
+
 
  const qa=[
 
@@ -2167,16 +3349,20 @@ function render(){
 
  ];
 
- document.getElementById(
-  'quickActions'
- ).innerHTML=
+
+ document.getElementById('quickActions')
+ .innerHTML=
 
  qa.map(x=>`
 
  <button
  class="btn green"
- onclick="addXP(${x[1]},'${x[2]}','${x[0]}');animateCharacter('${x[2]}')"
- >
+ onclick="addXP(
+  ${x[1]},
+  '${x[2]}',
+  '${x[0]}',
+  {gaming:${x[1]*2}}
+ )">
 
  ${x[0]}
  <b>+${x[1]} GM</b>
@@ -2185,80 +3371,178 @@ function render(){
 
  `).join('');
 
+
  renderQuests();
+
  renderStats();
+
  renderShop();
+
  renderAchievements();
+
  renderHistory();
- applyTheme();
+
+ renderBoss();
+
+ renderAccountProgress();
+
+ renderCharacter();
+
+
+ document.getElementById('shopGM')
+ .textContent=
+  fmt(state.gm)+' GM';
+
+ document.getElementById('playerName')
+ .value=
+  state.name;
+
+ document.getElementById('gamingMinutes')
+ .value=
+  state.gamingMinutes;
+
+ document.getElementById('email')
+ .value=
+  state.email||'';
+
+ document.getElementById('emailStatus')
+ .textContent=
+  state.email
+  ?'📧 Акаунт привʼязаний до: '+state.email
+  :'Акаунт ще не привʼязаний.';
+
+ document.body.classList.toggle(
+  'light',
+  state.theme==='light'
+ );
+
+ document.getElementById('themeButton')
+ .textContent=
+  state.theme==='light'
+  ?'☀️ Світла тема'
+  :'🌙 Темна тема';
+
+}
+
+
+/* ==========================================
+   QUEST RENDER
+========================================== */
+
+function questHTML(q){
+
+ const done=
+  state.completed[q.id]===today();
+
+ return `
+
+ <div class="quest ${done?'done':''}">
+
+  <div class="qtext">
+
+   <b>${escapeHTML(q.name)}</b>
+
+   <small>
+    +${q.gm} GM · ${STATS[q.stat]}
+   </small>
+
+  </div>
+
+  <button
+   ${done?'disabled':''}
+   onclick="completeQuest('${q.id}')">
+
+   ${done?'✓ DONE':'COMPLETE'}
+
+  </button>
+
+ </div>
+
+ `;
 
 }
 
 
 function renderQuests(){
 
- const list=
-  document.getElementById(
-   'questList'
-  );
+ const daily=
+  state.quests.filter(q=>q.daily);
 
- list.innerHTML=
-  state.quests.map(q=>{
+ document.getElementById('questList')
+ .innerHTML=
 
-   const done=
-    state.completed[q.id]===today();
+ daily.map(questHTML).join('')+
 
-   return `
+ `
 
-   <div class="quest">
+ <div class="quest">
 
-   <div class="qtext">
+  <div class="qtext">
 
-   <b>${q.name}</b>
+   <b>
+    ☠️ TikTok / ігри замість важливої справи
+   </b>
 
    <small>
-   +${q.gm} GM · ${STATS[q.stat]}
+    -20 GM · мінус за свідому прокрастинацію
    </small>
 
-   </div>
+  </div>
 
-   <button
-    ${done?'disabled':''}
-    onclick="completeQuest('${q.id}')"
-   >
+  <button
+   class="btn red"
+   onclick="penalty(20,'📱 Лінь / TikTok')">
 
-   ${done?'✓ DONE':'COMPLETE'}
+   -20 GM
 
-   </button>
+  </button>
 
-   </div>
+ </div>
 
-   `;
+ `;
 
-  }).join('');
-
- const daily=
-  state.quests.length;
 
  const done=
-  state.quests.filter(
+  daily.filter(
    q=>state.completed[q.id]===today()
   ).length;
 
- document.getElementById(
-  'dailyCount'
- ).textContent=
-  done+'/'+daily;
+ document.getElementById('dailyCount')
+ .textContent=
+  done+'/'+daily.length;
+
+
+ document.getElementById('dailyHome')
+ .innerHTML=
+
+ daily.slice(0,5)
+ .map(questHTML)
+ .join('')+
+
+ `
+
+ <button
+  class="btn gold"
+  style="width:100%;margin-top:10px;text-align:center"
+  onclick="completeDaily()">
+
+  🎯 COMPLETE DAILY · +100 GM
+
+ </button>
+
+ `;
 
 }
 
 
+/* ==========================================
+   STATS
+========================================== */
+
 function renderStats(){
 
  const el=
-  document.getElementById(
-   'fullStats'
-  );
+  document.getElementById('fullStats');
 
  el.innerHTML=
   Object.entries(STATS)
@@ -2270,277 +3554,522 @@ function renderStats(){
    const pct=
     Math.min(
      100,
-     (val/1000)*100
+     val/1000*100
     );
 
    return `
 
    <div style="margin:13px 0">
 
-   <div style="
-    display:flex;
-    justify-content:space-between
-   ">
+    <div style="
+     display:flex;
+     justify-content:space-between">
 
-   <b>${v}</b>
+     <b>${v}</b>
 
-   <b>${fmt(val)} XP</b>
+     <b>${fmt(val)} XP</b>
 
-   </div>
+    </div>
 
-   <div class="bar">
+    <div class="bar">
 
-   <span style="
-    width:${pct}%
-   "></span>
+     <span
+      style="width:${pct}%">
+     </span>
 
-   </div>
+    </div>
 
    </div>
 
    `;
 
-  }).join('');
+  })
+  .join('');
 
 }
 
 
+/* ==========================================
+   SHOP RENDER
+========================================== */
+
 function renderShop(){
 
- document.getElementById(
-  'shopList'
- ).innerHTML=
+ document.getElementById('shopList')
+ .innerHTML=
 
  SHOP.map(x=>`
 
  <div class="shopItem">
 
- <h3>${x[0]}</h3>
+  <h3>${x[0]}</h3>
 
- <p>
- Ціна:
- <b>${x[1]} GM</b>
- </p>
+  <p>
 
- <button
-  ${state.gm<x[1]?'disabled':''}
-  onclick="buyReward(${x[1]},'${x[0]}')"
- >
+   Ціна:
+   <b>${x[1]} GM</b>
 
- КУПИТИ
+   ${x[2]
+    ?' · Gaming Pass +'+x[2]+' хв'
+    :''
+   }
 
- </button>
+  </p>
+
+  <button
+   ${state.gm<x[1]?'disabled':''}
+   onclick="buyReward(
+    ${x[1]},
+    '${x[0]}',
+    ${x[2]}
+   )">
+
+   КУПИТИ
+
+  </button>
 
  </div>
 
  `).join('');
 
- document.getElementById(
-  'shopGM'
- ).textContent=
-  fmt(state.gm)+' GM';
-
 }
 
+
+/* ==========================================
+   ACHIEVEMENTS RENDER
+========================================== */
 
 function renderAchievements(){
 
  checkAchievements();
 
- document.getElementById(
-  'achList'
- ).innerHTML=
+ document.getElementById('achList')
+ .innerHTML=
 
  ACH.map(x=>`
 
- <div class="achievement">
+ <div
+  class="achievement ${
+   state.achievements[x[0]]
+   ?'unlocked'
+   :'locked'
+  }">
 
- <h3>
+  <h3>
 
- ${x[1]}
+   ${x[1]}
 
- ${state.achievements[x[0]]
-  ?'✓'
-  :'🔒'}
+   ${
+    state.achievements[x[0]]
+    ?'✓'
+    :'🔒'
+   }
 
- </h3>
+  </h3>
 
- <p>${x[2]}</p>
+  <p>${x[2]}</p>
 
  </div>
 
  `).join('');
 
- const count=
-  Object.values(
-   state.achievements
-  ).filter(Boolean).length;
 
- document.getElementById(
-  'achCount'
- ).textContent=
-  count+'/'+ACH.length;
+ document.getElementById('achCount')
+ .textContent=
+
+ Object.values(
+  state.achievements
+ )
+ .filter(Boolean)
+ .length+
+ '/'+
+ ACH.length;
 
 }
 
 
+/* ==========================================
+   HISTORY
+========================================== */
+
 function renderHistory(){
 
- const el=
-  document.getElementById(
-   'historyBody'
+ document.getElementById('historyBody')
+ .innerHTML=
+
+ state.history
+ .slice(0,100)
+ .map(h=>`
+
+ <tr>
+
+  <td style="padding:9px">
+   ${h.date}
+  </td>
+
+  <td style="
+   padding:9px;
+   color:${h.amount>=0?'var(--accent)':'var(--danger)'}">
+
+   ${h.amount>=0?'+':''}${fmt(h.amount)}
+
+  </td>
+
+  <td style="padding:9px">
+   ${escapeHTML(h.stat)}
+  </td>
+
+  <td style="padding:9px">
+   ${escapeHTML(h.reason)}
+  </td>
+
+ </tr>
+
+ `)
+ .join('')
+
+ ||
+
+ `
+
+ <tr>
+
+  <td
+   colspan="4"
+   class="muted"
+   style="padding:15px">
+
+   Ще немає активності.
+
+  </td>
+
+ </tr>
+
+ `;
+
+}
+
+
+/* ==========================================
+   BOSS
+========================================== */
+
+function renderBoss(){
+
+ const target=1000;
+
+ const start=
+  new Date();
+
+ start.setDate(
+  start.getDate()-
+  start.getDay()
+ );
+
+ start.setHours(0,0,0,0);
+
+ const earned=
+  state.history
+  .filter(h=>
+   h.amount>0 &&
+   new Date(h.date)>=start
+  )
+  .reduce(
+   (a,h)=>a+h.amount,
+   0
   );
 
- if(!state.history.length){
+ const pct=
+  Math.min(
+   100,
+   Math.round(
+    earned/target*100
+   )
+  );
 
-  el.innerHTML=
-   '<p class="muted">Ще немає активності.</p>';
+ document.getElementById('bossStatus')
+ .textContent=
+  pct+'%';
+
+
+ document.getElementById('bossHome')
+ .innerHTML=
+
+ `
+
+ <b>👹 Defeat Laziness</b>
+
+ <p class="muted">
+  Зароби ${fmt(target)} GM цього тижня.
+ </p>
+
+ <div class="bar">
+
+  <span
+   style="width:${pct}%">
+  </span>
+
+ </div>
+
+ <small class="muted">
+
+  ${fmt(
+   Math.min(earned,target)
+  )}
+  /
+  ${fmt(target)}
+  GM
+
+ </small>
+
+ `;
+
+}
+
+
+/* ==========================================
+   ACCOUNT PROGRESS
+========================================== */
+
+function renderAccountProgress(){
+
+ const lvl=
+  levelForGM(state.gm);
+
+ const percent=
+  Math.min(
+   100,
+   (state.gm/10000)*100
+  );
+
+ document.getElementById(
+  'accountProgress'
+ )
+ .innerHTML=
+
+ `
+
+ <div style="
+  display:flex;
+  justify-content:space-between">
+
+  <b>LEVEL ${lvl}</b>
+
+  <b>${fmt(state.gm)} GM</b>
+
+ </div>
+
+ <div class="bar">
+
+  <span
+   style="width:${percent}%">
+  </span>
+
+ </div>
+
+ <p class="muted">
+  Загальний розвиток акаунта.
+  Чим більше корисних дій — тим сильніший твій персонаж.
+ </p>
+
+ `;
+
+}
+
+
+/* ==========================================
+   SETTINGS
+========================================== */
+
+document
+ .getElementById('playerName')
+ .addEventListener(
+  'change',
+  e=>{
+
+   state.name=
+    e.target.value.trim()
+    ||'Yevhenii';
+
+   save();
+
+   renderCharacter();
+
+   toast('Імʼя збережено');
+
+  }
+ );
+
+
+document
+ .getElementById('gamingMinutes')
+ .addEventListener(
+  'change',
+  e=>{
+
+   state.gamingMinutes=
+    Math.max(
+     0,
+     Number(e.target.value)||0
+    );
+
+   save();
+
+   render();
+
+  }
+ );
+
+
+function saveEmail(){
+
+ const email=
+  document.getElementById('email')
+  .value
+  .trim();
+
+ if(
+  email &&
+  !email.includes('@')
+ ){
+
+  toast('❌ Введи правильний email');
 
   return;
 
  }
 
- el.innerHTML=
-  state.history
-  .slice(0,100)
-  .map(h=>`
+ state.email=email;
 
-  <div style="
-   display:flex;
-   justify-content:space-between;
-   padding:11px 0;
-   border-bottom:1px solid var(--line);
-   gap:10px;
-  ">
+ save();
 
-  <div>
+ render();
 
-  <b>${h.reason}</b>
-
-  <div class="muted">
-  ${h.date} · ${h.stat}
-  </div>
-
-  </div>
-
-  <b style="
-   color:${h.amount>=0
-    ?'var(--accent)'
-    :'var(--danger)'
-   }
-  ">
-
-  ${h.amount>=0?'+':''}${fmt(h.amount)} GM
-
-  </b>
-
-  </div>
-
-  `).join('');
+ toast(
+  email
+  ?'📧 Email збережено'
+  :'Email видалено'
+ );
 
 }
 
 
-document
-.querySelectorAll('#nav button')
-.forEach(btn=>{
+function toggleTheme(){
 
- btn.addEventListener(
-  'click',
+ state.theme=
+  state.theme==='dark'
+  ?'light'
+  :'dark';
+
+ save();
+
+ document.body.classList.add('themeChanging');
+
+ setTimeout(
   ()=>{
-
-   document
-   .querySelectorAll('.nav button')
-   .forEach(
-    b=>b.classList.remove('active')
+   document.body.classList.remove(
+    'themeChanging'
    );
-
-   btn.classList.add('active');
-
-   document
-   .querySelectorAll('.page')
-   .forEach(
-    p=>p.classList.remove('active')
-   );
-
-   document
-   .getElementById(btn.dataset.page)
-   .classList.add('active');
-
-  }
+  },
+  250
  );
 
-});
+ render();
+
+ toast(
+  state.theme==='light'
+  ?'☀️ Світла тема'
+  :'🌙 Темна тема'
+ );
+
+}
 
 
-window.addEventListener(
- 'click',
- e=>{
+/* ==========================================
+   NAVIGATION
+========================================== */
 
-  if(
-   e.target.id==='characterModal'
-  ){
+document
+ .querySelectorAll('#nav button')
+ .forEach(btn=>{
 
-   closeCharacter();
+  btn.addEventListener(
+   'click',
+   ()=>{
 
-  }
+    document
+     .querySelectorAll('.nav button')
+     .forEach(
+      b=>b.classList.remove('active')
+     );
 
- }
-);
+    btn.classList.add('active');
+
+    document
+     .querySelectorAll('.page')
+     .forEach(
+      p=>p.classList.remove('active')
+     );
+
+    document
+     .getElementById(
+      btn.dataset.page
+     )
+     .classList.add('active');
+
+   }
+  );
+
+ });
 
 
-setInterval(
- blinkCharacter,
- 5000
-);
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHTML(s){
+
+ return String(s)
+ .replace(
+  /[&<>'"]/g,
+  c=>({
+
+   '&':'&amp;',
+   '<':'&lt;',
+   '>':'&gt;',
+   "'":'&#39;',
+   '"':'&quot;'
+
+  }[c])
+ );
+
+}
 
 
-setInterval(()=>{
-
- const random=
-  Math.random();
-
- if(random<.5){
-
-  const ch=
-   document.getElementById(
-    'characterMini'
-   );
-
-  if(ch){
-
-   ch.classList.add('wave');
-
-   setTimeout(
-    ()=>ch.classList.remove('wave'),
-    2500
-   );
-
-  }
-
- }
-
-},12000);
-
+/* ==========================================
+   SERVICE WORKER
+========================================== */
 
 if('serviceWorker' in navigator){
 
  window.addEventListener(
   'load',
   ()=>{
-
-   navigator
-   .serviceWorker
+   navigator.serviceWorker
    .register('./sw.js')
    .catch(()=>{});
-
   }
  );
 
 }
 
 
+/* ==========================================
+   START
+========================================== */
+
 checkAchievements();
+
 render();
 
 </script>
