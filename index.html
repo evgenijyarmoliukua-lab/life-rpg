@@ -3,627 +3,726 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#07101d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <title>Life RPG 2.0</title>
+
 <link rel="manifest" href="manifest.json">
 
 <style>
 :root{
---bg:#07101d;
---bg2:#0b1220;
---panel:#0d1828;
---panel2:#111f33;
---text:#eef5ff;
---muted:#91a3bb;
---accent:#69e5a4;
---accent2:#5aa9ff;
---danger:#ff6577;
---gold:#ffd166;
---line:#21334b;
---input:#081322;
---button:#182941;
---shadow:0 16px 45px rgba(0,0,0,.25);
-}
-
-body.light{
---bg:#eef4f8;
---bg2:#f7fafc;
---panel:#ffffff;
---panel2:#f1f5f9;
---text:#172333;
---muted:#64748b;
---line:#d5dee8;
---input:#ffffff;
---button:#e7eef5;
---shadow:0 16px 40px rgba(31,50,70,.12);
+ --bg:#07101d;
+ --panel:#0d1828;
+ --panel2:#111f33;
+ --text:#eef5ff;
+ --muted:#91a3bb;
+ --accent:#69e5a4;
+ --accent2:#5aa9ff;
+ --gold:#ffd166;
+ --danger:#ff6577;
+ --line:#21334b;
+ --shadow:0 16px 45px rgba(0,0,0,.25);
 }
 
 *{box-sizing:border-box}
 
 html,body{
-margin:0;
-min-height:100%;
-font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-background:
-radial-gradient(circle at 20% 0,#14365a 0,transparent 35%),
-radial-gradient(circle at 100% 0,#25451d 0,transparent 30%),
-var(--bg);
-color:var(--text);
-transition:background .45s ease,color .45s ease;
+ margin:0;
+ min-height:100%;
+ font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ background:
+ radial-gradient(circle at 20% 0,#14365a 0,transparent 35%),
+ radial-gradient(circle at 100% 0,#25451d 0,transparent 30%),
+ var(--bg);
+ color:var(--text);
+ transition:background .45s,color .45s;
 }
 
 body.light{
-background:
-radial-gradient(circle at 20% 0,#d8efff 0,transparent 35%),
-radial-gradient(circle at 100% 0,#e5f7df 0,transparent 30%),
-var(--bg);
+ --bg:#eef4f8;
+ --panel:#ffffff;
+ --panel2:#f3f7fa;
+ --text:#172131;
+ --muted:#657487;
+ --line:#d7e0e8;
+ --shadow:0 12px 35px rgba(30,50,70,.12);
+ background:
+ radial-gradient(circle at 20% 0,#d8f5e8 0,transparent 35%),
+ radial-gradient(circle at 100% 0,#dcecff 0,transparent 30%),
+ var(--bg);
 }
 
 button,input,select{font:inherit}
-button{border:0;cursor:pointer;color:var(--text)}
 
-.app{
-max-width:1180px;
-margin:auto;
-padding:18px 18px 40px;
-animation:appAppear .45s ease;
+button{
+ border:0;
+ cursor:pointer;
+ color:var(--text);
 }
 
-@keyframes appAppear{
-from{opacity:.7;transform:translateY(5px)}
-to{opacity:1;transform:translateY(0)}
+.app{
+ max-width:1180px;
+ margin:auto;
+ padding:18px 18px 50px;
 }
 
 .top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:12px;
-margin-bottom:16px
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ margin-bottom:16px;
 }
 
 .brand{
-display:flex;
-align-items:center;
-gap:12px
+ display:flex;
+ align-items:center;
+ gap:12px;
 }
 
 .logo{
-width:46px;
-height:46px;
-border-radius:14px;
-display:grid;
-place-items:center;
-background:linear-gradient(135deg,#64e7a0,#5a9fff);
-color:#06111c;
-font-size:24px;
-font-weight:900
+ width:46px;
+ height:46px;
+ border-radius:14px;
+ display:grid;
+ place-items:center;
+ background:linear-gradient(135deg,#64e7a0,#5a9fff);
+ color:#06111c;
+ font-size:24px;
+ font-weight:900;
 }
 
-.brand h1{font-size:22px;margin:0}
-.brand small{color:var(--muted)}
+.brand h1{
+ font-size:22px;
+ margin:0;
+}
+
+.brand small{
+ color:var(--muted);
+}
 
 .nav{
-display:flex;
-gap:7px;
-overflow:auto;
-padding-bottom:4px
+ display:flex;
+ gap:7px;
+ overflow:auto;
+ padding-bottom:5px;
+ margin-bottom:16px;
 }
 
 .nav button{
-background:rgba(255,255,255,.05);
-padding:10px 13px;
-border-radius:11px;
-color:var(--muted);
-white-space:nowrap;
-transition:.25s
-}
-
-body.light .nav button{
-background:rgba(0,0,0,.04)
+ background:rgba(255,255,255,.05);
+ padding:10px 13px;
+ border-radius:11px;
+ color:var(--muted);
+ white-space:nowrap;
 }
 
 .nav button.active{
-background:var(--accent);
-color:#06111c;
-font-weight:800
+ background:var(--accent);
+ color:#06111c;
+ font-weight:800;
 }
 
 .page{display:none}
 .page.active{display:block}
 
 .grid{
-display:grid;
-grid-template-columns:1.35fr .65fr;
-gap:16px
+ display:grid;
+ grid-template-columns:1.35fr .65fr;
+ gap:16px;
 }
 
 .card{
-background:var(--panel);
-border:1px solid var(--line);
-border-radius:18px;
-padding:18px;
-box-shadow:var(--shadow);
-backdrop-filter:blur(12px);
-transition:background .4s ease,border-color .4s ease,box-shadow .4s ease
+ background:rgba(13,24,40,.9);
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:18px;
+ padding:18px;
+ box-shadow:var(--shadow);
+ backdrop-filter:blur(12px);
 }
 
 .hero{
-position:relative;
-overflow:hidden
-}
-
-.hero:after{
-content:"";
-position:absolute;
-width:260px;
-height:260px;
-right:-110px;
-top:-110px;
-background:rgba(105,229,164,.12);
-border-radius:50%;
-filter:blur(2px)
+ position:relative;
+ overflow:hidden;
 }
 
 .heroRow{
-display:flex;
-justify-content:space-between;
-gap:15px;
-align-items:flex-start
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ align-items:flex-start;
 }
 
 .eyebrow{
-color:var(--muted);
-font-size:13px
+ color:var(--muted);
+ font-size:13px;
 }
 
 .gm{
-font-size:38px;
-font-weight:900;
-margin:5px 0
+ font-size:38px;
+ font-weight:900;
+ margin:5px 0;
 }
 
 .level{
-font-size:18px;
-font-weight:800
+ font-size:18px;
+ font-weight:800;
 }
 
 .streak{
-color:var(--gold);
-font-weight:800
+ color:var(--gold);
+ font-weight:800;
 }
 
 .bar{
-height:11px;
-background:var(--bg2);
-border-radius:99px;
-overflow:hidden;
-border:1px solid var(--line);
-margin-top:12px
+ height:11px;
+ background:#07111e;
+ border-radius:99px;
+ overflow:hidden;
+ border:1px solid var(--line);
+ margin-top:12px;
 }
 
 .bar>span{
-display:block;
-height:100%;
-width:0;
-background:linear-gradient(90deg,var(--accent2),var(--accent));
-border-radius:99px;
-transition:width .3s
+ display:block;
+ height:100%;
+ width:0;
+ background:linear-gradient(90deg,var(--accent2),var(--accent));
+ border-radius:99px;
+ transition:width .4s;
 }
 
-.muted{color:var(--muted)}
-
 .statGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-top:15px
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin-top:15px;
 }
 
 .stat{
-background:var(--panel2);
-padding:12px;
-border-radius:14px
+ background:var(--panel2);
+ padding:12px;
+ border-radius:14px;
 }
 
 .stat b{
-display:block;
-font-size:13px
+ display:block;
+ font-size:13px;
 }
 
-.stat strong{font-size:20px}
+.stat strong{
+ font-size:20px;
+}
 
 .actions{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:9px;
-margin-top:14px
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:9px;
+ margin-top:14px;
 }
 
 .btn{
-padding:11px 12px;
-border-radius:12px;
-background:var(--button);
-border:1px solid var(--line);
-text-align:left;
-transition:.2s
+ padding:11px 12px;
+ border-radius:12px;
+ background:#182941;
+ border:1px solid #29405d;
+ text-align:left;
 }
 
 .btn:hover{
-filter:brightness(1.08);
-transform:translateY(-1px)
+ filter:brightness(1.12);
 }
 
 .btn.green{
-background:rgba(105,229,164,.14);
-border-color:rgba(105,229,164,.4)
-}
-
-.btn.red{
-background:rgba(255,101,119,.12);
-border-color:rgba(255,101,119,.4)
+ background:rgba(105,229,164,.14);
+ border-color:rgba(105,229,164,.4);
 }
 
 .btn.gold{
-background:rgba(255,209,102,.12);
-border-color:rgba(255,209,102,.4)
+ background:rgba(255,209,102,.12);
+ border-color:rgba(255,209,102,.4);
+}
+
+.btn.red{
+ background:rgba(255,101,119,.12);
+ border-color:rgba(255,101,119,.4);
 }
 
 .sectionTitle{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:12px;
 }
 
 .sectionTitle h2{
-margin:0;
-font-size:18px
+ margin:0;
+ font-size:18px;
 }
 
 .pill{
-font-size:12px;
-padding:5px 8px;
-border-radius:99px;
-background:var(--button);
-color:var(--muted)
+ font-size:12px;
+ padding:5px 8px;
+ border-radius:99px;
+ background:#182941;
+ color:var(--muted);
 }
 
 .quest{
-display:flex;
-align-items:center;
-gap:10px;
-padding:11px 0;
-border-bottom:1px solid var(--line)
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:11px 0;
+ border-bottom:1px solid var(--line);
 }
 
-.quest:last-child{border-bottom:0}
+.quest:last-child{
+ border-bottom:0;
+}
 
-.quest .qtext{flex:1}
+.quest .qtext{
+ flex:1;
+}
 
 .quest small{
-display:block;
-color:var(--muted);
-margin-top:3px
+ display:block;
+ color:var(--muted);
+ margin-top:3px;
 }
 
 .quest button{
-padding:8px 10px;
-border-radius:10px;
-background:var(--accent);
-color:#06111c;
-font-weight:800
+ padding:8px 10px;
+ border-radius:10px;
+ background:var(--accent);
+ color:#06111c;
+ font-weight:800;
 }
 
-.quest.done{opacity:.5}
-
-.quest.done button{
-background:#304258;
-color:#aebdd0
+.quest.done{
+ opacity:.5;
 }
 
 .form{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
 }
 
 .field label{
-display:block;
-color:var(--muted);
-font-size:12px;
-margin-bottom:5px
+ display:block;
+ color:var(--muted);
+ font-size:12px;
+ margin-bottom:5px;
 }
 
 .field input,
 .field select{
-width:100%;
-padding:11px;
-border-radius:11px;
-border:1px solid var(--line);
-background:var(--input);
-color:var(--text);
-outline:none;
-transition:.25s
+ width:100%;
+ padding:11px;
+ border-radius:11px;
+ border:1px solid var(--line);
+ background:var(--panel2);
+ color:var(--text);
+ outline:none;
 }
 
-.field input:focus,
-.field select:focus{
-border-color:var(--accent2);
-box-shadow:0 0 0 3px rgba(90,169,255,.12)
+.full{
+ grid-column:1/-1;
 }
 
-.form .full{grid-column:1/-1}
-
-.tableWrap{overflow:auto}
-
-.history{
-width:100%;
-border-collapse:collapse
+.characterCard{
+ text-align:center;
+ min-height:390px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ position:relative;
+ overflow:hidden;
 }
 
-.history th,
-.history td{
-padding:9px;
-border-bottom:1px solid var(--line);
-text-align:left;
-font-size:13px
+.character{
+ width:190px;
+ height:240px;
+ position:relative;
+ margin:10px auto;
+ cursor:pointer;
+ animation:float 3s ease-in-out infinite;
 }
 
-.history th{color:var(--muted)}
-.pos{color:var(--accent)}
-.neg{color:var(--danger)}
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-5px)}
+}
+
+.character.blink .eye{
+ transform:scaleY(.1);
+}
+
+.character.wave .arm.right{
+ transform:rotate(-55deg);
+}
+
+.character.read .book{
+ transform:translateY(-8px) rotate(-4deg);
+}
+
+.character.exercise .arm{
+ animation:pump .55s infinite alternate;
+}
+
+@keyframes pump{
+ from{transform:rotate(20deg)}
+ to{transform:rotate(-30deg)}
+}
+
+.head{
+ position:absolute;
+ width:100px;
+ height:105px;
+ left:45px;
+ top:18px;
+ background:#ffd0a6;
+ border-radius:45% 45% 42% 42%;
+ border:4px solid #182941;
+}
+
+.hair{
+ position:absolute;
+ left:43px;
+ top:10px;
+ width:105px;
+ height:43px;
+ background:#39291f;
+ border-radius:55px 55px 20px 20px;
+ z-index:3;
+}
+
+.eye{
+ position:absolute;
+ width:10px;
+ height:13px;
+ background:#172131;
+ border-radius:50%;
+ top:52px;
+ transition:.15s;
+}
+
+.eye.left{left:25px}
+.eye.right{right:25px}
+
+.brow{
+ position:absolute;
+ width:18px;
+ height:4px;
+ background:#39291f;
+ top:43px;
+ border-radius:5px;
+}
+
+.brow.left{left:21px}
+.brow.right{right:21px}
+
+.nose{
+ position:absolute;
+ left:47px;
+ top:61px;
+ width:8px;
+ height:12px;
+ border-right:3px solid #c58f6d;
+ border-bottom:3px solid #c58f6d;
+ border-radius:0 0 7px 0;
+}
+
+.mouth{
+ position:absolute;
+ left:39px;
+ top:78px;
+ width:22px;
+ height:8px;
+ border-bottom:3px solid #8f4d4d;
+ border-radius:0 0 15px 15px;
+}
+
+.bodyChar{
+ position:absolute;
+ left:50px;
+ top:118px;
+ width:90px;
+ height:80px;
+ background:#5aa9ff;
+ border:4px solid #182941;
+ border-radius:30px 30px 20px 20px;
+}
+
+.arm{
+ position:absolute;
+ width:20px;
+ height:70px;
+ background:#ffd0a6;
+ border:4px solid #182941;
+ border-radius:20px;
+ top:122px;
+ transition:.3s;
+ transform-origin:top center;
+}
+
+.arm.left{
+ left:30px;
+ transform:rotate(20deg);
+}
+
+.arm.right{
+ right:30px;
+ transform:rotate(-20deg);
+}
+
+.leg{
+ position:absolute;
+ width:25px;
+ height:65px;
+ background:#243650;
+ border:4px solid #182941;
+ border-radius:10px;
+ top:188px;
+}
+
+.leg.left{left:60px}
+.leg.right{right:60px}
+
+.book{
+ position:absolute;
+ left:68px;
+ top:148px;
+ width:55px;
+ height:38px;
+ background:#ffd166;
+ border:4px solid #182941;
+ border-radius:5px;
+ z-index:5;
+ transition:.3s;
+}
+
+.dumbbell{
+ position:absolute;
+ right:3px;
+ top:130px;
+ font-size:35px;
+ opacity:0;
+ transition:.3s;
+}
+
+.character.exercise .dumbbell{
+ opacity:1;
+}
+
+.characterInfo{
+ margin-top:5px;
+}
+
+.characterName{
+ font-size:22px;
+ font-weight:900;
+}
+
+.characterHint{
+ color:var(--muted);
+ font-size:13px;
+ margin-top:4px;
+}
+
+.avatarTabs{
+ display:flex;
+ gap:7px;
+ overflow:auto;
+ margin-bottom:15px;
+}
+
+.avatarTabs button{
+ padding:9px 12px;
+ border-radius:10px;
+ background:var(--panel2);
+ color:var(--muted);
+}
+
+.avatarTabs button.active{
+ background:var(--accent);
+ color:#06111c;
+ font-weight:800;
+}
 
 .shopGrid,
 .achGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
 }
 
 .shopItem,
 .achievement{
-background:var(--panel2);
-border:1px solid var(--line);
-border-radius:14px;
-padding:14px
+ background:var(--panel2);
+ border:1px solid var(--line);
+ border-radius:14px;
+ padding:14px;
 }
 
 .shopItem h3,
 .achievement h3{
-margin:0 0 6px;
-font-size:15px
+ margin:0 0 6px;
+ font-size:15px;
 }
 
 .shopItem p,
 .achievement p{
-margin:0 0 12px;
-color:var(--muted);
-font-size:13px
+ margin:0 0 12px;
+ color:var(--muted);
+ font-size:13px;
 }
 
 .shopItem button{
-width:100%;
-padding:9px;
-border-radius:10px;
-background:var(--gold);
-color:#17120a;
-font-weight:800
+ width:100%;
+ padding:9px;
+ border-radius:10px;
+ background:var(--gold);
+ color:#17120a;
+ font-weight:800;
 }
 
 .shopItem button:disabled{
-opacity:.35;
-cursor:not-allowed
-}
-
-.achievement.locked{opacity:.4}
-
-.achievement.unlocked{
-border-color:rgba(255,209,102,.5)
+ opacity:.35;
+ cursor:not-allowed;
 }
 
 .notice{
-padding:12px;
-border-radius:12px;
-background:rgba(90,169,255,.1);
-border:1px solid rgba(90,169,255,.25);
-color:#cce2ff;
-font-size:13px
-}
-
-.dangerBox{
-padding:12px;
-border-radius:12px;
-background:rgba(255,101,119,.08);
-border:1px solid rgba(255,101,119,.25)
-}
-
-/* SETTINGS */
-
-.settingsBlock{
-margin-top:16px;
-padding-top:16px;
-border-top:1px solid var(--line)
-}
-
-.settingsBlock:first-of-type{
-margin-top:0;
-padding-top:0;
-border-top:0
-}
-
-.settingsTitle{
-font-weight:800;
-margin-bottom:10px
-}
-
-.accountBox{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-padding:14px;
-background:var(--panel2);
-border:1px solid var(--line);
-border-radius:14px
-}
-
-.accountInfo{
-flex:1;
-min-width:0
-}
-
-.accountEmail{
-font-weight:800;
-word-break:break-word
-}
-
-.accountStatus{
-font-size:12px;
-color:var(--muted);
-margin-top:3px
-}
-
-/* THEME SWITCH */
-
-.themeRow{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:15px;
-padding:14px;
-background:var(--panel2);
-border:1px solid var(--line);
-border-radius:14px
-}
-
-.themeInfo{
-display:flex;
-align-items:center;
-gap:10px
-}
-
-.themeIcon{
-font-size:24px;
-width:34px;
-text-align:center
+ padding:12px;
+ border-radius:12px;
+ background:rgba(90,169,255,.1);
+ border:1px solid rgba(90,169,255,.25);
+ color:#cce2ff;
+ font-size:13px;
 }
 
 .themeSwitch{
-position:relative;
-width:58px;
-height:32px;
-flex-shrink:0
+ width:66px;
+ height:34px;
+ border-radius:50px;
+ padding:4px;
+ background:#182941;
+ border:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ transition:.4s;
 }
 
-.themeSwitch input{
-opacity:0;
-width:0;
-height:0
+.themeSwitch span{
+ width:26px;
+ height:26px;
+ border-radius:50%;
+ background:#ffd166;
+ display:grid;
+ place-items:center;
+ transition:.4s;
 }
 
-.slider{
-position:absolute;
-inset:0;
-background:#243750;
-border-radius:99px;
-cursor:pointer;
-transition:.35s
+body.light .themeSwitch{
+ background:#b9d8ff;
 }
 
-.slider:before{
-content:"🌙";
-position:absolute;
-width:26px;
-height:26px;
-left:3px;
-top:3px;
-display:grid;
-place-items:center;
-background:#fff;
-border-radius:50%;
-font-size:14px;
-transition:.35s;
-box-shadow:0 3px 10px rgba(0,0,0,.25)
+body.light .themeSwitch span{
+ transform:translateX(30px);
+ background:#fff;
 }
 
-.themeSwitch input:checked + .slider{
-background:var(--accent)
-}
-
-.themeSwitch input:checked + .slider:before{
-transform:translateX(26px);
-content:"☀️"
-}
-
-.themeFlash{
-position:fixed;
-inset:0;
-z-index:100;
-pointer-events:none;
-background:rgba(255,255,255,.16);
-opacity:0
-}
-
-.themeFlash.animate{
-animation:themeFlash .45s ease
-}
-
-@keyframes themeFlash{
-0%{opacity:0}
-35%{opacity:1}
-100%{opacity:0}
+.accountBox{
+ padding:15px;
+ border-radius:14px;
+ background:var(--panel2);
+ border:1px solid var(--line);
+ margin-top:14px;
 }
 
 .toast{
-position:fixed;
-right:18px;
-bottom:18px;
-z-index:120;
-background:#edf7ff;
-color:#081321;
-padding:12px 15px;
-border-radius:13px;
-box-shadow:var(--shadow);
-font-weight:800;
-transform:translateY(120px);
-transition:.25s
+ position:fixed;
+ right:18px;
+ bottom:18px;
+ z-index:50;
+ background:#edf7ff;
+ color:#081321;
+ padding:12px 15px;
+ border-radius:13px;
+ box-shadow:var(--shadow);
+ font-weight:800;
+ transform:translateY(120px);
+ transition:.25s;
 }
 
 .toast.show{
-transform:translateY(0)
+ transform:translateY(0);
+}
+
+.modal{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.65);
+ backdrop-filter:blur(8px);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ z-index:40;
+}
+
+.modal.show{
+ display:flex;
+}
+
+.modalBox{
+ width:min(650px,100%);
+ max-height:90vh;
+ overflow:auto;
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:20px;
+ padding:20px;
+ box-shadow:var(--shadow);
+}
+
+.close{
+ float:right;
+ background:var(--panel2);
+ padding:8px 12px;
+ border-radius:10px;
 }
 
 @media(max-width:850px){
-.grid{grid-template-columns:1fr}
-.shopGrid,.achGrid{grid-template-columns:repeat(2,1fr)}
+ .grid{grid-template-columns:1fr}
+ .shopGrid,.achGrid{grid-template-columns:repeat(2,1fr)}
 }
 
 @media(max-width:560px){
-.app{padding:12px 10px 30px}
-.top{align-items:flex-start}
-.brand h1{font-size:18px}
-.statGrid{grid-template-columns:repeat(2,1fr)}
-.actions{grid-template-columns:1fr}
-.shopGrid,.achGrid{grid-template-columns:1fr}
-.form{grid-template-columns:1fr}
-.form .full{grid-column:auto}
-.gm{font-size:31px}
-.card{padding:14px}
-.accountBox{align-items:flex-start;flex-direction:column}
+ .app{padding:12px 10px 30px}
+ .top{align-items:flex-start}
+ .brand h1{font-size:18px}
+ .statGrid{grid-template-columns:repeat(2,1fr)}
+ .actions{grid-template-columns:1fr}
+ .shopGrid,.achGrid{grid-template-columns:1fr}
+ .form{grid-template-columns:1fr}
+ .full{grid-column:auto}
+ .gm{font-size:31px}
+ .card{padding:14px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="themeFlash" id="themeFlash"></div>
-
 <div class="app">
 
 <header class="top">
+
 <div class="brand">
 <div class="logo">⚔</div>
 <div>
@@ -631,22 +730,28 @@ transform:translateY(0)
 <small>Прокачуй персонажа. Прокачуй життя.</small>
 </div>
 </div>
+
 <div class="streak" id="topStreak">🔥 0 DAYS</div>
+
 </header>
 
 <nav class="nav" id="nav">
+
 <button data-page="home" class="active">🏠 Головна</button>
 <button data-page="quests">🎯 Квести</button>
+<button data-page="character">🧍 Персонаж</button>
 <button data-page="stats">🧬 Стати</button>
 <button data-page="shop">🎁 Магазин</button>
 <button data-page="ach">🏆 Досягнення</button>
 <button data-page="history">📊 Історія</button>
 <button data-page="settings">⚙️ Налаштування</button>
+
 </nav>
 
 <main>
 
 <section id="home" class="page active">
+
 <div class="grid">
 
 <div>
@@ -662,9 +767,17 @@ transform:translateY(0)
 </div>
 
 <div style="text-align:right">
+
 <div class="eyebrow">HP</div>
-<div style="font-size:28px;font-weight:900" id="hp">100/100</div>
-<div class="streak" id="streak">🔥 0 DAYS</div>
+
+<div style="font-size:28px;font-weight:900" id="hp">
+100/100
+</div>
+
+<div class="streak" id="streak">
+🔥 0 DAYS
+</div>
+
 </div>
 
 </div>
@@ -696,32 +809,63 @@ transform:translateY(0)
 
 <div>
 
-<div class="card">
+<div class="card characterCard">
 
-<div class="sectionTitle">
-<h2>🎯 Сьогодні</h2>
-<span class="pill" id="dailyCount">0/0</span>
+<div class="sectionTitle" style="width:100%">
+<h2>🧍 Твій персонаж</h2>
+<span class="pill">натисни</span>
 </div>
 
-<div id="dailyHome"></div>
+<div class="character" id="characterMini" onclick="openCharacter()">
+
+<div class="hair"></div>
+
+<div class="head">
+
+<div class="brow left"></div>
+<div class="brow right"></div>
+
+<div class="eye left"></div>
+<div class="eye right"></div>
+
+<div class="nose"></div>
+<div class="mouth"></div>
 
 </div>
 
-<div class="card" style="margin-top:16px">
+<div class="bodyChar"></div>
 
-<div class="sectionTitle">
-<h2>👹 Weekly Boss</h2>
-<span class="pill" id="bossStatus">0%</span>
-</div>
+<div class="arm left"></div>
+<div class="arm right"></div>
 
-<div id="bossHome"></div>
+<div class="leg left"></div>
+<div class="leg right"></div>
 
-</div>
-
-</div>
+<div class="book"></div>
+<div class="dumbbell">🏋️</div>
 
 </div>
+
+<div class="characterInfo">
+
+<div class="characterName" id="characterName">
+Yevhenii
+</div>
+
+<div class="characterHint">
+Натисни на мене 👆
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
+
 
 <section id="quests" class="page">
 
@@ -729,52 +873,110 @@ transform:translateY(0)
 
 <div class="sectionTitle">
 <h2>🎯 Daily Quests</h2>
-<span class="pill">оновлюються щодня</span>
+<span class="pill" id="dailyCount">0/0</span>
 </div>
 
 <div id="questList"></div>
 
 </div>
 
+</section>
+
+
+<section id="character" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>🧍 Мій персонаж</h2>
+
+<button class="btn green" onclick="randomCharacter()">
+🎲 Випадковий
+</button>
+
+</div>
+
+<div style="text-align:center">
+
+<div class="character" id="characterBig">
+
+<div class="hair"></div>
+
+<div class="head">
+
+<div class="brow left"></div>
+<div class="brow right"></div>
+
+<div class="eye left"></div>
+<div class="eye right"></div>
+
+<div class="nose"></div>
+<div class="mouth"></div>
+
+</div>
+
+<div class="bodyChar"></div>
+
+<div class="arm left"></div>
+<div class="arm right"></div>
+
+<div class="leg left"></div>
+<div class="leg right"></div>
+
+<div class="book"></div>
+<div class="dumbbell">🏋️</div>
+
+</div>
+
+<div class="characterName" id="characterBigName">
+Yevhenii
+</div>
+
+<p class="muted">
+Твій персонаж росте разом із тобою.
+</p>
+
+</div>
+
+</div>
+
 <div class="card" style="margin-top:16px">
 
 <div class="sectionTitle">
-<h2>➕ Створити свій квест</h2>
+<h2>🎨 Налаштування аватара</h2>
 </div>
 
-<div class="form">
+<div class="avatarTabs">
 
-<div class="field">
-<label>Назва</label>
-<input id="newQuestName" placeholder="Наприклад: 30 хв Blender">
-</div>
+<button class="active" onclick="avatarTab('body',this)">
+🧍 Тіло
+</button>
 
-<div class="field">
-<label>GM</label>
-<input id="newQuestGM" type="number" min="1" value="20">
-</div>
+<button onclick="avatarTab('face',this)">
+🙂 Обличчя
+</button>
 
-<div class="field">
-<label>Стата</label>
-<select id="newQuestStat">
-<option value="INT">INT</option>
-<option value="STR">STR</option>
-<option value="LANG">LANG</option>
-<option value="TECH">TECH</option>
-<option value="WIS">WIS</option>
-<option value="DISC">DISC</option>
-</select>
-</div>
+<button onclick="avatarTab('clothes',this)">
+👕 Одяг
+</button>
 
-<div class="field">
-<label>&nbsp;</label>
-<button class="btn green" onclick="addQuest()">➕ Додати квест</button>
-</div>
+<button onclick="avatarTab('items',this)">
+🎒 Предмети
+</button>
+
+<button onclick="avatarTab('emotions',this)">
+😎 Емоції
+</button>
 
 </div>
+
+<div id="avatarOptions"></div>
+
 </div>
 
 </section>
+
 
 <section id="stats" class="page">
 
@@ -791,18 +993,26 @@ transform:translateY(0)
 
 </section>
 
+
 <section id="shop" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>🎁 Reward Shop</h2>
-<span class="pill" id="shopGM">0 GM</span>
+
+<span class="pill" id="shopGM">
+0 GM
+</span>
+
 </div>
 
 <div class="notice" style="margin-bottom:12px">
-Нагорода повинна бути реальною, але не руйнувати твою дисципліну.
-Ідея: купуй розваги за зароблений GM.
+
+💰 Тут ти витрачаєш зароблені GM на нагороди,
+одяг та предмети для персонажа.
+
 </div>
 
 <div class="shopGrid" id="shopList"></div>
@@ -811,13 +1021,19 @@ transform:translateY(0)
 
 </section>
 
+
 <section id="ach" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>🏆 Achievements</h2>
-<span class="pill" id="achCount">0/0</span>
+
+<span class="pill" id="achCount">
+0/0
+</span>
+
 </div>
 
 <div class="achGrid" id="achList"></div>
@@ -826,39 +1042,27 @@ transform:translateY(0)
 
 </section>
 
+
 <section id="history" class="page">
 
 <div class="card">
 
 <div class="sectionTitle">
+
 <h2>📊 Activity Log</h2>
-<button class="btn red" style="padding:7px 10px" onclick="clearHistory()">
-Очистити історію
+
+<button class="btn red" onclick="clearHistory()">
+Очистити
 </button>
-</div>
-
-<div class="tableWrap">
-
-<table class="history">
-
-<thead>
-<tr>
-<th>Дата</th>
-<th>GM</th>
-<th>Стата</th>
-<th>Причина</th>
-</tr>
-</thead>
-
-<tbody id="historyBody"></tbody>
-
-</table>
 
 </div>
+
+<div id="historyBody"></div>
 
 </div>
 
 </section>
+
 
 <section id="settings" class="page">
 
@@ -868,105 +1072,93 @@ transform:translateY(0)
 <h2>⚙️ Налаштування</h2>
 </div>
 
-<!-- NAME -->
-
-<div class="settingsBlock">
-
-<div class="settingsTitle">👤 Профіль</div>
-
 <div class="form">
 
 <div class="field">
+
 <label>Ім'я персонажа</label>
-<input id="playerName" placeholder="Введи своє ім'я">
+
+<input id="playerName" placeholder="Твоє ім'я">
+
 </div>
 
 <div class="field">
-<label>Gaming Pass хвилин</label>
-<input id="gamingMinutes" type="number" min="0">
-</div>
+
+<label>Email акаунта</label>
+
+<input id="playerEmail" type="email" placeholder="example@email.com">
 
 </div>
 
 </div>
 
-<!-- ACCOUNT -->
-
-<div class="settingsBlock">
-
-<div class="settingsTitle">📧 Акаунт</div>
-
-<div id="accountArea">
 
 <div class="accountBox">
 
-<div class="accountInfo">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
 
-<div class="accountEmail">
-Акаунт ще не зареєстрований
+<div>
+
+<b>👤 LIFE RPG ACCOUNT</b>
+
+<div class="muted" id="accountStatus">
+Акаунт ще не підключений
 </div>
 
-<div class="accountStatus">
-Зареєструй Email, щоб у майбутньому синхронізувати прогрес між пристроями.
 </div>
+
+<span>🔐</span>
 
 </div>
 
-<button class="btn green" onclick="registerEmail()">
-📧 Реєстрація
+<p class="muted" style="font-size:13px">
+
+Поки що email зберігається тільки на цьому пристрої.
+Справжню синхронізацію ПК ↔ телефон підключимо окремим етапом.
+
+</p>
+
+<button class="btn green" style="width:100%" onclick="saveAccount()">
+📧 Зберегти акаунт
+</button>
+
+</div>
+
+
+<div class="accountBox">
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+
+<div>
+<b>🌙 Тема</b>
+<div class="muted">Темна / світла</div>
+</div>
+
+<button class="themeSwitch" onclick="toggleTheme()">
+<span id="themeIcon">🌙</span>
 </button>
 
 </div>
 
 </div>
 
-</div>
 
-<!-- THEME -->
+<div class="accountBox">
 
-<div class="settingsBlock">
+<b>🎮 Gaming Pass</b>
 
-<div class="settingsTitle">🎨 Тема</div>
-
-<div class="themeRow">
-
-<div class="themeInfo">
-
-<div class="themeIcon" id="themeIcon">🌙</div>
-
-<div>
-
-<b id="themeName">Темна тема</b>
-
-<div class="muted" style="font-size:12px">
-Натисни перемикач, щоб змінити тему
+<div class="muted" id="gamingText">
+0 хвилин
 </div>
 
 </div>
 
+
+<div style="margin-top:16px">
+
+<div class="sectionTitle">
+<h2>⚠️ Небезпечна зона</h2>
 </div>
-
-<label class="themeSwitch">
-
-<input type="checkbox" id="themeToggle">
-
-<span class="slider"></span>
-
-</label>
-
-</div>
-
-</div>
-
-<!-- RESET -->
-
-<div class="dangerBox" style="margin-top:16px">
-
-<b>⚠️ Скидання</b>
-
-<p class="muted">
-Видалить весь прогрес на цьому пристрої.
-</p>
 
 <button class="btn red" onclick="resetGame()">
 ☠️ RESET EVERYTHING
@@ -982,9 +1174,33 @@ transform:translateY(0)
 
 </div>
 
+
 <div class="toast" id="toast"></div>
 
+
+<div class="modal" id="characterModal">
+
+<div class="modalBox">
+
+<button class="close" onclick="closeCharacter()">
+✕
+</button>
+
+<h2>🧍 <span id="modalName">Персонаж</span></h2>
+
+<p class="muted">
+Твій персонаж відображає твій реальний розвиток.
+</p>
+
+<div id="modalStats"></div>
+
+</div>
+
+</div>
+
+
 <script>
+
 'use strict';
 
 const KEY='life_rpg_v2';
@@ -1001,14 +1217,24 @@ DISC:'⚔️ DISC'
 const DEFAULT={
 name:'Yevhenii',
 email:'',
-registered:false,
-theme:'dark',
 gm:0,
 hp:100,
 streak:0,
 lastDaily:null,
 lastDate:null,
 gamingMinutes:0,
+
+theme:'dark',
+
+avatar:{
+body:'normal',
+skin:'light',
+hair:'brown',
+eyes:'blue',
+clothes:'blue',
+emotion:'normal',
+item:'none'
+},
 
 stats:{
 STR:0,
@@ -1020,1250 +1246,1299 @@ DISC:0
 },
 
 quests:[
+
 {id:'push',name:'10 віджимань',gm:5,stat:'STR',daily:true},
+
 {id:'squat',name:'20 присідань',gm:5,stat:'STR',daily:true},
+
 {id:'book',name:'2 сторінки книги',gm:5,stat:'WIS',daily:true},
+
 {id:'german',name:'10 хвилин німецької',gm:5,stat:'LANG',daily:true},
+
 {id:'tech',name:'10 хвилин навчання / Blender',gm:5,stat:'TECH',daily:true},
+
 {id:'music',name:'10 хвилин музики',gm:5,stat:'DISC',daily:true}
+
 ],
 
 completed:{},
 history:[],
 shopPurchases:[],
 achievements:{}
+
 };
+
 
 let state=loadState();
 
+
 function clone(x){
-return JSON.parse(JSON.stringify(x));
+ return JSON.parse(JSON.stringify(x));
 }
 
-function loadState(){
-
-try{
-
-const raw=localStorage.getItem(KEY);
-
-if(!raw)return clone(DEFAULT);
-
-const d=JSON.parse(raw);
-
-return merge(clone(DEFAULT),d);
-
-}catch(e){
-
-return clone(DEFAULT);
-
-}
-
-}
 
 function merge(base,src){
 
-Object.keys(src||{}).forEach(k=>{
+ Object.keys(src||{}).forEach(k=>{
 
-if(
-src[k] &&
-typeof src[k]==='object' &&
-!Array.isArray(src[k]) &&
-base[k] &&
-typeof base[k]==='object' &&
-!Array.isArray(base[k])
-){
+  if(
+   src[k] &&
+   typeof src[k]==='object' &&
+   !Array.isArray(src[k]) &&
+   base[k] &&
+   typeof base[k]==='object' &&
+   !Array.isArray(base[k])
+  ){
 
-base[k]=merge(base[k],src[k]);
+   base[k]=merge(base[k],src[k]);
 
-}else{
+  }else{
 
-base[k]=src[k];
+   base[k]=src[k];
+
+  }
+
+ });
+
+ return base;
+}
+
+
+function loadState(){
+
+ try{
+
+  const raw=localStorage.getItem(KEY);
+
+  if(!raw)
+   return clone(DEFAULT);
+
+  return merge(clone(DEFAULT),JSON.parse(raw));
+
+ }catch(e){
+
+  return clone(DEFAULT);
+
+ }
 
 }
 
-});
-
-return base;
-}
 
 function save(){
-localStorage.setItem(KEY,JSON.stringify(state));
+
+ localStorage.setItem(KEY,JSON.stringify(state));
+
 }
+
 
 function today(){
-return new Date().toISOString().slice(0,10);
+
+ return new Date().toISOString().slice(0,10);
+
 }
+
 
 function levelForGM(gm){
-return Math.max(
-1,
-Math.floor(Math.sqrt(Math.max(0,gm)/100))+1
-);
+
+ return Math.max(
+  1,
+  Math.floor(Math.sqrt(Math.max(0,gm)/100))+1
+ );
+
 }
+
 
 function levelStart(level){
-return level<=1?0:100*(level-1)*(level-1);
+
+ return level<=1
+  ?0
+  :100*(level-1)*(level-1);
+
 }
+
 
 function nextLevelGM(level){
-return 100*level*level;
+
+ return 100*level*level;
+
 }
 
+
 function fmt(n){
-return Math.round(n).toLocaleString('uk-UA');
+
+ return Math.round(n).toLocaleString('uk-UA');
+
 }
+
 
 function toast(msg){
 
-const el=document.getElementById('toast');
+ const el=document.getElementById('toast');
 
-el.textContent=msg;
+ el.textContent=msg;
 
-el.classList.add('show');
+ el.classList.add('show');
 
-clearTimeout(window.__toast);
+ clearTimeout(window.__toast);
 
-window.__toast=setTimeout(
-()=>el.classList.remove('show'),
-2200
-);
+ window.__toast=setTimeout(
+  ()=>el.classList.remove('show'),
+  2200
+ );
 
 }
+
 
 function normalizeDay(){
 
-const t=today();
+ const t=today();
 
-if(state.lastDate && state.lastDate!==t){
+ if(
+  state.lastDate &&
+  state.lastDate!==t
+ ){
 
-const prev=new Date(state.lastDate);
-const cur=new Date(t);
+  const prev=new Date(state.lastDate);
+  const cur=new Date(t);
 
-const diff=Math.round(
-(cur-prev)/86400000
-);
+  const diff=Math.round(
+   (cur-prev)/86400000
+  );
 
-if(diff>1)state.streak=0;
+  if(diff>1)
+   state.streak=0;
 
-}
+ }
 
-state.lastDate=t;
+ state.lastDate=t;
 
-Object.keys(state.completed).forEach(id=>{
+ Object.keys(state.completed).forEach(id=>{
 
-if(state.completed[id]!==t)
-delete state.completed[id];
+  if(state.completed[id]!==t)
+   delete state.completed[id];
 
-});
+ });
 
-save();
-
-}
-
-function addXP(amount,stat,reason,opts={}){
-
-const old=levelForGM(state.gm);
-
-state.gm=Math.max(
-0,
-state.gm+amount
-);
-
-if(stat&&amount>0){
-
-state.stats[stat]=
-(state.stats[stat]||0)+amount;
+ save();
 
 }
 
-if(opts.gaming)
-state.gamingMinutes+=opts.gaming;
 
-state.history.unshift({
-date:today(),
-amount,
-stat:stat||'-',
-reason
-});
+function addXP(amount,stat,reason){
 
-const nw=levelForGM(state.gm);
+ const old=levelForGM(state.gm);
 
-save();
-render();
+ state.gm=Math.max(
+  0,
+  state.gm+amount
+ );
 
-if(nw>old){
+ if(stat && amount>0){
 
-toast(
-'🆙 LEVEL UP! Ти досяг рівня '+nw+'!'
-);
+  state.stats[stat]=
+   (state.stats[stat]||0)+amount;
 
-}else{
+ }
 
-toast(
-(amount>=0?'+'+fmt(amount):fmt(amount))+
-' GM · '+reason
-);
+ state.history.unshift({
+
+  date:today(),
+  amount,
+  stat:stat||'-',
+  reason
+
+ });
+
+ const nw=levelForGM(state.gm);
+
+ save();
+ render();
+
+ if(nw>old){
+
+  toast(
+   '🆙 LEVEL UP! Ти досяг рівня '+nw+'!'
+  );
+
+ }else{
+
+  toast(
+   (amount>=0?'+':'')+
+   fmt(amount)+' GM · '+reason
+  );
+
+ }
 
 }
 
-checkAchievements();
-
-}
 
 function completeQuest(id){
 
-normalizeDay();
+ normalizeDay();
 
-const q=state.quests.find(
-x=>x.id===id
-);
+ const q=state.quests.find(
+  x=>x.id===id
+ );
 
-if(
-!q ||
-state.completed[id]===today()
-)return;
+ if(!q)
+  return;
 
-state.completed[id]=today();
+ if(state.completed[id]===today()){
 
-addXP(
-q.gm,
-q.stat,
-q.name,
-{gaming:q.gm*2}
-);
+  toast('Цей квест вже виконаний 🔥');
+  return;
 
-save();
-render();
+ }
 
-}
+ state.completed[id]=today();
 
-function addQuest(){
+ addXP(
+  q.gm,
+  q.stat,
+  q.name
+ );
 
-const name=
-document.getElementById(
-'newQuestName'
-).value.trim();
+ animateCharacter(
+  q.stat
+ );
 
-const gm=Math.max(
-1,
-Number(
-document.getElementById('newQuestGM').value
-)||1
-);
-
-const stat=
-document.getElementById(
-'newQuestStat'
-).value;
-
-if(!name){
-
-toast('Введи назву квесту');
-
-return;
+ save();
+ render();
 
 }
 
-state.quests.push({
-id:'q_'+Date.now(),
-name,
-gm,
-stat,
-daily:true
-});
-
-save();
-render();
-
-document.getElementById(
-'newQuestName'
-).value='';
-
-toast('🎯 Квест створено');
-
-}
-
-function deleteQuest(id){
-
-state.quests=
-state.quests.filter(q=>q.id!==id);
-
-delete state.completed[id];
-
-save();
-render();
-
-}
-
-function penalty(amount,reason){
-
-addXP(
--amount,
-null,
-reason
-);
-
-state.hp=
-Math.max(
-0,
-state.hp-amount/5
-);
-
-save();
-render();
-
-}
 
 function completeDaily(){
 
-normalizeDay();
+ normalizeDay();
 
-if(state.lastDaily===today()){
+ if(state.lastDaily===today()){
 
-toast('Daily уже виконаний 🔥');
+  toast('Daily уже виконаний 🔥');
+  return;
 
-return;
+ }
 
-}
+ const yesterday=
+  new Date(
+   Date.now()-86400000
+  ).toISOString().slice(0,10);
 
-const yesterday=
-new Date(
-Date.now()-86400000
-).toISOString().slice(0,10);
+ state.streak=
+  state.lastDaily===yesterday
+   ?state.streak+1
+   :1;
 
-state.streak=
-state.lastDaily===yesterday
-?state.streak+1
-:1;
+ state.lastDaily=today();
 
-state.lastDaily=today();
+ addXP(
+  100,
+  'DISC',
+  '🎯 Daily Quest'
+ );
 
-const bonus=
-100+(state.streak%7===0?50:0);
-
-addXP(
-bonus,
-'DISC',
-'🎯 Daily Quest',
-{gaming:30}
-);
-
-save();
-render();
+ save();
+ render();
 
 }
 
-function buyReward(cost,name,minutes){
 
-if(state.gm<cost){
+function buyReward(cost,name){
 
-toast('❌ Не вистачає GM');
+ if(state.gm<cost){
 
-return;
+  toast('❌ Не вистачає GM');
+  return;
+
+ }
+
+ state.gm-=cost;
+
+ state.history.unshift({
+
+  date:today(),
+  amount:-cost,
+  stat:'-',
+  reason:'🎁 '+name
+
+ });
+
+ state.shopPurchases.unshift({
+
+  date:today(),
+  name,
+  cost
+
+ });
+
+ save();
+ render();
+
+ toast('🎁 Куплено: '+name);
 
 }
 
-state.gm-=cost;
-
-state.gamingMinutes+=minutes||0;
-
-state.history.unshift({
-date:today(),
-amount:-cost,
-stat:'-',
-reason:'🎁 '+name
-});
-
-state.shopPurchases.unshift({
-date:today(),
-name,
-cost
-});
-
-save();
-render();
-
-toast(
-'🎁 Нагороду куплено: '+name
-);
-
-}
 
 function clearHistory(){
 
-if(
-confirm(
-'Очистити історію? Сам GM не зміниться.'
-)
-){
+ if(
+  confirm('Очистити історію?')
+ ){
 
-state.history=[];
+  state.history=[];
 
-save();
-render();
+  save();
+  render();
 
-}
+ }
 
 }
+
 
 function resetGame(){
 
-if(
-confirm(
-'Точно видалити весь прогрес?'
-)
-){
+ if(
+  confirm(
+   'Точно видалити весь прогрес?'
+  )
+ ){
 
-state=clone(DEFAULT);
+  state=clone(DEFAULT);
 
-save();
+  save();
+  render();
 
-applyTheme();
+  toast('Прогрес скинуто');
 
-render();
-
-toast('Прогрес скинуто');
-
-}
+ }
 
 }
 
-/* EMAIL */
-
-function registerEmail(){
-
-if(state.registered){
-
-toast('📧 Email вже зареєстрований');
-
-return;
-
-}
-
-const email=prompt(
-'Введи свій Email:'
-);
-
-if(!email)return;
-
-const clean=email.trim();
-
-const valid=
-/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-.test(clean);
-
-if(!valid){
-
-toast('❌ Введи правильний Email');
-
-return;
-
-}
-
-state.email=clean;
-state.registered=true;
-
-save();
-render();
-
-toast(
-'📧 Email збережено'
-);
-
-}
-
-/* THEME */
-
-function applyTheme(){
-
-document.body.classList.toggle(
-'light',
-state.theme==='light'
-);
-
-const toggle=
-document.getElementById('themeToggle');
-
-const name=
-document.getElementById('themeName');
-
-const icon=
-document.getElementById('themeIcon');
-
-if(toggle)
-toggle.checked=
-state.theme==='light';
-
-if(name)
-name.textContent=
-state.theme==='light'
-?'Світла тема'
-:'Темна тема';
-
-if(icon)
-icon.textContent=
-state.theme==='light'
-?'☀️'
-:'🌙';
-
-const meta=
-document.querySelector(
-'meta[name="theme-color"]'
-);
-
-if(meta){
-
-meta.setAttribute(
-'content',
-state.theme==='light'
-?'#eef4f8'
-:'#0b1220'
-);
-
-}
-
-}
 
 function toggleTheme(){
 
-state.theme=
-state.theme==='dark'
-?'light'
-:'dark';
+ state.theme=
+  state.theme==='dark'
+   ?'light'
+   :'dark';
 
-save();
+ applyTheme();
 
-const flash=
-document.getElementById('themeFlash');
+ save();
 
-flash.classList.remove('animate');
-
-void flash.offsetWidth;
-
-flash.classList.add('animate');
-
-applyTheme();
-
-toast(
-state.theme==='light'
-?'☀️ Світла тема'
-:'🌙 Темна тема'
-);
+ toast(
+  state.theme==='dark'
+   ?'🌙 Темна тема'
+   :'☀️ Світла тема'
+ );
 
 }
 
-/* ACHIEVEMENTS */
+
+function applyTheme(){
+
+ document.body.classList.toggle(
+  'light',
+  state.theme==='light'
+ );
+
+ document.getElementById(
+  'themeIcon'
+ ).textContent=
+  state.theme==='dark'
+   ?'🌙'
+   :'☀️';
+
+}
+
+
+function saveAccount(){
+
+ const name=
+  document.getElementById(
+   'playerName'
+  ).value.trim();
+
+ const email=
+  document.getElementById(
+   'playerEmail'
+  ).value.trim();
+
+ state.name=
+  name||'Yevhenii';
+
+ state.email=email;
+
+ save();
+
+ render();
+
+ toast(
+  email
+   ?'📧 Дані акаунта збережено'
+   :'👤 Імʼя збережено'
+ );
+
+}
+
+
+function openCharacter(){
+
+ document.getElementById(
+  'characterModal'
+ ).classList.add('show');
+
+ document.getElementById(
+  'modalName'
+ ).textContent=state.name;
+
+ renderModalStats();
+
+}
+
+
+function closeCharacter(){
+
+ document.getElementById(
+  'characterModal'
+ ).classList.remove('show');
+
+}
+
+
+function renderModalStats(){
+
+ const el=
+  document.getElementById(
+   'modalStats'
+  );
+
+ el.innerHTML=
+  Object.entries(STATS)
+  .map(([k,v])=>{
+
+   return `
+
+   <div style="
+    margin:12px 0;
+    padding:12px;
+    background:var(--panel2);
+    border-radius:12px;
+   ">
+
+   <div style="
+    display:flex;
+    justify-content:space-between;
+   ">
+
+   <b>${v}</b>
+
+   <b>${fmt(state.stats[k])} XP</b>
+
+   </div>
+
+   </div>
+
+   `;
+
+  }).join('');
+
+}
+
+
+function openCharacterPage(){
+
+ document.querySelector(
+  '[data-page="character"]'
+ ).click();
+
+}
+
+
+function animateCharacter(stat){
+
+ const chars=[
+  document.getElementById('characterMini'),
+  document.getElementById('characterBig')
+ ];
+
+ chars.forEach(ch=>{
+
+  if(!ch)return;
+
+  ch.classList.remove(
+   'exercise',
+   'read',
+   'wave'
+  );
+
+  if(stat==='STR')
+   ch.classList.add('exercise');
+
+  else if(stat==='WIS')
+   ch.classList.add('read');
+
+  else
+   ch.classList.add('wave');
+
+  setTimeout(()=>{
+
+   ch.classList.remove(
+    'exercise',
+    'read',
+    'wave'
+   );
+
+  },3000);
+
+ });
+
+}
+
+
+function blinkCharacter(){
+
+ const chars=[
+  document.getElementById('characterMini'),
+  document.getElementById('characterBig')
+ ];
+
+ chars.forEach(ch=>{
+
+  if(!ch)return;
+
+  ch.classList.add('blink');
+
+  setTimeout(
+   ()=>ch.classList.remove('blink'),
+   180
+  );
+
+ });
+
+}
+
+
+function randomCharacter(){
+
+ const skins=[
+  'light',
+  'tan'
+ ];
+
+ const hairs=[
+  'brown',
+  'black',
+  'blonde'
+ ];
+
+ const eyes=[
+  'blue',
+  'green',
+  'brown'
+ ];
+
+ state.avatar.skin=
+  skins[
+   Math.floor(
+    Math.random()*skins.length
+   )
+  ];
+
+ state.avatar.hair=
+  hairs[
+   Math.floor(
+    Math.random()*hairs.length
+   )
+  ];
+
+ state.avatar.eyes=
+  eyes[
+   Math.floor(
+    Math.random()*eyes.length
+   )
+  ];
+
+ save();
+
+ toast('🎲 Персонажа змінено');
+
+}
+
+
+function avatarTab(type,button){
+
+ document
+  .querySelectorAll('.avatarTabs button')
+  .forEach(
+   b=>b.classList.remove('active')
+  );
+
+ button.classList.add('active');
+
+ const options=
+  document.getElementById(
+   'avatarOptions'
+  );
+
+ const data={
+
+  body:[
+   ['normal','🧍 Звичайне тіло'],
+   ['athletic','💪 Спортивне тіло']
+  ],
+
+  face:[
+   ['normal','🙂 Звичайне обличчя'],
+   ['happy','😄 Щасливе'],
+   ['cool','😎 Круте']
+  ],
+
+  clothes:[
+   ['blue','🔵 Синя футболка'],
+   ['green','🟢 Зелена футболка'],
+   ['black','⚫ Чорна футболка']
+  ],
+
+  items:[
+   ['none','❌ Нічого'],
+   ['book','📖 Книга'],
+   ['dumbbell','🏋️ Гантеля']
+  ],
+
+  emotions:[
+   ['normal','🙂 Нормальний'],
+   ['happy','😄 Радісний'],
+   ['cool','😎 Крутий']
+  ]
+
+ };
+
+ options.innerHTML=
+  data[type].map(x=>`
+
+   <button
+    class="btn"
+    style="margin:5px"
+    onclick="setAvatar('${type}','${x[0]}')"
+   >
+   ${x[1]}
+   </button>
+
+  `).join('');
+
+}
+
+
+function setAvatar(type,value){
+
+ state.avatar[type]=value;
+
+ save();
+
+ toast('🎨 Персонажа оновлено');
+
+}
+
+
+const SHOP=[
+
+ ['👕 Зелена футболка',100],
+ ['🧢 Кепка',150],
+ ['🎧 Навушники',250],
+ ['👓 Окуляри',300],
+ ['🏋️ Гантеля',400],
+ ['📖 Книга',200],
+ ['😎 Круті окуляри',500],
+ ['👑 Корона',1000]
+
+];
+
+
+const ACH=[
+
+ ['first','🩸 First Blood','Перша корисна дія'],
+
+ ['hundred','💯 100 GM','Набрати 100 GM'],
+
+ ['thousand','🔥 1K GM','Набрати 1 000 GM'],
+
+ ['streak7','🔥 7 Day Streak','7 днів поспіль'],
+
+ ['book100','📚 Bookworm','100 WIS XP'],
+
+ ['strong100','💪 Strong','100 STR XP']
+
+];
+
 
 function checkAchievements(){
 
-const checks=[
-['first','🩸 First Blood','Перша дія','gm',1],
-['hundred','💯 100 GM','Набрати 100 GM','gm',100],
-['thousand','🔥 1K GM','Набрати 1 000 GM','gm',1000],
-['tenk','👑 10K GM','Набрати 10 000 GM','gm',10000],
-['streak7','🔥 7 Day Streak','7 днів поспіль','streak',7],
-['book100','📚 Bookworm','100 WIS XP','statWIS',100],
-['strong100','💪 Strong','100 STR XP','statSTR',100],
-['tech100','💻 Builder','100 TECH XP','statTECH',100]
-];
+ if(
+  state.gm>0 &&
+  !state.achievements.first
+ ){
 
-for(const [id] of checks){
+  state.achievements.first=true;
 
-if(state.achievements[id])
-continue;
+ }
 
-let ok=false;
+ if(
+  state.gm>=100 &&
+  !state.achievements.hundred
+ ){
 
-if(id==='first')
-ok=state.history.length>0;
+  state.achievements.hundred=true;
 
-else if(id==='hundred')
-ok=state.gm>=100;
+ }
 
-else if(id==='thousand')
-ok=state.gm>=1000;
+ if(
+  state.gm>=1000 &&
+  !state.achievements.thousand
+ ){
 
-else if(id==='tenk')
-ok=state.gm>=10000;
+  state.achievements.thousand=true;
 
-else if(id==='streak7')
-ok=state.streak>=7;
+ }
 
-else if(id==='book100')
-ok=state.stats.WIS>=100;
+ if(
+  state.streak>=7 &&
+  !state.achievements.streak7
+ ){
 
-else if(id==='strong100')
-ok=state.stats.STR>=100;
+  state.achievements.streak7=true;
 
-else if(id==='tech100')
-ok=state.stats.TECH>=100;
+ }
 
-if(ok)
-state.achievements[id]=true;
+ if(
+  state.stats.WIS>=100 &&
+  !state.achievements.book100
+ ){
+
+  state.achievements.book100=true;
+
+ }
+
+ if(
+  state.stats.STR>=100 &&
+  !state.achievements.strong100
+ ){
+
+  state.achievements.strong100=true;
+
+ }
+
+ save();
 
 }
 
-save();
-
-}
-
-const ACH=[
-['first','🩸 First Blood','Зробити першу корисну дію'],
-['hundred','💯 100 GM','Набрати 100 GM'],
-['thousand','🔥 1K GM','Набрати 1 000 GM'],
-['tenk','👑 10K GM','Набрати 10 000 GM'],
-['streak7','🔥 7 Day Streak','7 днів поспіль'],
-['book100','📚 Bookworm','100 WIS XP'],
-['strong100','💪 Strong','100 STR XP'],
-['tech100','💻 Builder','100 TECH XP']
-];
-
-const SHOP=[
-['🎮 Gaming Pass 30 min',120,30],
-['🎮 Gaming Pass 60 min',220,60],
-['🍫 Маленька смаколика',150,0],
-['🎬 1 фільм без почуття провини',300,0],
-['🎮 Gaming Pass 2 hours',400,120],
-['🏆 Особлива нагорода',1000,0]
-];
 
 function render(){
 
-normalizeDay();
+ normalizeDay();
 
-const lvl=levelForGM(state.gm);
+ const lvl=
+  levelForGM(state.gm);
 
-const start=levelStart(lvl);
+ const start=
+  levelStart(lvl);
 
-const next=nextLevelGM(lvl);
+ const next=
+  nextLevelGM(lvl);
 
-const pct=Math.max(
-0,
-Math.min(
-100,
-((state.gm-start)/(next-start))*100
-)
-);
+ const pct=
+  Math.max(
+   0,
+   Math.min(
+    100,
+    ((state.gm-start)/
+    (next-start))*100
+   )
+  );
 
-document.getElementById('gm').textContent=
-fmt(state.gm)+' GM';
+ document.getElementById(
+  'gm'
+ ).textContent=
+  fmt(state.gm)+' GM';
 
-document.getElementById('level').textContent=
-'LEVEL '+lvl;
+ document.getElementById(
+  'level'
+ ).textContent=
+  'LEVEL '+lvl;
 
-document.getElementById('streak').textContent=
-'🔥 '+state.streak+' DAYS';
+ document.getElementById(
+  'hp'
+ ).textContent=
+  Math.round(state.hp)+'/100';
 
-document.getElementById('topStreak').textContent=
-'🔥 '+state.streak+' DAYS';
+ document.getElementById(
+  'streak'
+ ).textContent=
+  '🔥 '+state.streak+' DAYS';
 
-document.getElementById('hp').textContent=
-Math.round(state.hp)+'/100';
+ document.getElementById(
+  'topStreak'
+ ).textContent=
+  '🔥 '+state.streak+' DAYS';
 
-document.getElementById('xpBar').style.width=
-pct+'%';
+ document.getElementById(
+  'xpBar'
+ ).style.width=
+  pct+'%';
 
-document.getElementById('xpText').textContent=
-fmt(Math.max(0,state.gm-start))+
-' / '+
-fmt(next-start)+
-' GM до наступного рівня';
+ document.getElementById(
+  'xpText'
+ ).textContent=
+  fmt(Math.max(
+   0,
+   state.gm-start
+  ))+
+  ' / '+
+  fmt(next-start)+
+  ' GM до наступного рівня';
 
-const mini=
-document.getElementById('miniStats');
+ document.getElementById(
+  'characterName'
+ ).textContent=
+  state.name;
 
-mini.innerHTML='';
+ document.getElementById(
+  'characterBigName'
+ ).textContent=
+  state.name;
 
-Object.entries(STATS).forEach(
-([k,v])=>{
+ document.getElementById(
+  'playerName'
+ ).value=
+  state.name;
 
-mini.insertAdjacentHTML(
-'beforeend',
+ document.getElementById(
+  'playerEmail'
+ ).value=
+  state.email||'';
 
-'<div class="stat">'+
-'<b>'+v+'</b>'+
-'<strong>'+
-fmt(state.stats[k])+
-'</strong>'+
-'</div>'
-);
+ document.getElementById(
+  'gamingText'
+ ).textContent=
+  state.gamingMinutes+' хвилин';
 
-}
-);
+ document.getElementById(
+  'accountStatus'
+ ).textContent=
+  state.email
+   ?state.email
+   :'Акаунт ще не підключений';
 
-const qa=[
-['💪 10 віджимань',5,'STR'],
-['📖 2 сторінки',5,'WIS'],
-['🇩🇪 10 хв німецької',5,'LANG'],
-['💻 10 хв IT/Blender',5,'TECH'],
-['🥁 10 хв музики',5,'DISC'],
-['🚶 1 км ходьби',20,'STR']
-];
+ const mini=
+  document.getElementById(
+   'miniStats'
+  );
 
-document.getElementById(
-'quickActions'
-).innerHTML=
+ mini.innerHTML='';
 
-qa.map(
-x=>
-'<button class="btn green" onclick="addXP('+
-x[1]+',\''+
-x[2]+'\',\''+
-x[0]+'\', {gaming:'+
-x[1]*2+
-'})">'+
-x[0]+
-' <b>+'+
-x[1]+
-' GM</b></button>'
-).join('');
+ Object.entries(STATS)
+ .forEach(([k,v])=>{
 
-renderQuests();
-renderStats();
-renderShop();
-renderAchievements();
-renderHistory();
-renderBoss();
+  mini.insertAdjacentHTML(
+   'beforeend',
 
-document.getElementById('shopGM').textContent=
-fmt(state.gm)+' GM';
+   `<div class="stat">
+    <b>${v}</b>
+    <strong>${fmt(state.stats[k])}</strong>
+   </div>`
 
-document.getElementById('playerName').value=
-state.name;
+  );
 
-document.getElementById('gamingMinutes').value=
-state.gamingMinutes;
+ });
 
-renderAccount();
+ const qa=[
 
-applyTheme();
+  ['💪 10 віджимань',5,'STR'],
 
-}
+  ['📖 2 сторінки',5,'WIS'],
 
-function renderAccount(){
+  ['🇩🇪 10 хв німецької',5,'LANG'],
 
-const area=
-document.getElementById('accountArea');
+  ['💻 10 хв IT/Blender',5,'TECH'],
 
-if(!area)return;
+  ['🥁 10 хв музики',5,'DISC'],
 
-if(state.registered && state.email){
+  ['🚶 1 км ходьби',20,'STR']
 
-area.innerHTML=
+ ];
 
-'<div class="accountBox">'+
+ document.getElementById(
+  'quickActions'
+ ).innerHTML=
 
-'<div class="accountInfo">'+
+ qa.map(x=>`
 
-'<div class="accountEmail">'+
-'📧 '+escapeHTML(state.email)+
-'</div>'+
+ <button
+ class="btn green"
+ onclick="addXP(${x[1]},'${x[2]}','${x[0]}');animateCharacter('${x[2]}')"
+ >
 
-'<div class="accountStatus">'+
-'Email збережений у цьому браузері.'+
-'</div>'+
+ ${x[0]}
+ <b>+${x[1]} GM</b>
 
-'</div>'+
+ </button>
 
-'<button class="btn red" onclick="logoutEmail()">'+
-'Вийти'+
-'</button>'+
+ `).join('');
 
-'</div>';
-
-}else{
-
-area.innerHTML=
-
-'<div class="accountBox">'+
-
-'<div class="accountInfo">'+
-
-'<div class="accountEmail">'+
-'Акаунт ще не зареєстрований'+
-'</div>'+
-
-'<div class="accountStatus">'+
-'У майбутньому цей Email буде використовуватися для синхронізації прогресу.'+
-'</div>'+
-
-'</div>'+
-
-'<button class="btn green" onclick="registerEmail()">'+
-'📧 Реєстрація'+
-'</button>'+
-
-'</div>';
+ renderQuests();
+ renderStats();
+ renderShop();
+ renderAchievements();
+ renderHistory();
+ applyTheme();
 
 }
 
-}
-
-function logoutEmail(){
-
-if(
-confirm(
-'Вийти з Email акаунта на цьому пристрої?'
-)
-){
-
-state.email='';
-state.registered=false;
-
-save();
-render();
-
-toast('📧 Ви вийшли з акаунта');
-
-}
-
-}
-
-function questHTML(q){
-
-const done=
-state.completed[q.id]===today();
-
-return '<div class="quest '+
-(done?'done':'')+
-'">'+
-
-'<div class="qtext">'+
-
-'<b>'+
-escapeHTML(q.name)+
-'</b>'+
-
-'<small>+'+
-q.gm+
-' GM · '+
-STATS[q.stat]+
-'</small>'+
-
-'</div>'+
-
-'<button '+
-(done?'disabled':'')+
-' onclick="completeQuest(\''+
-q.id+
-'\')">'+
-(done?'✓ DONE':'COMPLETE')+
-'</button>'+
-
-(q.id.startsWith('q_')
-?
-'<button class="btn red" style="padding:7px" onclick="deleteQuest(\''+
-q.id+
-'\')">✕</button>'
-:'')+
-
-'</div>';
-
-}
 
 function renderQuests(){
 
-const daily=
-state.quests.filter(q=>q.daily);
+ const list=
+  document.getElementById(
+   'questList'
+  );
 
-document.getElementById(
-'questList'
-).innerHTML=
+ list.innerHTML=
+  state.quests.map(q=>{
 
-daily.map(questHTML).join('')+
+   const done=
+    state.completed[q.id]===today();
 
-'<div class="quest">'+
+   return `
 
-'<div class="qtext">'+
-'<b>☠️ TikTok / ігри замість важливої справи</b>'+
-'<small>-20 GM · мінус за свідому прокрастинацію</small>'+
-'</div>'+
+   <div class="quest">
 
-'<button class="btn red" onclick="penalty(20,\'📱 Лінь / TikTok\')">'+
-'-20 GM'+
-'</button>'+
+   <div class="qtext">
 
-'</div>';
+   <b>${q.name}</b>
 
-const done=
-daily.filter(
-q=>state.completed[q.id]===today()
-).length;
+   <small>
+   +${q.gm} GM · ${STATS[q.stat]}
+   </small>
 
-document.getElementById(
-'dailyCount'
-).textContent=
-done+'/'+daily.length;
+   </div>
 
-document.getElementById(
-'dailyHome'
-).innerHTML=
+   <button
+    ${done?'disabled':''}
+    onclick="completeQuest('${q.id}')"
+   >
 
-daily.slice(0,5)
-.map(questHTML)
-.join('')+
+   ${done?'✓ DONE':'COMPLETE'}
 
-'<button class="btn gold" style="width:100%;margin-top:10px;text-align:center" onclick="completeDaily()">'+
-'🎯 COMPLETE DAILY · +100 GM'+
-'</button>';
+   </button>
+
+   </div>
+
+   `;
+
+  }).join('');
+
+ const daily=
+  state.quests.length;
+
+ const done=
+  state.quests.filter(
+   q=>state.completed[q.id]===today()
+  ).length;
+
+ document.getElementById(
+  'dailyCount'
+ ).textContent=
+  done+'/'+daily;
 
 }
+
 
 function renderStats(){
 
-const el=
-document.getElementById('fullStats');
+ const el=
+  document.getElementById(
+   'fullStats'
+  );
 
-el.innerHTML=
-Object.entries(STATS)
-.map(
-([k,v])=>{
+ el.innerHTML=
+  Object.entries(STATS)
+  .map(([k,v])=>{
 
-const val=
-state.stats[k];
+   const val=
+    state.stats[k];
 
-const pct=
-Math.min(
-100,
-(val/1000)*100
-);
+   const pct=
+    Math.min(
+     100,
+     (val/1000)*100
+    );
 
-return '<div style="margin:13px 0">'+
+   return `
 
-'<div style="display:flex;justify-content:space-between">'+
+   <div style="margin:13px 0">
 
-'<b>'+v+'</b>'+
-'<b>'+fmt(val)+' XP</b>'+
+   <div style="
+    display:flex;
+    justify-content:space-between
+   ">
 
-'</div>'+
+   <b>${v}</b>
 
-'<div class="bar">'+
-'<span style="width:'+pct+'%"></span>'+
-'</div>'+
+   <b>${fmt(val)} XP</b>
 
-'</div>';
+   </div>
+
+   <div class="bar">
+
+   <span style="
+    width:${pct}%
+   "></span>
+
+   </div>
+
+   </div>
+
+   `;
+
+  }).join('');
 
 }
-)
-.join('');
 
-}
 
 function renderShop(){
 
-document.getElementById(
-'shopList'
-).innerHTML=
+ document.getElementById(
+  'shopList'
+ ).innerHTML=
 
-SHOP.map(
-x=>
+ SHOP.map(x=>`
 
-'<div class="shopItem">'+
+ <div class="shopItem">
 
-'<h3>'+x[0]+'</h3>'+
+ <h3>${x[0]}</h3>
 
-'<p>Ціна: <b>'+
-x[1]+
-' GM</b>'+
+ <p>
+ Ціна:
+ <b>${x[1]} GM</b>
+ </p>
 
-(x[2]
-?' · Gaming Pass +'+x[2]+' хв'
-:'')+
+ <button
+  ${state.gm<x[1]?'disabled':''}
+  onclick="buyReward(${x[1]},'${x[0]}')"
+ >
 
-'</p>'+
+ КУПИТИ
 
-'<button '+
-(state.gm<x[1]?'disabled':'')+
-' onclick="buyReward('+
-x[1]+
-',\''+
-x[0]+
-'\','+
-x[2]+
-')">'+
-'КУПИТИ'+
-'</button>'+
+ </button>
 
-'</div>'
+ </div>
 
-).join('');
+ `).join('');
+
+ document.getElementById(
+  'shopGM'
+ ).textContent=
+  fmt(state.gm)+' GM';
 
 }
+
 
 function renderAchievements(){
 
-checkAchievements();
+ checkAchievements();
 
-document.getElementById(
-'achList'
-).innerHTML=
+ document.getElementById(
+  'achList'
+ ).innerHTML=
 
-ACH.map(
-x=>
+ ACH.map(x=>`
 
-'<div class="achievement '+
-(state.achievements[x[0]]
-?'unlocked'
-:'locked')+
-'">'+
+ <div class="achievement">
 
-'<h3>'+
-x[1]+' '+
-(state.achievements[x[0]]
-?'✓'
-:'🔒')+
-'</h3>'+
+ <h3>
 
-'<p>'+
-x[2]+
-'</p>'+
+ ${x[1]}
 
-'</div>'
+ ${state.achievements[x[0]]
+  ?'✓'
+  :'🔒'}
 
-).join('');
+ </h3>
 
-document.getElementById(
-'achCount'
-).textContent=
+ <p>${x[2]}</p>
 
-Object.values(
-state.achievements
-).filter(Boolean).length+
-'/'+
-ACH.length;
+ </div>
+
+ `).join('');
+
+ const count=
+  Object.values(
+   state.achievements
+  ).filter(Boolean).length;
+
+ document.getElementById(
+  'achCount'
+ ).textContent=
+  count+'/'+ACH.length;
 
 }
+
 
 function renderHistory(){
 
-document.getElementById(
-'historyBody'
-).innerHTML=
+ const el=
+  document.getElementById(
+   'historyBody'
+  );
 
-state.history
-.slice(0,100)
-.map(
-h=>
+ if(!state.history.length){
 
-'<tr>'+
-'<td>'+h.date+'</td>'+
+  el.innerHTML=
+   '<p class="muted">Ще немає активності.</p>';
 
-'<td class="'+
-(h.amount>=0?'pos':'neg')+
-'">'+
-(h.amount>=0?'+':'')+
-fmt(h.amount)+
-'</td>'+
+  return;
 
-'<td>'+
-escapeHTML(h.stat)+
-'</td>'+
+ }
 
-'<td>'+
-escapeHTML(h.reason)+
-'</td>'+
+ el.innerHTML=
+  state.history
+  .slice(0,100)
+  .map(h=>`
 
-'</tr>'
+  <div style="
+   display:flex;
+   justify-content:space-between;
+   padding:11px 0;
+   border-bottom:1px solid var(--line);
+   gap:10px;
+  ">
 
-).join('')||
+  <div>
 
-'<tr>'+
-'<td colspan="4" class="muted">'+
-'Ще немає активності.'+
-'</td>'+
-'</tr>';
+  <b>${h.reason}</b>
 
-}
+  <div class="muted">
+  ${h.date} · ${h.stat}
+  </div>
 
-function renderBoss(){
+  </div>
 
-const week=
-Math.floor(
-(
-Date.now()-
-new Date(
-new Date().getFullYear(),
-0,
-1
-)
-)/
-604800000
-);
+  <b style="
+   color:${h.amount>=0
+    ?'var(--accent)'
+    :'var(--danger)'
+   }
+  ">
 
-const target=1000;
+  ${h.amount>=0?'+':''}${fmt(h.amount)} GM
 
-const earned=
-state.history
-.filter(
-h=>
-h.amount>0 &&
-Math.floor(
-(
-new Date(h.date)-
-new Date(
-new Date(h.date).getFullYear(),
-0,
-1
-)
-)/
-604800000
-)===week
-)
-.reduce(
-(a,h)=>a+h.amount,
-0
-);
+  </b>
 
-const pct=
-Math.min(
-100,
-Math.round(
-earned/target*100
-)
-);
+  </div>
 
-document.getElementById(
-'bossStatus'
-).textContent=
-pct+'%';
-
-document.getElementById(
-'bossHome'
-).innerHTML=
-
-'<b>👹 Defeat Laziness</b>'+
-
-'<p class="muted">'+
-'Зароби '+fmt(target)+
-' GM цього тижня.'+
-'</p>'+
-
-'<div class="bar">'+
-'<span style="width:'+pct+'%"></span>'+
-'</div>'+
-
-'<small class="muted">'+
-fmt(Math.min(earned,target))+
-' / '+
-fmt(target)+
-' GM'+
-'</small>';
+  `).join('');
 
 }
 
-function escapeHTML(s){
-
-return String(s).replace(
-/[&<>'"]/g,
-c=>
-({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-"'":'&#39;',
-'"':'&quot;'
-}[c])
-);
-
-}
-
-/* NAVIGATION */
 
 document
 .querySelectorAll('#nav button')
-.forEach(
-btn=>
+.forEach(btn=>{
 
-btn.addEventListener(
-'click',
-()=>{
+ btn.addEventListener(
+  'click',
+  ()=>{
 
-document
-.querySelectorAll('.nav button')
-.forEach(
-b=>b.classList.remove('active')
+   document
+   .querySelectorAll('.nav button')
+   .forEach(
+    b=>b.classList.remove('active')
+   );
+
+   btn.classList.add('active');
+
+   document
+   .querySelectorAll('.page')
+   .forEach(
+    p=>p.classList.remove('active')
+   );
+
+   document
+   .getElementById(btn.dataset.page)
+   .classList.add('active');
+
+  }
+ );
+
+});
+
+
+window.addEventListener(
+ 'click',
+ e=>{
+
+  if(
+   e.target.id==='characterModal'
+  ){
+
+   closeCharacter();
+
+  }
+
+ }
 );
 
-btn.classList.add('active');
 
-document
-.querySelectorAll('.page')
-.forEach(
-p=>p.classList.remove('active')
+setInterval(
+ blinkCharacter,
+ 5000
 );
 
-document
-.getElementById(
-btn.dataset.page
-)
-.classList.add('active');
 
-}
-)
-);
+setInterval(()=>{
 
-/* NAME */
+ const random=
+  Math.random();
 
-document
-.getElementById('playerName')
-.addEventListener(
-'change',
-e=>{
+ if(random<.5){
 
-state.name=
-e.target.value.trim()||
-'Yevhenii';
+  const ch=
+   document.getElementById(
+    'characterMini'
+   );
 
-save();
+  if(ch){
 
-toast('Імʼя збережено');
+   ch.classList.add('wave');
 
-}
-);
+   setTimeout(
+    ()=>ch.classList.remove('wave'),
+    2500
+   );
 
-/* GAMING */
+  }
 
-document
-.getElementById('gamingMinutes')
-.addEventListener(
-'change',
-e=>{
+ }
 
-state.gamingMinutes=
-Math.max(
-0,
-Number(e.target.value)||0
-);
+},12000);
 
-save();
-render();
-
-}
-);
-
-/* THEME */
-
-document
-.getElementById('themeToggle')
-.addEventListener(
-'change',
-toggleTheme
-);
-
-/* SERVICE WORKER */
 
 if('serviceWorker' in navigator){
 
-window.addEventListener(
-'load',
-()=>navigator.serviceWorker
-.register('./sw.js')
-.catch(()=>{})
-);
+ window.addEventListener(
+  'load',
+  ()=>{
+
+   navigator
+   .serviceWorker
+   .register('./sw.js')
+   .catch(()=>{});
+
+  }
+ );
 
 }
 
-/* START */
 
 checkAchievements();
 render();
