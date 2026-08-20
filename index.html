@@ -3,483 +3,668 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Life RPG 4.2</title>
+<meta name="theme-color" content="#07101d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<title>Life RPG 4.0</title>
 
 <style>
-:root {
-    --bg: #0b0f14;
-    --card: #151b23;
-    --card2: #1b232e;
-    --text: #f4f7fb;
-    --muted: #9da8b5;
-    --green: #42e695;
-    --green2: #24b866;
-    --yellow: #ffd54a;
-    --red: #ff5d67;
-    --blue: #4da3ff;
-    --purple: #a875ff;
-    --border: rgba(255,255,255,0.09);
-    --shadow: 0 15px 40px rgba(0,0,0,0.35);
+:root{
+    --bg:#07101d;
+    --card:#0d1828;
+    --card2:#111f33;
+    --text:#eef5ff;
+    --muted:#91a3bb;
+    --green:#69e5a4;
+    --blue:#5aa9ff;
+    --red:#ff6577;
+    --gold:#ffd166;
+    --line:#21334b;
 }
 
-body.light {
-    --bg: #eef2f6;
-    --card: #ffffff;
-    --card2: #f4f6f8;
-    --text: #17202a;
-    --muted: #64707c;
-    --border: rgba(0,0,0,0.08);
-    --shadow: 0 15px 40px rgba(0,0,0,0.10);
+*{
+    box-sizing:border-box;
 }
 
-* {
-    box-sizing: border-box;
+body{
+    margin:0;
+    background:
+        radial-gradient(circle at 15% 0,#14365a 0,transparent 35%),
+        radial-gradient(circle at 100% 0,#25451d 0,transparent 30%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
+body.light{
+    --bg:#edf3f8;
+    --card:#ffffff;
+    --card2:#f1f5f9;
+    --text:#132033;
+    --muted:#607086;
+    --line:#d5dee8;
 }
 
 button,
 input,
-select {
-    font: inherit;
+select{
+    font:inherit;
 }
 
-button {
-    cursor: pointer;
+button{
+    cursor:pointer;
 }
 
-.app {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
+.app{
+    max-width:1200px;
+    margin:auto;
+    padding:16px;
 }
 
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+/* HEADER */
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
 }
 
-.logo {
-    font-size: 28px;
-    font-weight: 900;
+.profile{
+    display:flex;
+    gap:12px;
+    align-items:center;
 }
 
-.version {
-    color: var(--green);
-    font-size: 13px;
-    margin-left: 5px;
+.avatar{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--green),var(--blue));
+    color:#06111c;
+    font-size:24px;
+    font-weight:900;
 }
 
-.top-actions {
-    display: flex;
-    gap: 8px;
+.profile h1{
+    margin:0;
+    font-size:22px;
 }
 
-.icon-btn {
-    width: 43px;
-    height: 43px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--card);
-    color: var(--text);
+.profile small,
+.muted{
+    color:var(--muted);
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
+.streak{
+    font-weight:900;
+    color:var(--gold);
+    white-space:nowrap;
 }
 
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: var(--shadow);
+/* NAVIGATION */
+
+.nav{
+    display:flex;
+    gap:7px;
+    overflow:auto;
+    margin-bottom:16px;
 }
 
-.profile {
-    position: sticky;
-    top: 20px;
-    height: fit-content;
+.nav button,
+.btn{
+    border:1px solid #29405d;
+    background:#182941;
+    color:var(--text);
+    padding:10px 13px;
+    border-radius:11px;
+    white-space:nowrap;
 }
 
-.avatar {
-    width: 115px;
-    height: 115px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 15px;
-    font-size: 62px;
-    background: var(--card2);
-    border: 3px solid var(--green);
+.nav button.active{
+    background:var(--green);
+    color:#06111c;
+    font-weight:900;
 }
 
-.profile-name {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 800;
+/* PAGES */
+
+.page{
+    display:none;
 }
 
-.profile-info {
-    text-align: center;
-    color: var(--muted);
-    margin-top: 5px;
+.page.active{
+    display:block;
 }
 
-.level {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 800;
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:16px;
 }
 
-.xp-bar {
-    height: 12px;
-    background: var(--card2);
-    border-radius: 20px;
-    overflow: hidden;
-    margin-top: 10px;
+/* CARDS */
+
+.card{
+    background:rgba(13,24,40,.93);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 16px 45px #0004;
 }
 
-.xp-fill {
-    height: 100%;
-    background: var(--green);
-    width: 0%;
-    transition: width .3s;
+.light .card{
+    background:#fff;
 }
 
-.stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 20px;
+.heroRow,
+.sectionTitle{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
 }
 
-.stat {
-    background: var(--card2);
-    border-radius: 14px;
-    padding: 13px;
-    text-align: center;
+.sectionTitle{
+    align-items:center;
+    margin-bottom:12px;
 }
 
-.stat-value {
-    font-size: 22px;
-    font-weight: 900;
+.sectionTitle h2{
+    margin:0;
+    font-size:18px;
 }
 
-.stat-label {
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 3px;
+.eyebrow{
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
 }
 
-.day-box {
-    margin-top: 20px;
-    padding: 14px;
-    border-radius: 14px;
-    background: var(--card2);
+.gm{
+    font-size:38px;
+    font-weight:900;
+    margin:4px 0;
 }
 
-.day-title {
-    color: var(--muted);
-    font-size: 12px;
+.level{
+    font-weight:900;
+    font-size:18px;
 }
 
-.day-time {
-    font-size: 18px;
-    font-weight: 800;
-    margin-top: 5px;
+.clock{
+    color:var(--blue);
+    font-weight:900;
+    margin-top:10px;
 }
 
-.section-title {
-    font-size: 25px;
-    font-weight: 900;
-    margin-bottom: 5px;
+/* BARS */
+
+.bar{
+    height:11px;
+    background:#07111e;
+    border:1px solid var(--line);
+    border-radius:99px;
+    overflow:hidden;
 }
 
-.section-subtitle {
-    color: var(--muted);
-    margin-bottom: 20px;
+.bar span{
+    display:block;
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,var(--blue),var(--green));
+    border-radius:99px;
 }
 
-.quest-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* STATS */
+
+.statGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-top:14px;
 }
 
-.quest {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 17px;
-    position: relative;
-    overflow: hidden;
+.stat,
+.mini{
+    background:var(--card2);
+    padding:12px;
+    border-radius:13px;
 }
 
-.quest.available {
-    border-left: 4px solid var(--green);
+.stat b{
+    display:block;
+    font-size:12px;
 }
 
-.quest.locked {
-    border-left: 4px solid var(--muted);
-    opacity: .75;
+.stat strong{
+    font-size:20px;
 }
 
-.quest.completed {
-    border-left: 4px solid var(--blue);
-    opacity: .75;
+/* PILLS */
+
+.pill{
+    font-size:12px;
+    padding:5px 8px;
+    border-radius:99px;
+    background:#182941;
+    color:var(--muted);
 }
 
-.quest.failed {
-    border-left: 4px solid var(--red);
-    opacity: .65;
+/* QUICK ACTIONS */
+
+.actions{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
 }
 
-.quest-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+.btn.green{
+    background:#69e5a41f;
+    border-color:#69e5a466;
 }
 
-.quest-title {
-    font-size: 18px;
-    font-weight: 850;
+.btn.red{
+    background:#ff65771f;
+    border-color:#ff657766;
 }
 
-.quest-description {
-    color: var(--muted);
-    margin-top: 7px;
-    line-height: 1.4;
+.btn.gold{
+    background:#ffd1661f;
+    border-color:#ffd16666;
 }
 
-.quest-type {
-    font-size: 11px;
-    background: var(--card2);
-    padding: 6px 9px;
-    border-radius: 10px;
-    white-space: nowrap;
+/* QUESTS */
+
+.quest{
+    padding:15px 0;
+    border-bottom:1px solid var(--line);
 }
 
-.quest-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-top: 14px;
-    flex-wrap: wrap;
+.quest:last-child{
+    border:0;
 }
 
-.rewards {
-    display: flex;
-    gap: 10px;
-    color: var(--yellow);
-    font-size: 13px;
-    font-weight: 700;
+.qtop{
+    display:flex;
+    gap:10px;
 }
 
-.timer {
-    font-weight: 900;
-    color: var(--green);
+.qicon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:var(--card2);
+    display:grid;
+    place-items:center;
+    flex:none;
+    font-size:20px;
 }
 
-.locked .timer {
-    color: var(--muted);
+.qtext{
+    flex:1;
 }
 
-.failed .timer {
-    color: var(--red);
+.qtext b{
+    font-size:15px;
 }
 
-.quest button {
-    border: 0;
-    border-radius: 11px;
-    padding: 9px 13px;
-    background: var(--green);
-    color: #06100a;
-    font-weight: 800;
+.qtext small{
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
 }
 
-.quest button:hover {
-    filter: brightness(1.08);
+.desc{
+    margin:9px 0;
+    padding:10px;
+    border-radius:11px;
+    background:#5aa9ff12;
+    color:#cce2ff;
+    font-size:13px;
 }
 
-.quest button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
+.timer{
+    padding:8px 10px;
+    border-radius:10px;
+    background:#ffd16612;
+    border:1px solid #ffd16630;
+    color:var(--gold);
+    font-size:12px;
+    font-weight:900;
 }
 
-.empty {
-    text-align: center;
-    padding: 40px;
-    color: var(--muted);
+.timer.bad{
+    background:#ff657712;
+    border-color:#ff657740;
+    color:var(--red);
 }
 
-.modal-bg {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.72);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 1000;
+.timer.wait{
+    background:#5aa9ff12;
+    border-color:#5aa9ff33;
+    color:var(--blue);
 }
 
-.modal {
-    width: 100%;
-    max-width: 500px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 25px;
-    box-shadow: var(--shadow);
-    max-height: 90vh;
-    overflow-y: auto;
+.qactions{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
 }
 
-.modal h1 {
-    margin-top: 0;
+.qactions button{
+    border:0;
+    border-radius:10px;
+    padding:9px 12px;
+    background:var(--green);
+    color:#06111c;
+    font-weight:900;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.qactions button:disabled{
+    background:#304258;
+    color:#aebdd0;
+    cursor:not-allowed;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 700;
+.quest.done,
+.quest.failed{
+    opacity:.55;
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--card2);
-    color: var(--text);
-    outline: none;
+/* FLAME */
+
+.flamebox{
+    text-align:center;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    border-color: var(--green);
+.flame{
+    height:180px;
+    display:grid;
+    place-items:center;
+    font-size:120px;
+    transition:.4s;
+    filter:drop-shadow(0 0 18px #ff9d363f);
 }
 
-.primary {
-    width: 100%;
-    padding: 14px;
-    border: 0;
-    border-radius: 13px;
-    background: var(--green);
-    color: #06100a;
-    font-weight: 900;
-    font-size: 16px;
+.flame.active{
+    animation:pulse 1.8s infinite;
 }
 
-.secondary {
-    padding: 11px 15px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--card2);
-    color: var(--text);
-    font-weight: 700;
+.flame.frozen{
+    filter:drop-shadow(0 0 18px #5ad9ff88);
 }
 
-.danger {
-    background: var(--red);
-    color: white;
-    border: 0;
+.flame.frozen span{
+    color:#62dfff;
+    text-shadow:0 0 20px #5ad9ff;
 }
 
-.notice {
-    padding: 12px;
-    border-radius: 12px;
-    background: rgba(66,230,149,.1);
-    border: 1px solid rgba(66,230,149,.2);
-    color: var(--green);
-    font-size: 13px;
-    margin-bottom: 15px;
+.flame.lost{
+    filter:grayscale(1);
+    opacity:.6;
 }
 
-.settings-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+.flame.lost span{
+    color:#89939f;
 }
 
-.settings-row button {
-    flex: 1;
+.flameTimer{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:6px;
 }
 
-.hidden {
-    display: none !important;
+.bigStreak{
+    font-size:30px;
+    font-weight:900;
 }
 
-.toast {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    box-shadow: var(--shadow);
-    z-index: 2000;
-    max-width: 320px;
-}
-
-.toast.success {
-    border-left: 4px solid var(--green);
-}
-
-.toast.error {
-    border-left: 4px solid var(--red);
-}
-
-.toast.info {
-    border-left: 4px solid var(--blue);
-}
-
-@media(max-width: 850px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .profile {
-        position: static;
+@keyframes pulse{
+    50%{
+        transform:scale(1.04);
     }
 }
 
-@media(max-width: 550px) {
-    .app {
-        padding: 12px;
+/* MINI GRID */
+
+.miniGrid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+/* NOTICE */
+
+.notice{
+    padding:12px;
+    border-radius:12px;
+    background:#5aa9ff12;
+    border:1px solid #5aa9ff40;
+    color:#cce2ff;
+    font-size:13px;
+}
+
+/* FORMS */
+
+.form{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.field label{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.field input,
+.field select{
+    width:100%;
+    padding:11px;
+    border-radius:11px;
+    border:1px solid var(--line);
+    background:#081322;
+    color:var(--text);
+}
+
+/* SHOP / ACHIEVEMENTS */
+
+.shopGrid,
+.achGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.shop,
+.ach{
+    background:var(--card2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+}
+
+.shop h3,
+.ach h3{
+    margin:0 0 7px;
+    font-size:15px;
+}
+
+.shop p,
+.ach p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.ach.lock{
+    opacity:.55;
+}
+
+/* TABLE */
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table th,
+.table td{
+    padding:10px;
+    border-bottom:1px solid var(--line);
+    text-align:left;
+    white-space:nowrap;
+}
+
+.table th{
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* MODALS */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#0009;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    z-index:1000;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modalbox{
+    width:min(520px,100%);
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 25px 70px #0008;
+}
+
+.modalbox h2{
+    margin-top:0;
+}
+
+.modalActions{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:16px;
+}
+
+.primary{
+    background:var(--green);
+    color:#06111c;
+    font-weight:900;
+    border:0;
+    padding:11px 15px;
+    border-radius:11px;
+}
+
+.secondary{
+    background:#182941;
+    color:var(--text);
+    border:0;
+    padding:11px 15px;
+    border-radius:11px;
+}
+
+.choices{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+.choice{
+    padding:12px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--card2);
+    cursor:pointer;
+}
+
+.choice.sel{
+    border-color:var(--green);
+    background:#69e5a41f;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%) translateY(20px);
+    background:#101d2e;
+    border:1px solid var(--line);
+    color:white;
+    padding:12px 16px;
+    border-radius:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:2000;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+    .grid{
+        grid-template-columns:1fr;
     }
 
-    .topbar {
-        align-items: flex-start;
+    .shopGrid,
+    .achGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:560px){
+    .app{
+        padding:10px;
     }
 
-    .logo {
-        font-size: 22px;
+    .profile h1{
+        font-size:18px;
     }
 
-    .quest-top {
-        flex-direction: column;
+    .statGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .actions,
+    .form,
+    .choices{
+        grid-template-columns:1fr;
+    }
+
+    .shopGrid,
+    .achGrid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:14px;
     }
 }
 </style>
@@ -487,2180 +672,2786 @@ button {
 
 <body>
 
-<div id="setupModal" class="modal-bg hidden">
-    <div class="modal">
-        <h1>⚔️ Створення героя</h1>
-
-        <div class="notice">
-            Створи свого персонажа. Ці дані використовуватимуться для
-            персоналізації Life RPG.
-        </div>
-
-        <div class="form-group">
-            <label>👤 Нікнейм</label>
-            <input id="setupNickname" type="text" maxlength="24"
-                   placeholder="Наприклад: Shadow">
-        </div>
-
-        <div class="form-group">
-            <label>👨‍🦱👩 Стать</label>
-            <select id="setupGender">
-                <option value="male">Хлопець</option>
-                <option value="female">Дівчина</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>🎂 Вік</label>
-            <input id="setupAge" type="number" min="6" max="100"
-                   placeholder="17">
-        </div>
-
-        <div class="form-group">
-            <label>📧 Email</label>
-            <input id="setupEmail" type="email"
-                   placeholder="example@email.com">
-        </div>
-
-        <button class="primary" onclick="createCharacter()">
-            🚀 Почати Life RPG
-        </button>
-    </div>
-</div>
-
-<div id="settingsModal" class="modal-bg hidden">
-    <div class="modal">
-        <h1>⚙️ Налаштування</h1>
-
-        <div class="form-group">
-            <label>👤 Нікнейм</label>
-            <input id="editNickname" type="text">
-        </div>
-
-        <div class="form-group">
-            <label>📧 Email</label>
-            <input id="editEmail" type="email">
-        </div>
-
-        <div class="form-group">
-            <label>🎂 Вік</label>
-            <input id="editAge" type="number" min="6" max="100">
-        </div>
-
-        <div class="settings-row">
-            <button class="secondary" onclick="saveSettings()">
-                💾 Зберегти
-            </button>
-
-            <button class="secondary" onclick="closeSettings()">
-                Закрити
-            </button>
-        </div>
-
-        <div class="settings-row">
-            <button class="secondary danger" onclick="resetGame()">
-                🗑️ Скинути гру
-            </button>
-        </div>
-    </div>
-</div>
-
-<div id="toast" class="toast hidden"></div>
-
 <div class="app">
 
-    <header class="topbar">
+<header class="top">
+
+    <div class="profile">
+
+        <div class="avatar">🔥</div>
+
         <div>
-            <div class="logo">
-                ⚔️ Life RPG <span class="version">4.2</span>
-            </div>
+            <h1 id="name">Yevhenii</h1>
+
+            <small>
+                <span id="lvl">LVL 1</span>
+                ·
+                <span id="streakText">0 днів</span>
+            </small>
         </div>
 
-        <div class="top-actions">
-            <button class="icon-btn" onclick="toggleTheme()">
-                🌙
-            </button>
+    </div>
 
-            <button class="icon-btn" onclick="openSettings()">
-                ⚙️
-            </button>
-        </div>
-    </header>
+    <div class="streak" id="topStreak">
+        🔥 0 DAYS
+    </div>
 
-    <main class="grid">
+</header>
 
-        <aside class="card profile">
 
-            <div id="avatar" class="avatar">🧙</div>
+<nav class="nav" id="nav">
 
-            <div id="profileName" class="profile-name">
-                Герой
-            </div>
+    <button class="active" data-page="home">
+        🏠 Головна
+    </button>
 
-            <div id="profileInfo" class="profile-info">
-                Створення персонажа...
-            </div>
+    <button data-page="quests">
+        🎯 Квести
+    </button>
 
-            <div class="level">
-                Рівень <span id="level">1</span>
-            </div>
+    <button data-page="stats">
+        📊 Стати
+    </button>
 
-            <div class="xp-bar">
-                <div id="xpFill" class="xp-fill"></div>
-            </div>
+    <button data-page="shop">
+        🎁 Магазин
+    </button>
 
-            <div id="xpText"
-                 style="text-align:center;margin-top:7px;color:var(--muted);font-size:13px;">
-                0 / 100 XP
-            </div>
+    <button data-page="ach">
+        🏆 Досягнення
+    </button>
 
-            <div class="stats">
+    <button data-page="history">
+        📜 Історія
+    </button>
 
-                <div class="stat">
-                    <div id="xpValue" class="stat-value">0</div>
-                    <div class="stat-label">XP</div>
-                </div>
+    <button data-page="settings">
+        ⚙️ Налаштування
+    </button>
 
-                <div class="stat">
-                    <div id="gmValue" class="stat-value">0</div>
-                    <div class="stat-label">GM</div>
-                </div>
+</nav>
 
-            </div>
 
-            <div class="day-box">
+<main>
 
-                <div class="day-title">
-                    🕐 ПОТОЧНИЙ RPG-ДЕНЬ
-                </div>
+<!-- HOME -->
 
-                <div id="dayStart" class="day-time">
-                    —
-                </div>
+<section id="home" class="page active">
 
-                <div style="margin-top:8px;color:var(--muted);font-size:12px;">
-                    День починається з моменту входу в гру.
-                </div>
+<div class="grid">
 
-            </div>
+<div>
 
-        </aside>
+<div class="card">
 
-        <section>
+<div class="heroRow">
 
-            <div class="card">
+<div>
 
-                <div class="section-title">
-                    ⚔️ Твої квести
-                </div>
+<div class="eyebrow">
+GLOBAL MASTERY
+</div>
 
-                <div id="questSubtitle"
-                     class="section-subtitle">
-                    Завдання для твого персонажа
-                </div>
+<div class="gm" id="gm">
+0 GM
+</div>
 
-                <div id="questList" class="quest-list"></div>
-
-            </div>
-
-        </section>
-
-    </main>
+<div class="level" id="level">
+LEVEL 1
+</div>
 
 </div>
+
+
+<div style="text-align:right">
+
+<div class="eyebrow">
+HP
+</div>
+
+<b style="font-size:25px" id="hp">
+100/100
+</b>
+
+</div>
+
+</div>
+
+
+<div class="clock" id="clock">
+00:00:00
+</div>
+
+
+<div class="muted"
+style="font-size:12px;margin-top:8px">
+
+Прогрес дня
+
+</div>
+
+<div class="bar">
+<span id="daybar"></span>
+</div>
+
+
+<div class="muted"
+style="font-size:12px;margin-top:12px">
+
+До наступного рівня
+
+</div>
+
+<div class="bar">
+<span id="xpbar"></span>
+</div>
+
+<div id="xptext"
+class="muted"
+style="font-size:12px;margin-top:7px">
+
+0 GM
+
+</div>
+
+
+<div class="statGrid"
+id="ministats">
+</div>
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+⚡ Швидкі дії
+</h2>
+
+<span class="pill">
+GM
+</span>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn green"
+onclick="quick(10,'DISC','⚡ Маленька дія')">
+
++10 GM · Маленька дія
+
+</button>
+
+
+<button
+class="btn gold"
+onclick="quick(20,'WIS','📖 Навчання')">
+
++20 GM · Навчання
+
+</button>
+
+
+<button
+class="btn"
+onclick="quick(15,'STR','💪 Активність')">
+
++15 GM · Активність
+
+</button>
+
+
+<button
+class="btn"
+onclick="quick(15,'TECH','💻 Робота')">
+
++15 GM · Робота
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- DISCIPLINE -->
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+⚔️ Дисципліна
+</h2>
+
+<span class="pill"
+id="discipline">
+0%
+</span>
+
+</div>
+
+
+<div class="bar">
+<span id="discbar"></span>
+</div>
+
+
+<p
+class="muted"
+id="dischint">
+
+Виконай хоча б 1 завдання,
+щоб врятувати вогник.
+
+</p>
+
+</div>
+
+</div>
+
+
+<!-- RIGHT SIDE -->
+
+<div>
+
+
+<!-- FLAME -->
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+🔥 Вогник
+</h2>
+
+<span
+class="pill"
+id="flamestatus">
+
+ACTIVE
+
+</span>
+
+</div>
+
+
+<div class="flamebox">
+
+<div
+id="flame"
+class="flame active">
+
+<span>🔥</span>
+
+</div>
+
+
+<b id="flamelabel">
+Вогник горить
+</b>
+
+
+<div
+id="flametimer"
+class="flameTimer">
+
+Виконай хоча б 1 завдання сьогодні.
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- STREAK -->
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+🔥 Серія
+</h2>
+
+</div>
+
+<div class="bigStreak"
+id="homestreak">
+
+0 днів
+
+</div>
+
+<p class="muted">
+
+Твій поточний streak.
+
+</p>
+
+</div>
+
+
+<!-- DAY SUMMARY -->
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+📅 Сьогодні
+</h2>
+
+</div>
+
+
+<div
+class="miniGrid"
+id="daysummary">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUESTS -->
+
+<section id="quests" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+🎯 Квести
+</h2>
+
+<button
+class="primary"
+onclick="openTask()">
+
+➕ Нове завдання
+
+</button>
+
+</div>
+
+
+<div class="notice">
+
+⏳ Після відкриття є 4 години на виконання.
+<br>
+❌ Пропущений дедлайн дає штраф GM.
+<br>
+🔥 Для вогника достатньо <b>1 виконаного завдання</b>.
+
+</div>
+
+
+<div id="questlist">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section id="stats" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+📊 Стати
+</h2>
+
+</div>
+
+<div id="fullstats">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SHOP -->
+
+<section id="shop" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+🎁 Reward Shop
+</h2>
+
+<span
+class="pill"
+id="shopgm">
+
+0 GM
+
+</span>
+
+</div>
+
+<div
+class="shopGrid"
+id="shoplist">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ACHIEVEMENTS -->
+
+<section id="ach" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+🏆 Досягнення
+</h2>
+
+<span
+class="pill"
+id="achcount">
+
+0/5
+
+</span>
+
+</div>
+
+<div
+class="achGrid"
+id="achlist">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section id="history" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+📜 Історія
+</h2>
+
+<button
+class="btn red"
+onclick="clearHistory()">
+
+Очистити
+
+</button>
+
+</div>
+
+
+<div style="overflow:auto">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Дата</th>
+<th>GM</th>
+<th>Стата</th>
+<th>Причина</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historybody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+<div class="card">
+
+<div class="sectionTitle">
+
+<h2>
+⚙️ Налаштування
+</h2>
+
+</div>
+
+
+<div class="form">
+
+
+<div class="field">
+
+<label>
+Нікнейм
+</label>
+
+<input id="setname">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Email
+</label>
+
+<input id="setemail">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Рік народження
+</label>
+
+<input
+id="birth"
+type="number">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Вік
+</label>
+
+<input
+id="age"
+readonly>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Тема
+</label>
+
+<select id="theme">
+
+<option value="dark">
+🌙 Темна
+</option>
+
+<option value="light">
+☀️ Світла
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div
+class="notice"
+style="margin-top:15px">
+
+<b>🔥 Правило вогника</b>
+
+<br><br>
+
+1+ виконане завдання
+→ 🔥 горить.
+
+<br>
+
+0 завдань
+→ 🧊 заморожений на 24 години.
+
+<br>
+
+24 години без жодного виконаного завдання
+→ 🩶 сірий, streak = 0.
+
+<br><br>
+
+Інший прогрес не скидається.
+
+</div>
+
+
+<div style="margin-top:15px">
+
+<button
+class="btn red"
+onclick="resetGame()">
+
+🗑 Скинути всю гру
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- SETUP -->
+
+<div class="modal" id="setup">
+
+<div class="modalbox">
+
+
+<div id="s1">
+
+<h2>
+👋 Life RPG
+</h2>
+
+<p class="muted">
+Введи свій нікнейм.
+</p>
+
+<input
+id="setupname"
+value="Yevhenii"
+style="width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#081322;color:var(--text)">
+
+<div class="modalActions">
+
+<span></span>
+
+<button
+class="primary"
+onclick="setupStep(2)">
+
+Далі →
+
+</button>
+
+</div>
+
+</div>
+
+
+<div id="s2" style="display:none">
+
+<h2>
+🎂 Рік народження
+</h2>
+
+<input
+id="setupbirth"
+type="number"
+placeholder="2009"
+style="width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#081322;color:var(--text)">
+
+<div class="modalActions">
+
+<button
+class="secondary"
+onclick="setupStep(1)">
+
+←
+
+</button>
+
+<button
+class="primary"
+onclick="setupStep(3)">
+
+Далі →
+
+</button>
+
+</div>
+
+</div>
+
+
+<div id="s3" style="display:none">
+
+<h2>
+🎯 Напрямки
+</h2>
+
+<p class="muted">
+Вибери хоча б один.
+</p>
+
+<div
+class="choices"
+id="choices">
+</div>
+
+
+<div class="modalActions">
+
+<button
+class="secondary"
+onclick="setupStep(2)">
+
+←
+
+</button>
+
+<button
+class="primary"
+onclick="finishSetup()">
+
+🚀 Почати
+
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- TASK MODAL -->
+
+<div class="modal" id="taskmodal">
+
+<div class="modalbox">
+
+<h2>
+➕ Нове завдання
+</h2>
+
+
+<div class="field">
+
+<label>
+Назва
+</label>
+
+<input
+id="taskname"
+placeholder="Наприклад: 20 хвилин навчання">
+
+</div>
+
+
+<div
+class="form"
+style="margin-top:10px">
+
+<div class="field">
+
+<label>
+Стата
+</label>
+
+<select id="taskstat">
+
+<option value="STR">
+💪 STR
+</option>
+
+<option value="INT">
+🧠 INT
+</option>
+
+<option value="LANG">
+🇩🇪 LANG
+</option>
+
+<option value="TECH">
+💻 TECH
+</option>
+
+<option value="WIS">
+📖 WIS
+</option>
+
+<option value="DISC">
+⚔️ DISC
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Хвилини
+</label>
+
+<input
+id="taskmin"
+type="number"
+value="30"
+min="1">
+
+</div>
+
+</div>
+
+
+<div class="modalActions">
+
+<button
+class="secondary"
+onclick="closeTask()">
+
+Скасувати
+
+</button>
+
+<button
+class="primary"
+onclick="createTask()">
+
+Створити
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
 
 <script>
 
-/* =========================================================
-   LIFE RPG 4.2
-   ========================================================= */
+/* =====================================================
+   LIFE RPG 4.0
+   ===================================================== */
 
-const STORAGE_KEY = "life_rpg_v42";
-
-let state = loadState();
-
-let timerInterval = null;
+const KEY = "life_rpg_v4";
 
 
-/* =========================================================
-   QUEST DATABASE
-   ========================================================= */
-
-const QUESTS = [
-
-    {
-        title: "💧 Випий води",
-        description: "Випий 1 велику склянку води.",
-        type: "Здоров'я",
-        xp: 10,
-        gm: 5,
-        duration: 30 * 60 * 1000,
-        ageMin: 6,
-        ageMax: 100
-    },
-
-    {
-        title: "🛏️ Наведи порядок",
-        description: "Прибери своє ліжко та наведи порядок навколо нього.",
-        type: "Побут",
-        xp: 15,
-        gm: 7,
-        duration: 60 * 60 * 1000,
-        ageMin: 6,
-        ageMax: 100
-    },
-
-    {
-        title: "🧹 Прибери кімнату",
-        description: "Прибери щонайменше одну ділянку своєї кімнати.",
-        type: "Побут",
-        xp: 25,
-        gm: 12,
-        duration: 2 * 60 * 60 * 1000,
-        ageMin: 10,
-        ageMax: 100
-    },
-
-    {
-        title: "🚶 Прогулянка",
-        description: "Проведи на свіжому повітрі щонайменше 20 хвилин.",
-        type: "Здоров'я",
-        xp: 25,
-        gm: 12,
-        duration: 3 * 60 * 60 * 1000,
-        ageMin: 8,
-        ageMax: 100
-    },
-
-    {
-        title: "📚 Навчання",
-        description: "Присвяти навчанню 30 хвилин без соціальних мереж.",
-        type: "Розвиток",
-        xp: 35,
-        gm: 18,
-        duration: 4 * 60 * 60 * 1000,
-        ageMin: 10,
-        ageMax: 100
-    },
-
-    {
-        title: "🧠 Вивчи щось нове",
-        description: "Дізнайся 3 нові факти про тему, яка тобі цікава.",
-        type: "Розвиток",
-        xp: 30,
-        gm: 15,
-        duration: 5 * 60 * 60 * 1000,
-        ageMin: 10,
-        ageMax: 100
-    },
-
-    {
-        title: "🎨 Намалюй предмет",
-        description: "Намалюй чашку на столі. Додай тінь, світло та ручку. Не використовуй готове зображення.",
-        type: "Творчість",
-        xp: 40,
-        gm: 20,
-        duration: 5 * 60 * 60 * 1000,
-        ageMin: 8,
-        ageMax: 100
-    },
-
-    {
-        title: "🎨 Створи персонажа",
-        description: "Створи власного фантастичного персонажа: голова, тіло, одяг, взуття та одна особлива деталь.",
-        type: "Творчість",
-        xp: 50,
-        gm: 25,
-        duration: 6 * 60 * 60 * 1000,
-        ageMin: 12,
-        ageMax: 100
-    },
-
-    {
-        title: "💪 Фізична активність",
-        description: "Зроби легке тренування або іншу фізичну активність протягом 20 хвилин.",
-        type: "Фізичне",
-        xp: 35,
-        gm: 18,
-        duration: 6 * 60 * 60 * 1000,
-        ageMin: 12,
-        ageMax: 100
-    },
-
-    {
-        title: "🎵 Розвиток навички",
-        description: "Потренуй одну свою навичку щонайменше 20 хвилин.",
-        type: "Навичка",
-        xp: 40,
-        gm: 20,
-        duration: 7 * 60 * 60 * 1000,
-        ageMin: 10,
-        ageMax: 100
-    },
-
-    {
-        title: "📖 Читання",
-        description: "Прочитай щонайменше 10 сторінок книги або корисного матеріалу.",
-        type: "Розвиток",
-        xp: 35,
-        gm: 17,
-        duration: 8 * 60 * 60 * 1000,
-        ageMin: 8,
-        ageMax: 100
-    },
-
-    {
-        title: "🧘 Відпочинок",
-        description: "Зроби 10 хвилин спокійного відпочинку без телефону.",
-        type: "Баланс",
-        xp: 20,
-        gm: 10,
-        duration: 8 * 60 * 60 * 1000,
-        ageMin: 6,
-        ageMax: 100
-    },
-
-    {
-        title: "📝 План дня",
-        description: "Запиши 3 справи, які ти хочеш виконати сьогодні.",
-        type: "Організація",
-        xp: 20,
-        gm: 10,
-        duration: 9 * 60 * 60 * 1000,
-        ageMin: 10,
-        ageMax: 100
-    },
-
-    {
-        title: "🌱 Добра справа",
-        description: "Зроби одну корисну справу для іншої людини без очікування нагороди.",
-        type: "Соціальне",
-        xp: 45,
-        gm: 22,
-        duration: 10 * 60 * 60 * 1000,
-        ageMin: 8,
-        ageMax: 100
-    },
-
-    {
-        title: "🏆 Великий квест",
-        description: "Вибери одну важливу справу, яку давно відкладав, і зроби її сьогодні.",
-        type: "Особливий",
-        xp: 70,
-        gm: 35,
-        duration: 12 * 60 * 60 * 1000,
-        ageMin: 14,
-        ageMax: 100
-    }
-
-];
+const ST = {
+    STR:"💪 STR",
+    INT:"🧠 INT",
+    LANG:"🇩🇪 LANG",
+    TECH:"💻 TECH",
+    WIS:"📖 WIS",
+    DISC:"⚔️ DISC"
+};
 
 
-/* =========================================================
-   STATE
-   ========================================================= */
+const GO = {
+    sport:"💪 Спорт",
+    development:"🧠 Розвиток",
+    work:"💼 Робота",
+    selfcare:"🧼 Догляд",
+    reading:"📚 Читання",
+    creativity:"🎨 Творчість",
+    discipline:"⚔️ Дисципліна",
+    music:"🎵 Музика"
+};
 
-function defaultState() {
+
+let S = load();
+
+
+function base(){
 
     return {
-        version: "4.2",
 
-        character: null,
+        setup:false,
 
-        level: 1,
-        xp: 0,
-        gm: 100,
+        name:"Yevhenii",
 
-        quests: [],
+        email:"",
 
-        dayStartedAt: null,
+        birth:2009,
 
-        lastGeneratedDay: null,
+        age:17,
 
-        theme: "dark"
+        goals:[],
+
+        theme:"dark",
+
+        gm:0,
+
+        hp:100,
+
+        streak:0,
+
+        best:0,
+
+        lastDate:null,
+
+        flame:"active",
+
+        frozenAt:null,
+
+        had:false,
+
+        quests:[],
+
+        done:{},
+
+        failed:{},
+
+        stats:{
+            STR:0,
+            INT:0,
+            LANG:0,
+            TECH:0,
+            WIS:0,
+            DISC:0
+        },
+
+        history:[]
+
     };
+
 }
 
 
-/* =========================================================
-   LOAD
-   ========================================================= */
+function load(){
 
-function loadState() {
+    try{
 
-    try {
+        return Object.assign(
+            base(),
+            JSON.parse(
+                localStorage.getItem(KEY) || "{}"
+            )
+        );
 
-        const saved =
-            localStorage.getItem(STORAGE_KEY);
+    }catch(e){
 
-        if (!saved) {
+        return base();
 
-            return defaultState();
-
-        }
-
-        const parsed =
-            JSON.parse(saved);
-
-        return {
-            ...defaultState(),
-            ...parsed
-        };
-
-    } catch (error) {
-
-        console.error(error);
-
-        return defaultState();
     }
+
 }
 
 
-/* =========================================================
-   SAVE
-   ========================================================= */
-
-function saveState() {
+function save(){
 
     localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(state)
+        KEY,
+        JSON.stringify(S)
     );
+
 }
 
 
-/* =========================================================
-   INITIALIZATION
-   ========================================================= */
+function date(){
 
-function init() {
+    const d = new Date();
 
-    applyTheme();
+    return d.toISOString().slice(0,10);
 
-    if (!state.character) {
-
-        document
-            .getElementById("setupModal")
-            .classList.remove("hidden");
-
-    } else {
-
-        checkDay();
-
-        render();
-    }
-
-    timerInterval =
-        setInterval(updateTimers, 1000);
 }
 
 
-init();
+function esc(x){
+
+    return String(x).replace(
+        /[&<>"']/g,
+        m => ({
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#39;"
+        }[m])
+    );
+
+}
 
 
-/* =========================================================
-   CHARACTER CREATION
-   ========================================================= */
+function age(){
 
-function createCharacter() {
+    return new Date().getFullYear()
+        - Number(S.birth || 2009);
 
-    const nickname =
-        document
-            .getElementById("setupNickname")
-            .value
-            .trim();
+}
 
-    const gender =
-        document
-            .getElementById("setupGender")
-            .value;
 
-    const age =
-        Number(
-            document
-                .getElementById("setupAge")
-                .value
+function toast(x){
+
+    const e =
+        document.getElementById("toast");
+
+    e.textContent = x;
+
+    e.classList.add("show");
+
+    clearTimeout(window.tt);
+
+    window.tt = setTimeout(
+        () => e.classList.remove("show"),
+        2200
+    );
+
+}
+
+
+function lvl(){
+
+    return Math.floor(
+        Math.sqrt(
+            Math.max(0,S.gm)/100
+        )
+    ) + 1;
+
+}
+
+
+function fmt(x){
+
+    return Math.round(
+        x || 0
+    ).toLocaleString("uk-UA");
+
+}
+
+
+/* =====================================================
+   SETUP
+   ===================================================== */
+
+function setupStep(n){
+
+    ["s1","s2","s3"].forEach(
+        (id,i)=>{
+
+            document.getElementById(id)
+                .style.display =
+                i+1 === n
+                ? "block"
+                : "none";
+
+        }
+    );
+
+}
+
+
+function buildChoices(){
+
+    document.getElementById("choices")
+        .innerHTML =
+        Object.entries(GO)
+        .map(
+            ([k,v]) =>
+            `
+            <div
+                class="choice"
+                data-go="${k}"
+                onclick="this.classList.toggle('sel')"
+            >
+                ${v}
+            </div>
+            `
+        )
+        .join("");
+
+}
+
+
+function finishSetup(){
+
+    const y =
+        +document.getElementById(
+            "setupbirth"
+        ).value;
+
+    const n =
+        document.getElementById(
+            "setupname"
+        ).value.trim()
+        || "Yevhenii";
+
+    const g =
+        [...document.querySelectorAll(
+            ".choice.sel"
+        )]
+        .map(x=>x.dataset.go);
+
+
+    if(
+        y < 1920 ||
+        y > new Date().getFullYear() ||
+        !y
+    ){
+
+        return toast(
+            "Введи правильний рік"
         );
 
-    const email =
-        document
-            .getElementById("setupEmail")
-            .value
-            .trim();
-
-
-    if (!nickname) {
-
-        showToast(
-            "Введи нікнейм.",
-            "error"
-        );
-
-        return;
     }
 
 
-    if (!age || age < 6 || age > 100) {
+    if(!g.length){
 
-        showToast(
-            "Вік має бути від 6 до 100 років.",
-            "error"
+        return toast(
+            "Вибери хоча б один напрямок"
         );
 
-        return;
     }
 
 
-    if (!email || !email.includes("@")) {
+    Object.assign(
+        S,
+        {
 
-        showToast(
-            "Введи правильний email.",
-            "error"
-        );
+            setup:true,
 
-        return;
-    }
+            name:n,
 
+            birth:y,
 
-    state.character = {
+            age:age(),
 
-        nickname,
-        gender,
-        age,
-        email,
+            goals:g,
 
-        createdAt: Date.now()
-    };
+            lastDate:date(),
 
+            flame:"active",
 
-    /*
-       ДУЖЕ ВАЖЛИВО:
+            had:false,
 
-       Саме тут починається перший RPG-день.
-       Не 00:00.
-       Не дата.
-       А реальний момент створення персонажа.
-    */
+            frozenAt:null
 
-    state.dayStartedAt = Date.now();
-
-    state.lastGeneratedDay =
-        getDayIdentifier(
-            state.dayStartedAt
-        );
+        }
+    );
 
 
-    generateDailyQuests();
+    daily();
 
-    saveState();
+    save();
 
     document
-        .getElementById("setupModal")
-        .classList.add("hidden");
+        .getElementById("setup")
+        .classList.remove("show");
 
     render();
 
-    showToast(
-        "🎮 RPG-день розпочато!",
-        "success"
+}
+
+
+/* =====================================================
+   DAILY QUESTS
+   ===================================================== */
+
+function add(q,n,d,gm,st){
+
+    q.push({
+
+        id:
+            n +
+            Date.now() +
+            Math.random(),
+
+        name:n,
+
+        desc:d,
+
+        gm:gm,
+
+        stat:st,
+
+        available:
+            Date.now() +
+            q.length * 1500,
+
+        deadline:
+            Date.now() +
+            q.length * 1500 +
+            14400000,
+
+        custom:false
+
+    });
+
+}
+
+
+function daily(){
+
+    let q = [];
+
+
+    if(S.goals.includes("sport")){
+
+        add(
+            q,
+            "💪 Рух",
+            "10–15 хвилин легкої фізичної активності.",
+            20,
+            "STR"
+        );
+
+        add(
+            q,
+            "🏃 Активність",
+            "Прогулянка швидким кроком 15 хвилин.",
+            18,
+            "STR"
+        );
+
+    }
+
+
+    if(S.goals.includes("development")){
+
+        add(
+            q,
+            "🧠 Розвиток",
+            "20 хвилин вивчай щось нове.",
+            22,
+            "INT"
+        );
+
+        add(
+            q,
+            "💡 Міні-навчання",
+            "Знайди відповідь на одне цікаве питання.",
+            18,
+            "INT"
+        );
+
+    }
+
+
+    if(S.goals.includes("work")){
+
+        add(
+            q,
+            "💼 Фокус",
+            "25 хвилин працюй над важливою справою.",
+            22,
+            "TECH"
+        );
+
+        add(
+            q,
+            "📋 План",
+            "Запиши 3 головні справи дня.",
+            16,
+            "DISC"
+        );
+
+    }
+
+
+    if(S.goals.includes("selfcare")){
+
+        add(
+            q,
+            "🧼 Self Care",
+            "Душ, зуби та чистий одяг.",
+            15,
+            "DISC"
+        );
+
+        add(
+            q,
+            "🧹 Простір",
+            "15 хвилин прибирай кімнату.",
+            16,
+            "DISC"
+        );
+
+    }
+
+
+    if(S.goals.includes("reading")){
+
+        add(
+            q,
+            "📚 Читання",
+            "20 хвилин читання.",
+            20,
+            "WIS"
+        );
+
+        add(
+            q,
+            "📖 Сторінки",
+            "Прочитай 5 сторінок.",
+            18,
+            "WIS"
+        );
+
+    }
+
+
+    if(S.goals.includes("creativity")){
+
+        add(
+            q,
+            "🎨 Творчість",
+            "Зроби маленьку творчу роботу.",
+            22,
+            "INT"
+        );
+
+        add(
+            q,
+            "✨ Ідея",
+            "Створи щось нове за 15 хвилин.",
+            18,
+            "INT"
+        );
+
+    }
+
+
+    if(S.goals.includes("discipline")){
+
+        add(
+            q,
+            "⚔️ Дисципліна",
+            "25 хвилин без соцмереж над однією справою.",
+            22,
+            "DISC"
+        );
+
+        add(
+            q,
+            "⏰ Не відкладай",
+            "Зроби одну справу одразу.",
+            18,
+            "DISC"
+        );
+
+    }
+
+
+    if(S.goals.includes("music")){
+
+        add(
+            q,
+            "🎵 Музика",
+            "15 хвилин тренування музики.",
+            22,
+            "INT"
+        );
+
+        add(
+            q,
+            "🥁 Ритм",
+            "10 хвилин ритмічної практики.",
+            18,
+            "INT"
+        );
+
+    }
+
+
+    add(
+        q,
+        "💧 Вода",
+        "Подбай про воду та коротку перерву.",
+        10,
+        "DISC"
     );
+
+
+    S.quests = q;
+
 }
 
 
-/* =========================================================
-   DAY SYSTEM
-   ========================================================= */
+/* =====================================================
+   DAY ROLLOVER
+   ===================================================== */
 
-function getDayIdentifier(timestamp) {
+function rollover(){
 
-    const date =
-        new Date(timestamp);
+    if(S.lastDate !== date()){
 
-    return [
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getDate()
-    ].join("-");
+        S.lastDate = date();
+
+        S.done = {};
+
+        S.failed = {};
+
+        S.had = false;
+
+        daily();
+
+    }
+
+
+    const did =
+        Object.values(S.done)
+        .includes(date());
+
+
+    if(did){
+
+        S.had = true;
+
+        S.flame = "active";
+
+        S.frozenAt = null;
+
+    }
+    else if(S.flame !== "lost"){
+
+        if(!S.frozenAt){
+
+            S.frozenAt = Date.now();
+
+            S.flame = "frozen";
+
+        }
+        else if(
+            Date.now() - S.frozenAt
+            >= 86400000
+        ){
+
+            S.flame = "lost";
+
+            S.streak = 0;
+
+            S.frozenAt = null;
+
+        }
+
+    }
+
+
+    processExpired();
+
+    save();
+
 }
 
 
-/*
-   ВАЖЛИВО:
+/* =====================================================
+   EXPIRED QUESTS
+   ===================================================== */
 
-   Новий день НЕ визначається через 00:00.
+function processExpired(){
 
-   День триває від моменту запуску.
+    S.quests.forEach(q=>{
 
-   Наприклад:
+        if(
+            S.done[q.id] === date() ||
+            S.failed[q.id] === date()
+        ){
 
-   Старт:
-   19 серпня 14:37
-
-   Наступний RPG-день:
-   20 серпня приблизно о 14:37
-
-*/
-
-function checkDay() {
-
-    if (!state.character) {
-        return;
-    }
-
-
-    if (!state.dayStartedAt) {
-
-        state.dayStartedAt =
-            Date.now();
-
-        generateDailyQuests();
-
-        saveState();
-
-        return;
-    }
-
-
-    const DAY_LENGTH =
-        24 * 60 * 60 * 1000;
-
-
-    const elapsed =
-        Date.now() -
-        state.dayStartedAt;
-
-
-    if (elapsed >= DAY_LENGTH) {
-
-        startNewRPGDay();
-    }
-}
-
-
-function startNewRPGDay() {
-
-    state.dayStartedAt =
-        Date.now();
-
-    state.lastGeneratedDay =
-        getDayIdentifier(
-            state.dayStartedAt
-        );
-
-    generateDailyQuests();
-
-    saveState();
-
-    showToast(
-        "🌅 Новий RPG-день! Нові квести!",
-        "success"
-    );
-}
-
-
-/* =========================================================
-   AGE DIFFICULTY
-   ========================================================= */
-
-function getAgeMultiplier(age) {
-
-    /*
-       6–11:
-       дуже легкі завдання
-
-       12–17:
-       нормальна складність
-
-       18–59:
-       підвищена
-
-       60+:
-       адаптована
-    */
-
-    if (age <= 11) {
-        return 0.65;
-    }
-
-    if (age <= 17) {
-        return 0.85;
-    }
-
-    if (age <= 59) {
-        return 1.15;
-    }
-
-    return 0.80;
-}
-
-
-/* =========================================================
-   GENDER PERSONALIZATION
-   ========================================================= */
-
-function personalizeQuest(quest, gender) {
-
-    const copy = {
-        ...quest
-    };
-
-
-    if (
-        quest.type === "Творчість"
-        && gender === "female"
-    ) {
-
-        copy.description =
-            quest.description +
-            " Можеш додати декоративні деталі та власний стиль.";
-
-    }
-
-
-    if (
-        quest.type === "Творчість"
-        && gender === "male"
-    ) {
-
-        copy.description =
-            quest.description +
-            " Спробуй додати оригінальну деталь, яка зробить роботу унікальною.";
-
-    }
-
-
-    return copy;
-}
-
-
-/* =========================================================
-   GENERATE QUESTS
-   ========================================================= */
-
-function generateDailyQuests() {
-
-    if (!state.character) {
-        return;
-    }
-
-
-    const age =
-        Number(state.character.age);
-
-    const gender =
-        state.character.gender;
-
-
-    const multiplier =
-        getAgeMultiplier(age);
-
-
-    let possible =
-        QUESTS.filter(q =>
-            age >= q.ageMin &&
-            age <= q.ageMax
-        );
-
-
-    /*
-       Перемішування.
-       Завдання кожного дня різні.
-    */
-
-    possible =
-        shuffle(possible);
-
-
-    /*
-       Для молодших гравців:
-       прибираємо надто складні завдання.
-    */
-
-    if (age <= 11) {
-
-        possible =
-            possible.filter(q =>
-                q.type !== "Особливий"
-                && q.type !== "Фізичне"
-            );
-    }
-
-
-    /*
-       Для 12–17 років:
-       можна давати більшість квестів,
-       але без надмірного навантаження.
-    */
-
-    if (age >= 12 && age <= 17) {
-
-        possible =
-            possible.slice(
-                0,
-                Math.min(
-                    10,
-                    possible.length
-                )
-            );
-    }
-
-
-    /*
-       18+:
-       більше завдань.
-    */
-
-    if (age >= 18) {
-
-        possible =
-            possible.slice(
-                0,
-                Math.min(
-                    13,
-                    possible.length
-                )
-            );
-    }
-
-
-    /*
-       Старший вік:
-       адаптуємо навантаження.
-    */
-
-    if (age >= 60) {
-
-        possible =
-            possible.filter(q =>
-                q.type !== "Фізичне"
-            );
-
-        possible =
-            possible.slice(0, 9);
-    }
-
-
-    /*
-       Вибираємо 8–13 завдань.
-    */
-
-    const count =
-        age <= 11
-            ? Math.min(7, possible.length)
-            : age >= 18
-                ? Math.min(12, possible.length)
-                : Math.min(10, possible.length);
-
-
-    possible =
-        possible.slice(0, count);
-
-
-    /*
-       Створюємо квести.
-
-       ПЕРШИЙ:
-       відкривається одразу.
-
-       Кожен наступний:
-       відкривається пізніше.
-
-       Це означає, що о 00:00
-       не відкривається весь список.
-    */
-
-    const now =
-        state.dayStartedAt;
-
-
-    state.quests =
-        possible.map(
-            (baseQuest, index) => {
-
-                const q =
-                    personalizeQuest(
-                        baseQuest,
-                        gender
-                    );
-
-
-                /*
-                   Чим нижче квест —
-                   тим пізніше він відкриється.
-
-                   Відкриття розподілене
-                   протягом RPG-дня.
-                */
-
-                const unlockDelay =
-                    index === 0
-                        ? 0
-                        : (
-                            index *
-                            45 *
-                            60 *
-                            1000
-                        );
-
-
-                const availableAt =
-                    now +
-                    unlockDelay;
-
-
-                /*
-                   Час виконання.
-
-                   Для дітей трохи довший,
-                   для дорослих трохи коротший.
-
-                   Але без небезпечного
-                   фізичного навантаження.
-                */
-
-                let duration =
-                    q.duration;
-
-
-                if (age <= 11) {
-
-                    duration *= 1.25;
-
-                } else if (age >= 18 && age <= 59) {
-
-                    duration *= 0.90;
-
-                } else if (age >= 60) {
-
-                    duration *= 1.30;
-                }
-
-
-                const deadlineAt =
-                    availableAt +
-                    duration;
-
-
-                const xp =
-                    Math.max(
-                        5,
-                        Math.round(
-                            q.xp *
-                            multiplier
-                        )
-                    );
-
-
-                const gm =
-                    Math.max(
-                        2,
-                        Math.round(
-                            q.gm *
-                            multiplier
-                        )
-                    );
-
-
-                return {
-
-                    id:
-                        Date.now()
-                        + "-"
-                        + index
-                        + "-"
-                        + Math.random()
-                            .toString(36)
-                            .slice(2),
-
-                    title:
-                        q.title,
-
-                    description:
-                        q.description,
-
-                    type:
-                        q.type,
-
-                    xp,
-
-                    gm,
-
-                    availableAt,
-
-                    deadlineAt,
-
-                    status: "locked"
-                };
-            }
-        );
-
-
-    saveState();
-}
-
-
-/* =========================================================
-   SHUFFLE
-   ========================================================= */
-
-function shuffle(array) {
-
-    const result =
-        [...array];
-
-
-    for (
-        let i = result.length - 1;
-        i > 0;
-        i--
-    ) {
-
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
-
-
-        [
-            result[i],
-            result[j]
-        ] =
-        [
-            result[j],
-            result[i]
-        ];
-    }
-
-
-    return result;
-}
-
-
-/* =========================================================
-   TIMER LOGIC
-   ========================================================= */
-
-function updateTimers() {
-
-    if (!state.character) {
-        return;
-    }
-
-
-    checkDay();
-
-
-    let changed =
-        false;
-
-
-    state.quests.forEach(q => {
-
-        const now =
-            Date.now();
-
-
-        /*
-           Квест ще не відкритий.
-        */
-
-        if (
-            q.status === "locked" &&
-            now >= q.availableAt
-        ) {
-
-            q.status =
-                "available";
-
-            changed = true;
+            return;
 
         }
 
 
-        /*
-           Квест доступний,
-           але дедлайн минув.
-        */
+        if(Date.now() >= q.deadline){
 
-        if (
-            (
-                q.status === "available"
-                ||
-                q.status === "locked"
-            )
-            &&
-            now >= q.deadlineAt
-        ) {
+            S.failed[q.id] = date();
 
-            q.status =
-                "failed";
 
-            /*
-               Штраф.
-            */
-
-            const xpPenalty =
+            const penalty =
                 Math.max(
-                    1,
-                    Math.floor(
-                        q.xp * 0.25
-                    )
+                    3,
+                    Math.round(q.gm * .35)
                 );
 
 
-            const gmPenalty =
-                Math.max(
-                    1,
-                    Math.floor(
-                        q.gm * 0.25
-                    )
-                );
-
-
-            state.xp =
+            S.gm =
                 Math.max(
                     0,
-                    state.xp -
-                    xpPenalty
+                    S.gm - penalty
                 );
 
 
-            state.gm =
-                Math.max(
-                    0,
-                    state.gm -
-                    gmPenalty
-                );
+            S.history.unshift({
 
+                date:date(),
 
-            changed = true;
+                gm:-penalty,
 
+                stat:q.stat,
 
-            showToast(
-                "❌ Квест провалено! -" +
-                xpPenalty +
-                " XP / -" +
-                gmPenalty +
-                " GM",
-                "error"
-            );
+                why:"❌ Пропущено: " +
+                    q.name
+
+            });
+
         }
 
     });
 
-
-    if (changed) {
-
-        calculateLevel();
-
-        saveState();
-    }
-
-
-    renderQuestList();
 }
 
 
-/* =========================================================
+/* =====================================================
    COMPLETE QUEST
-   ========================================================= */
+   ===================================================== */
 
-function completeQuest(id) {
+function complete(id){
 
-    const quest =
-        state.quests.find(
-            q => q.id === id
+    rollover();
+
+
+    const q =
+        S.quests.find(
+            x=>x.id === id
         );
 
 
-    if (!quest) {
+    if(
+        !q ||
+        S.done[id] === date() ||
+        S.failed[id] === date() ||
+        Date.now() < q.available ||
+        Date.now() >= q.deadline
+    ){
+
         return;
+
     }
 
 
-    if (quest.status !== "available") {
+    S.done[id] = date();
 
-        showToast(
-            "Цей квест зараз недоступний.",
-            "error"
-        );
+    S.had = true;
 
-        return;
-    }
+    S.flame = "active";
+
+    S.frozenAt = null;
 
 
-    if (
-        Date.now() >=
-        quest.deadlineAt
-    ) {
+    if(!S.counted){
 
-        quest.status =
-            "failed";
+        S.streak++;
 
-        saveState();
+        S.counted = date();
 
-        return;
-    }
-
-
-    quest.status =
-        "completed";
-
-
-    state.xp +=
-        quest.xp;
-
-
-    state.gm +=
-        quest.gm;
-
-
-    const oldLevel =
-        state.level;
-
-
-    calculateLevel();
-
-
-    saveState();
-
-
-    showToast(
-        "✅ Квест виконано! +" +
-        quest.xp +
-        " XP / +" +
-        quest.gm +
-        " GM",
-        "success"
-    );
-
-
-    if (state.level > oldLevel) {
-
-        setTimeout(() => {
-
-            showToast(
-                "🎉 LEVEL UP! Ти досяг рівня " +
-                state.level + "!",
-                "success"
+        S.best =
+            Math.max(
+                S.best,
+                S.streak
             );
 
-        }, 500);
     }
 
+
+    S.gm += q.gm;
+
+    S.stats[q.stat] =
+        (S.stats[q.stat] || 0)
+        + q.gm;
+
+
+    S.history.unshift({
+
+        date:date(),
+
+        gm:q.gm,
+
+        stat:q.stat,
+
+        why:"✅ " + q.name
+
+    });
+
+
+    save();
 
     render();
-}
 
-
-/* =========================================================
-   LEVEL SYSTEM
-   ========================================================= */
-
-function xpNeededForLevel(level) {
-
-    return 100 +
-        (
-            (level - 1) *
-            50
-        );
-}
-
-
-function calculateLevel() {
-
-    while (
-        state.xp >=
-        xpNeededForLevel(
-            state.level
-        )
-    ) {
-
-        state.xp -=
-            xpNeededForLevel(
-                state.level
-            );
-
-        state.level++;
-    }
-}
-
-
-/* =========================================================
-   SORT QUESTS
-   ========================================================= */
-
-function sortQuests(quests) {
-
-    const now =
-        Date.now();
-
-
-    return [...quests].sort(
-        (a, b) => {
-
-            /*
-               Провалені вниз.
-            */
-
-            if (
-                a.status === "failed"
-                &&
-                b.status !== "failed"
-            ) {
-                return 1;
-            }
-
-
-            if (
-                b.status === "failed"
-                &&
-                a.status !== "failed"
-            ) {
-                return -1;
-            }
-
-
-            /*
-               Виконані вниз.
-            */
-
-            if (
-                a.status === "completed"
-                &&
-                b.status !== "completed"
-            ) {
-                return 1;
-            }
-
-
-            if (
-                b.status === "completed"
-                &&
-                a.status !== "completed"
-            ) {
-                return -1;
-            }
-
-
-            /*
-               Серед доступних:
-
-               найменше часу
-               до дедлайну
-               → зверху.
-            */
-
-            if (
-                a.status === "available"
-                &&
-                b.status === "available"
-            ) {
-
-                return (
-                    a.deadlineAt -
-                    b.deadlineAt
-                );
-            }
-
-
-            /*
-               Серед заблокованих:
-
-               хто відкриється раніше
-               → вище.
-            */
-
-            if (
-                a.status === "locked"
-                &&
-                b.status === "locked"
-            ) {
-
-                return (
-                    a.availableAt -
-                    b.availableAt
-                );
-            }
-
-
-            /*
-               Доступні завжди
-               вище заблокованих.
-            */
-
-            if (
-                a.status === "available"
-                &&
-                b.status === "locked"
-            ) {
-                return -1;
-            }
-
-
-            if (
-                a.status === "locked"
-                &&
-                b.status === "available"
-            ) {
-                return 1;
-            }
-
-
-            return 0;
-        }
+    toast(
+        "+" +
+        q.gm +
+        " GM · " +
+        q.name
     );
+
 }
 
 
-/* =========================================================
-   RENDER
-   ========================================================= */
+/* =====================================================
+   QUICK ACTIONS
+   ===================================================== */
 
-function render() {
+function quick(gm,st,why){
 
-    if (!state.character) {
-        return;
+    S.gm += gm;
+
+    S.stats[st] += gm;
+
+
+    S.history.unshift({
+
+        date:date(),
+
+        gm:gm,
+
+        stat:st,
+
+        why:why
+
+    });
+
+
+    save();
+
+    render();
+
+    toast(
+        "+" +
+        gm +
+        " GM"
+    );
+
+}
+
+
+/* =====================================================
+   QUEST HTML
+   ===================================================== */
+
+function fmtTime(ms){
+
+    ms = Math.max(0,ms);
+
+    let s =
+        Math.floor(ms/1000);
+
+    let h =
+        Math.floor(s/3600);
+
+    let m =
+        Math.floor(
+            s%3600/60
+        );
+
+    let z =
+        s%60;
+
+
+    return [
+        h,m,z
+    ]
+    .map(
+        x=>String(x).padStart(2,"0")
+    )
+    .join(":");
+
+}
+
+
+function qhtml(q){
+
+    const done =
+        S.done[q.id] === date();
+
+    const fail =
+        S.failed[q.id] === date();
+
+    const avail =
+        Date.now() >= q.available;
+
+    const expired =
+        Date.now() >= q.deadline;
+
+
+    let timer = "";
+
+    let timerClass = "";
+
+
+    if(done){
+
+        timer =
+            "✓ Виконано";
+
     }
+    else if(fail || expired){
 
+        timer =
+            "❌ Пропущено";
 
-    renderProfile();
+        timerClass = "bad";
 
-    renderQuestList();
-
-    renderDay();
-}
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-function renderProfile() {
-
-    const c =
-        state.character;
-
-
-    document
-        .getElementById("profileName")
-        .textContent =
-        c.nickname;
-
-
-    const genderText =
-        c.gender === "male"
-            ? "Хлопець"
-            : "Дівчина";
-
-
-    document
-        .getElementById("profileInfo")
-        .textContent =
-        genderText +
-        " • " +
-        c.age +
-        " років";
-
-
-    document
-        .getElementById("avatar")
-        .textContent =
-        c.gender === "male"
-            ? "🧙‍♂️"
-            : "🧙‍♀️";
-
-
-    document
-        .getElementById("level")
-        .textContent =
-        state.level;
-
-
-    document
-        .getElementById("xpValue")
-        .textContent =
-        state.xp;
-
-
-    document
-        .getElementById("gmValue")
-        .textContent =
-        state.gm;
-
-
-    const needed =
-        xpNeededForLevel(
-            state.level
-        );
-
-
-    const percent =
-        Math.min(
-            100,
-            (
-                state.xp /
-                needed
-            ) * 100
-        );
-
-
-    document
-        .getElementById("xpFill")
-        .style.width =
-        percent + "%";
-
-
-    document
-        .getElementById("xpText")
-        .textContent =
-        state.xp +
-        " / " +
-        needed +
-        " XP";
-}
-
-
-/* =========================================================
-   DAY DISPLAY
-   ========================================================= */
-
-function renderDay() {
-
-    if (!state.dayStartedAt) {
-        return;
     }
+    else if(!avail){
 
-
-    const start =
-        new Date(
-            state.dayStartedAt
-        );
-
-
-    const hours =
-        String(
-            start.getHours()
-        ).padStart(2, "0");
-
-
-    const minutes =
-        String(
-            start.getMinutes()
-        ).padStart(2, "0");
-
-
-    document
-        .getElementById("dayStart")
-        .textContent =
-        hours +
-        ":" +
-        minutes;
-
-
-    const elapsed =
-        Date.now() -
-        state.dayStartedAt;
-
-
-    const remaining =
-        Math.max(
-            0,
-            (
-                24 *
-                60 *
-                60 *
-                1000
-            ) -
-            elapsed
-        );
-
-
-    document
-        .getElementById("questSubtitle")
-        .textContent =
-        "До нового RPG-дня: " +
-        formatDuration(
-            remaining
-        );
-}
-
-
-/* =========================================================
-   QUEST LIST
-   ========================================================= */
-
-function renderQuestList() {
-
-    const container =
-        document
-            .getElementById("questList");
-
-
-    if (!state.character) {
-
-        container.innerHTML =
-            `<div class="empty">
-                Створи персонажа.
-             </div>`;
-
-        return;
-    }
-
-
-    if (!state.quests.length) {
-
-        container.innerHTML =
-            `<div class="empty">
-                🎮 Підготовка квестів...
-             </div>`;
-
-        return;
-    }
-
-
-    const quests =
-        sortQuests(
-            state.quests
-        );
-
-
-    container.innerHTML =
-        quests
-            .map(renderQuest)
-            .join("");
-}
-
-
-/* =========================================================
-   QUEST CARD
-   ========================================================= */
-
-function renderQuest(q) {
-
-    const now =
-        Date.now();
-
-
-    let statusText = "";
-    let timerText = "";
-    let button = "";
-
-
-    if (q.status === "locked") {
-
-        const remaining =
-            Math.max(
-                0,
-                q.availableAt -
-                now
-            );
-
-
-        statusText =
+        timer =
             "🔒 Ще не відкрито";
 
-
-        timerText =
-            "Відкриється через " +
-            formatDuration(
-                remaining
-            );
-
-
-        button =
-            `<button disabled>
-                🔒 Заблоковано
-             </button>`;
+        timerClass = "wait";
 
     }
+    else{
 
-
-    else if (
-        q.status === "available"
-    ) {
-
-        const remaining =
-            Math.max(
-                0,
-                q.deadlineAt -
-                now
-            );
-
-
-        statusText =
-            "🔥 ДОСТУПНИЙ";
-
-
-        timerText =
+        timer =
             "⏳ " +
-            formatDuration(
-                remaining
+            fmtTime(
+                q.deadline -
+                Date.now()
             );
 
-
-        button =
-            `<button onclick="completeQuest('${q.id}')">
-                ✅ Виконати
-             </button>`;
-
-    }
-
-
-    else if (
-        q.status === "completed"
-    ) {
-
-        statusText =
-            "✅ ВИКОНАНО";
-
-
-        timerText =
-            "Нагорода отримана";
-
-
-        button =
-            `<button disabled>
-                Виконано
-             </button>`;
-
-    }
-
-
-    else if (
-        q.status === "failed"
-    ) {
-
-        statusText =
-            "❌ ПРОВАЛЕНО";
-
-
-        timerText =
-            "Дедлайн минув";
-
-
-        button =
-            `<button disabled>
-                Пропущено
-             </button>`;
     }
 
 
     return `
-        <article class="quest ${q.status}">
 
-            <div class="quest-top">
+    <div class="quest
+        ${done ? "done" : ""}
+        ${fail ? "failed" : ""}">
 
-                <div>
-                    <div class="quest-title">
-                        ${q.title}
-                    </div>
+        <div class="qtop">
 
-                    <div class="quest-description">
-                        ${q.description}
-                    </div>
-                </div>
+            <div class="qicon">
+                ${q.name.charAt(0)}
+            </div>
 
-                <div class="quest-type">
-                    ${q.type}
-                </div>
+            <div class="qtext">
+
+                <b>
+                    ${esc(q.name)}
+                </b>
+
+                <small>
+                    +${q.gm} GM · ${ST[q.stat]}
+                </small>
 
             </div>
 
-            <div class="quest-bottom">
+        </div>
 
-                <div>
+        <div class="desc">
+            ${esc(q.desc)}
+        </div>
 
-                    <div class="rewards">
-                        ⭐ ${q.xp} XP
-                        💰 ${q.gm} GM
-                    </div>
+        <div class="timer ${timerClass}">
+            ${timer}
+        </div>
 
-                    <div
-                        class="timer"
-                        style="margin-top:6px;"
-                    >
-                        ${statusText}
-                        <br>
-                        ${timerText}
-                    </div>
+        <div class="qactions">
 
-                </div>
+            <button
+                ${done || fail || expired || !avail ? "disabled" : ""}
+                onclick="complete('${q.id}')">
 
-                <div>
-                    ${button}
-                </div>
+                ${
+                    done
+                    ? "✓ ВИКОНАНО"
+                    : fail || expired
+                    ? "❌ ПРОПУЩЕНО"
+                    : !avail
+                    ? "🔒 ЩЕ НЕ ВІДКРИТО"
+                    : "ВИКОНАТИ КВЕСТ"
+                }
 
-            </div>
+            </button>
 
-        </article>
+        </div>
+
+    </div>
+
     `;
+
 }
 
 
-/* =========================================================
-   FORMAT TIME
-   ========================================================= */
+/* =====================================================
+   MAIN RENDER
+   ===================================================== */
 
-function formatDuration(ms) {
+function render(){
 
-    ms =
+    rollover();
+
+
+    const l = lvl();
+
+
+    const start =
+        100 *
+        (l-1) *
+        (l-1);
+
+
+    const next =
+        100 *
+        l *
+        l;
+
+
+    const p =
         Math.max(
             0,
-            ms
+            Math.min(
+                100,
+                (S.gm-start) /
+                (next-start) *
+                100
+            )
         );
 
 
-    const totalSeconds =
-        Math.floor(
-            ms / 1000
-        );
+    const qs = S.quests;
 
 
-    const hours =
-        Math.floor(
-            totalSeconds /
-            3600
-        );
+    const doneToday =
+        qs.filter(
+            q=>S.done[q.id] === date()
+        ).length;
 
 
-    const minutes =
-        Math.floor(
-            (
-                totalSeconds %
-                3600
-            ) / 60
-        );
+    const d =
+        qs.length
+        ? Math.round(
+            doneToday /
+            qs.length *
+            100
+        )
+        : 0;
 
 
-    const seconds =
-        totalSeconds %
-        60;
+    document.getElementById("name")
+        .textContent = S.name;
 
 
-    if (hours > 0) {
-
-        return (
-            hours +
-            " год " +
-            String(minutes)
-                .padStart(2, "0") +
-            " хв"
-        );
-    }
+    document.getElementById("lvl")
+        .textContent =
+        "LVL " + l;
 
 
-    if (minutes > 0) {
-
-        return (
-            minutes +
-            " хв " +
-            String(seconds)
-                .padStart(2, "0") +
-            " сек"
-        );
-    }
+    document.getElementById("streakText")
+        .textContent =
+        S.streak + " днів";
 
 
-    return (
-        seconds +
-        " сек"
+    document.getElementById("topStreak")
+        .textContent =
+        (
+            S.flame === "active"
+            ? "🔥"
+            : S.flame === "frozen"
+            ? "🧊"
+            : "🩶"
+        )
+        +
+        " " +
+        S.streak +
+        " DAYS";
+
+
+    document.getElementById("gm")
+        .textContent =
+        fmt(S.gm) +
+        " GM";
+
+
+    document.getElementById("level")
+        .textContent =
+        "LEVEL " + l;
+
+
+    document.getElementById("hp")
+        .textContent =
+        S.hp +
+        "/100";
+
+
+    document.getElementById("xpbar")
+        .style.width =
+        p + "%";
+
+
+    document.getElementById("xptext")
+        .textContent =
+        fmt(S.gm-start) +
+        " / " +
+        fmt(next-start) +
+        " GM";
+
+
+    document.getElementById("discipline")
+        .textContent =
+        d + "%";
+
+
+    document.getElementById("discbar")
+        .style.width =
+        d + "%";
+
+
+    document.getElementById("dischint")
+        .textContent =
+        `Сьогодні виконано ${doneToday} з ${qs.length}. Для вогника достатньо 1 завдання.`;
+
+
+    const now =
+        new Date();
+
+
+    const sec =
+        now.getHours()*3600 +
+        now.getMinutes()*60 +
+        now.getSeconds();
+
+
+    document.getElementById("daybar")
+        .style.width =
+        sec / 864 + "%";
+
+
+    document.getElementById("ministats")
+        .innerHTML =
+        Object.entries(ST)
+        .map(
+            ([k,v]) =>
+            `
+            <div class="stat">
+
+                <b>${v}</b>
+
+                <strong>
+                    ${fmt(S.stats[k])}
+                </strong>
+
+            </div>
+            `
+        )
+        .join("");
+
+
+    const flame =
+        document.getElementById("flame");
+
+
+    flame.className =
+        "flame " +
+        S.flame;
+
+
+    flame.innerHTML =
+        "<span>🔥</span>";
+
+
+    document.getElementById("flamestatus")
+        .textContent =
+        S.flame === "active"
+        ? "ACTIVE"
+        : S.flame === "frozen"
+        ? "FROZEN"
+        : "LOST";
+
+
+    document.getElementById("flamelabel")
+        .textContent =
+        S.flame === "active"
+        ? "Вогник горить"
+        : S.flame === "frozen"
+        ? "Вогник заморожений"
+        : "Вогник згас";
+
+
+    document.getElementById("flametimer")
+        .textContent =
+        S.flame === "frozen"
+        ? "До сірого: " +
+          fmtTime(
+              86400000 -
+              (Date.now()-S.frozenAt)
+          )
+        : S.flame === "lost"
+        ? "Серія скинута. Виконай завдання, щоб почати нову."
+        : "Виконай хоча б 1 завдання сьогодні.";
+
+
+    document.getElementById("homestreak")
+        .textContent =
+        S.streak +
+        " днів";
+
+
+    document.getElementById("dailycount")
+        ?.remove();
+
+
+    document.getElementById("dailyhome")
+        ?.remove();
+
+
+    document.getElementById("daysummary")
+        .innerHTML = `
+
+        <div class="mini">
+
+            <b>Виконано</b>
+
+            <br>
+
+            ${doneToday}/${qs.length}
+
+        </div>
+
+
+        <div class="mini">
+
+            <b>Вогник</b>
+
+            <br>
+
+            ${
+                S.flame === "active"
+                ? "🔥 Горить"
+                : S.flame === "frozen"
+                ? "🧊 Заморожений"
+                : "🩶 Згас"
+            }
+
+        </div>
+
+
+        <div class="mini">
+
+            <b>Рекорд</b>
+
+            <br>
+
+            ${S.best} днів
+
+        </div>
+
+
+        <div class="mini">
+
+            <b>GM</b>
+
+            <br>
+
+            ${fmt(S.gm)}
+
+        </div>
+
+        `;
+
+
+    document.getElementById("questlist")
+        .innerHTML =
+        qs.length
+        ? qs.map(qhtml).join("")
+        : '<div class="muted">Немає завдань.</div>';
+
+
+    renderStats();
+
+    renderShop();
+
+    renderAch();
+
+    renderHistory();
+
+    settings();
+
+
+    document.body.classList.toggle(
+        "light",
+        S.theme === "light"
     );
+
+
+    document.getElementById("clock")
+        .textContent =
+        now.toLocaleTimeString("uk-UA");
+
 }
 
 
-/* =========================================================
-   SETTINGS
-   ========================================================= */
+/* =====================================================
+   STATS
+   ===================================================== */
 
-function openSettings() {
+function renderStats(){
 
-    if (!state.character) {
-        return;
-    }
+    document.getElementById("fullstats")
+        .innerHTML =
+        Object.entries(ST)
+        .map(
+            ([k,v]) =>
+            `
 
+            <div style="margin:14px 0">
 
-    document
-        .getElementById("editNickname")
-        .value =
-        state.character.nickname;
+                <div
+                    style="
+                    display:flex;
+                    justify-content:space-between
+                    "
+                >
 
+                    <b>${v}</b>
 
-    document
-        .getElementById("editEmail")
-        .value =
-        state.character.email;
+                    <b>
+                        ${fmt(S.stats[k])}
+                    </b>
 
+                </div>
 
-    document
-        .getElementById("editAge")
-        .value =
-        state.character.age;
+                <div class="bar">
 
+                    <span
+                        style="
+                        width:${Math.min(
+                            100,
+                            S.stats[k]/10
+                        )}%
+                        "
+                    ></span>
 
-    document
-        .getElementById("settingsModal")
-        .classList.remove("hidden");
+                </div>
+
+            </div>
+
+            `
+        )
+        .join("");
+
 }
 
 
-function closeSettings() {
+/* =====================================================
+   SHOP
+   ===================================================== */
 
-    document
-        .getElementById("settingsModal")
-        .classList.add("hidden");
+function renderShop(){
+
+    const a = [
+
+        ["☕ Кава",100],
+
+        ["🎮 1 година гри",250],
+
+        ["🎬 Фільм",350],
+
+        ["🏆 Велика нагорода",1000]
+
+    ];
+
+
+    document.getElementById("shopgm")
+        .textContent =
+        fmt(S.gm) +
+        " GM";
+
+
+    document.getElementById("shoplist")
+        .innerHTML =
+        a.map(
+            x =>
+            `
+
+            <div class="shop">
+
+                <h3>
+                    ${x[0]}
+                </h3>
+
+                <p>
+                    Реальна нагорода за прогрес.
+                </p>
+
+                <b>
+                    ${x[1]} GM
+                </b>
+
+                <br><br>
+
+                <button
+                    class="btn"
+                    ${
+                        S.gm < x[1]
+                        ? "disabled"
+                        : ""
+                    }
+                    onclick="
+                        buy(
+                            ${x[1]},
+                            '${x[0]}'
+                        )
+                    "
+                >
+
+                    Купити
+
+                </button>
+
+            </div>
+
+            `
+        )
+        .join("");
+
 }
 
 
-function saveSettings() {
+function buy(cost,name){
 
-    const nickname =
-        document
-            .getElementById("editNickname")
-            .value
-            .trim();
-
-
-    const email =
-        document
-            .getElementById("editEmail")
-            .value
-            .trim();
-
-
-    const age =
-        Number(
-            document
-                .getElementById("editAge")
-                .value
-        );
-
-
-    if (!nickname) {
-
-        showToast(
-            "Нікнейм не може бути порожнім.",
-            "error"
-        );
+    if(S.gm < cost){
 
         return;
+
     }
 
 
-    if (!email.includes("@")) {
-
-        showToast(
-            "Невірний email.",
-            "error"
-        );
-
-        return;
-    }
+    S.gm -= cost;
 
 
-    if (
-        age < 6 ||
-        age > 100
-    ) {
+    S.history.unshift({
 
-        showToast(
-            "Невірний вік.",
-            "error"
-        );
+        date:date(),
 
-        return;
-    }
+        gm:-cost,
 
+        stat:"-",
 
-    state.character.nickname =
-        nickname;
+        why:"🎁 " + name
 
-    state.character.email =
-        email;
-
-    state.character.age =
-        age;
+    });
 
 
-    saveState();
-
-    closeSettings();
+    save();
 
     render();
 
-    showToast(
-        "💾 Дані збережено.",
-        "success"
+    toast(
+        "Нагороду куплено"
     );
+
 }
 
 
-/* =========================================================
-   RESET
-   ========================================================= */
+/* =====================================================
+   ACHIEVEMENTS
+   ===================================================== */
 
-function resetGame() {
+function renderAch(){
 
-    const confirmed =
+    const a = [
+
+        [
+            "🌱",
+            "Перший крок",
+            "Виконай 1 квест",
+            S.history.some(
+                x=>x.gm>0
+            )
+        ],
+
+        [
+            "🔥",
+            "7 днів",
+            "Серія 7 днів",
+            S.best >= 7
+        ],
+
+        [
+            "🔥",
+            "30 днів",
+            "Серія 30 днів",
+            S.best >= 30
+        ],
+
+        [
+            "💰",
+            "1000 GM",
+            "Зароби 1000 GM",
+            S.gm >= 1000
+        ],
+
+        [
+            "🎯",
+            "50 квестів",
+            "50 виконаних",
+            Object.keys(S.done).length >= 50
+        ]
+
+    ];
+
+
+    document.getElementById("achcount")
+        .textContent =
+        a.filter(
+            x=>x[3]
+        ).length +
+        "/" +
+        a.length;
+
+
+    document.getElementById("achlist")
+        .innerHTML =
+        a.map(
+            x =>
+            `
+
+            <div
+                class="ach ${
+                    x[3]
+                    ? "open"
+                    : "lock"
+                }"
+            >
+
+                <h3>
+                    ${x[0]}
+                    ${x[1]}
+                </h3>
+
+                <p>
+                    ${x[2]}
+                </p>
+
+                <b>
+                    ${
+                        x[3]
+                        ? "🏆 Відкрито"
+                        : "🔒 Закрито"
+                    }
+                </b>
+
+            </div>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   HISTORY
+   ===================================================== */
+
+function renderHistory(){
+
+    document.getElementById("historybody")
+        .innerHTML =
+        S.history.length
+
+        ? S.history
+            .slice(0,100)
+            .map(
+                x =>
+                `
+
+                <tr>
+
+                    <td>
+                        ${x.date}
+                    </td>
+
+                    <td>
+                        ${
+                            x.gm > 0
+                            ? "+"
+                            : ""
+                        }${x.gm}
+                    </td>
+
+                    <td>
+                        ${x.stat}
+                    </td>
+
+                    <td>
+                        ${esc(x.why)}
+                    </td>
+
+                </tr>
+
+                `
+            )
+            .join("")
+
+        : `
+
+        <tr>
+
+            <td
+                colspan="4"
+                class="muted"
+            >
+                Порожньо
+            </td>
+
+        </tr>
+
+        `;
+
+}
+
+
+function clearHistory(){
+
+    if(
         confirm(
-            "Точно хочеш повністю видалити свого персонажа та весь прогрес?"
-        );
+            "Очистити історію?"
+        )
+    ){
 
+        S.history = [];
 
-    if (!confirmed) {
-        return;
+        save();
+
+        render();
+
     }
 
-
-    localStorage.removeItem(
-        STORAGE_KEY
-    );
-
-
-    location.reload();
 }
 
 
-/* =========================================================
-   THEME
-   ========================================================= */
+/* =====================================================
+   SETTINGS
+   ===================================================== */
 
-function applyTheme() {
+function settings(){
 
-    if (
-        state.theme ===
-        "light"
-    ) {
-
-        document
-            .body
-            .classList
-            .add("light");
-
-    } else {
-
-        document
-            .body
-            .classList
-            .remove("light");
-    }
-}
+    document.getElementById("setname")
+        .value = S.name;
 
 
-function toggleTheme() {
-
-    state.theme =
-        state.theme === "dark"
-            ? "light"
-            : "dark";
+    document.getElementById("setemail")
+        .value = S.email || "";
 
 
-    applyTheme();
-
-    saveState();
-}
+    document.getElementById("birth")
+        .value = S.birth;
 
 
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-let toastTimeout = null;
+    document.getElementById("age")
+        .value = age();
 
 
-function showToast(
-    message,
-    type = "info"
-) {
-
-    const toast =
-        document
-            .getElementById("toast");
+    document.getElementById("theme")
+        .value = S.theme;
 
 
-    toast.textContent =
-        message;
+    document.getElementById("setname")
+        .onchange = e => {
 
+            S.name =
+                e.target.value.trim()
+                || "Yevhenii";
 
-    toast.className =
-        "toast " +
-        type;
-
-
-    clearTimeout(
-        toastTimeout
-    );
-
-
-    toastTimeout =
-        setTimeout(() => {
-
-            toast.classList.add(
-                "hidden"
-            );
-
-        }, 3500);
-}
-
-
-/* =========================================================
-   AUTO SAVE
-   ========================================================= */
-
-setInterval(() => {
-
-    if (state.character) {
-
-        saveState();
-    }
-
-}, 10000);
-
-
-/* =========================================================
-   BEFORE CLOSE
-   ========================================================= */
-
-window.addEventListener(
-    "beforeunload",
-    () => {
-
-        saveState();
-
-    }
-);
-
-
-/* =========================================================
-   VISIBILITY CHANGE
-   ========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    () => {
-
-        if (
-            document.visibilityState ===
-            "visible"
-        ) {
-
-            checkDay();
+            save();
 
             render();
 
-        } else {
+        };
 
-            saveState();
-        }
+
+    document.getElementById("setemail")
+        .onchange = e => {
+
+            S.email =
+                e.target.value;
+
+            save();
+
+        };
+
+
+    document.getElementById("birth")
+        .onchange = e => {
+
+            S.birth =
+                +e.target.value;
+
+            S.age =
+                age();
+
+            save();
+
+            render();
+
+        };
+
+
+    document.getElementById("theme")
+        .onchange = e => {
+
+            S.theme =
+                e.target.value;
+
+            save();
+
+            render();
+
+        };
+
+}
+
+
+/* =====================================================
+   CUSTOM TASK
+   ===================================================== */
+
+function openTask(){
+
+    document
+        .getElementById("taskmodal")
+        .classList.add("show");
+
+}
+
+
+function closeTask(){
+
+    document
+        .getElementById("taskmodal")
+        .classList.remove("show");
+
+}
+
+
+function createTask(){
+
+    let n =
+        document
+        .getElementById("taskname")
+        .value
+        .trim();
+
+
+    let st =
+        document
+        .getElementById("taskstat")
+        .value;
+
+
+    let m =
+        +document
+        .getElementById("taskmin")
+        .value || 30;
+
+
+    if(!n){
+
+        return toast(
+            "Напиши назву"
+        );
 
     }
+
+
+    let q = {
+
+        id:
+            "c" +
+            Date.now(),
+
+        name:n,
+
+        desc:n,
+
+        gm:
+            Math.max(
+                5,
+                Math.round(m/2)
+            ),
+
+        stat:st,
+
+        available:Date.now(),
+
+        deadline:
+            Date.now() +
+            m*60000,
+
+        custom:true
+
+    };
+
+
+    S.quests.push(q);
+
+
+    save();
+
+    closeTask();
+
+    render();
+
+    toast(
+        "🎯 Додано"
+    );
+
+
+    document.getElementById(
+        "taskname"
+    ).value = "";
+
+}
+
+
+/* =====================================================
+   RESET
+   ===================================================== */
+
+function resetGame(){
+
+    if(
+        confirm(
+            "Точно видалити весь прогрес?"
+        )
+    ){
+
+        localStorage.removeItem(KEY);
+
+        location.reload();
+
+    }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
+for(
+    let b of
+    document.querySelectorAll(
+        "#nav button"
+    )
+){
+
+    b.onclick = () => {
+
+        document
+            .querySelectorAll(
+                "#nav button"
+            )
+            .forEach(
+                x =>
+                x.classList.remove(
+                    "active"
+                )
+            );
+
+
+        b.classList.add("active");
+
+
+        document
+            .querySelectorAll(
+                ".page"
+            )
+            .forEach(
+                x =>
+                x.classList.remove(
+                    "active"
+                )
+            );
+
+
+        document
+            .getElementById(
+                b.dataset.page
+            )
+            .classList.add(
+                "active"
+            );
+
+    };
+
+}
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+setInterval(
+    () => {
+
+        rollover();
+
+        render();
+
+    },
+    1000
 );
 
 
-/* =========================================================
-   END
-   ========================================================= */
+buildChoices();
+
+
+if(!S.setup){
+
+    document
+        .getElementById("setup")
+        .classList.add("show");
+
+    setupStep(1);
+
+}
+else{
+
+    render();
+
+}
 
 </script>
 
