@@ -1,805 +1,850 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07101d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<title>Life RPG 4.1</title>
+<title>Life RPG 5.0</title>
 
 <style>
 :root{
- --bg:#07101d;
- --panel:#0d1828;
- --panel2:#111f33;
- --text:#eef5ff;
- --muted:#91a3bb;
- --accent:#69e5a4;
- --accent2:#5aa9ff;
- --danger:#ff6577;
- --gold:#ffd166;
- --line:#21334b;
- --shadow:0 16px 45px rgba(0,0,0,.25);
+    --bg:#07101d;
+    --panel:#0d1828;
+    --panel2:#111f33;
+    --text:#eef5ff;
+    --muted:#91a3bb;
+    --accent:#69e5a4;
+    --blue:#5aa9ff;
+    --gold:#ffd166;
+    --red:#ff6577;
+    --line:#21334b;
+    --shadow:0 16px 45px rgba(0,0,0,.28);
 }
 
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 html,body{
- margin:0;
- min-height:100%;
- font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
- background:
- radial-gradient(circle at 20% 0,#14365a 0,transparent 35%),
- radial-gradient(circle at 100% 0,#25451d 0,transparent 30%),
- var(--bg);
- color:var(--text);
- transition:.3s;
+    margin:0;
+    min-height:100%;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+        radial-gradient(circle at 15% 0,#14365a 0,transparent 35%),
+        radial-gradient(circle at 100% 0,#25451d 0,transparent 30%),
+        var(--bg);
+    color:var(--text);
 }
 
 body.light{
- --bg:#edf3f8;
- --panel:#fff;
- --panel2:#f1f5f9;
- --text:#132033;
- --muted:#607086;
- --line:#d5dee8;
- --shadow:0 12px 35px rgba(0,0,0,.12);
+    --bg:#edf3f8;
+    --panel:#ffffff;
+    --panel2:#f1f5f9;
+    --text:#132033;
+    --muted:#607086;
+    --line:#d5dee8;
+    --shadow:0 12px 35px rgba(0,0,0,.12);
 }
 
-button,input,select{font:inherit}
+button,
+input,
+select{
+    font:inherit;
+}
 
 button{
- border:0;
- cursor:pointer;
- color:var(--text);
+    border:0;
+    cursor:pointer;
+    color:var(--text);
 }
 
 .app{
- max-width:1200px;
- margin:auto;
- padding:18px 18px 45px;
+    width:min(1250px,100%);
+    margin:auto;
+    padding:18px 18px 45px;
 }
+
+/* =========================
+   TOP
+========================= */
 
 .top{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:12px;
- margin-bottom:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:16px;
 }
 
-.brand{
- display:flex;
- align-items:center;
- gap:12px;
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
 }
 
-.logo{
- width:48px;
- height:48px;
- border-radius:14px;
- display:grid;
- place-items:center;
- background:linear-gradient(135deg,#64e7a0,#5a9fff);
- color:#06111c;
- font-size:25px;
- font-weight:900;
+.profileIcon{
+    width:52px;
+    height:52px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#69e5a4,#5aa9ff);
+    color:#06111c;
+    font-size:25px;
+    font-weight:900;
+    flex-shrink:0;
 }
 
-.brand h1{
- font-size:22px;
- margin:0;
+.profileName{
+    margin:0;
+    font-size:22px;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.brand small{
- color:var(--muted);
+.profileInfo{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:3px;
 }
+
+.topFlame{
+    font-weight:900;
+    white-space:nowrap;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
 
 .nav{
- display:flex;
- gap:7px;
- overflow:auto;
- padding-bottom:6px;
- margin-bottom:16px;
+    display:flex;
+    gap:7px;
+    overflow:auto;
+    padding-bottom:7px;
+    margin-bottom:16px;
 }
 
 .nav button{
- background:rgba(255,255,255,.05);
- padding:10px 13px;
- border-radius:11px;
- color:var(--muted);
- white-space:nowrap;
+    background:rgba(255,255,255,.05);
+    padding:10px 13px;
+    border-radius:11px;
+    color:var(--muted);
+    white-space:nowrap;
 }
 
 .nav button.active{
- background:var(--accent);
- color:#06111c;
- font-weight:800;
+    background:var(--accent);
+    color:#06111c;
+    font-weight:900;
 }
 
-.page{display:none}
-.page.active{display:block}
+/* =========================
+   PAGES
+========================= */
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* =========================
+   CARDS
+========================= */
 
 .grid{
- display:grid;
- grid-template-columns:1.35fr .65fr;
- gap:16px;
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:16px;
 }
 
 .card{
- background:rgba(13,24,40,.92);
- border:1px solid var(--line);
- border-radius:18px;
- padding:18px;
- box-shadow:var(--shadow);
- backdrop-filter:blur(12px);
+    background:rgba(13,24,40,.92);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(12px);
 }
 
 body.light .card{
- background:rgba(255,255,255,.9);
-}
-
-.hero{
- position:relative;
- overflow:hidden;
-}
-
-.heroRow{
- display:flex;
- justify-content:space-between;
- gap:15px;
- align-items:flex-start;
-}
-
-.eyebrow{
- color:var(--muted);
- font-size:13px;
-}
-
-.gm{
- font-size:38px;
- font-weight:900;
- margin:5px 0;
-}
-
-.level{
- font-size:18px;
- font-weight:800;
-}
-
-.streak{
- color:var(--gold);
- font-weight:800;
-}
-
-.clock{
- margin-top:10px;
- color:var(--accent2);
- font-weight:800;
-}
-
-.bar{
- height:11px;
- background:#07111e;
- border-radius:99px;
- overflow:hidden;
- border:1px solid var(--line);
- margin-top:12px;
-}
-
-.bar>span{
- display:block;
- height:100%;
- width:0;
- background:linear-gradient(90deg,var(--accent2),var(--accent));
- border-radius:99px;
- transition:width .3s;
-}
-
-.statGrid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:10px;
- margin-top:15px;
-}
-
-.stat{
- background:var(--panel2);
- padding:12px;
- border-radius:14px;
-}
-
-.stat b{
- display:block;
- font-size:13px;
-}
-
-.stat strong{
- font-size:20px;
-}
-
-.actions{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:9px;
- margin-top:14px;
-}
-
-.btn{
- padding:11px 12px;
- border-radius:12px;
- background:#182941;
- border:1px solid #29405d;
- text-align:left;
-}
-
-.btn:hover{
- filter:brightness(1.12);
-}
-
-.btn.green{
- background:rgba(105,229,164,.14);
- border-color:rgba(105,229,164,.4);
-}
-
-.btn.red{
- background:rgba(255,101,119,.12);
- border-color:rgba(255,101,119,.4);
-}
-
-.btn.gold{
- background:rgba(255,209,102,.12);
- border-color:rgba(255,209,102,.4);
+    background:rgba(255,255,255,.92);
 }
 
 .sectionTitle{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
- margin-bottom:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
 }
 
 .sectionTitle h2{
- margin:0;
- font-size:18px;
+    margin:0;
+    font-size:18px;
+}
+
+.eyebrow{
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
 }
 
 .pill{
- font-size:12px;
- padding:5px 8px;
- border-radius:99px;
- background:#182941;
- color:var(--muted);
+    font-size:12px;
+    padding:5px 9px;
+    border-radius:99px;
+    background:#182941;
+    color:var(--muted);
 }
 
+/* =========================
+   MAIN INFO
+========================= */
+
+.gm{
+    font-size:38px;
+    font-weight:900;
+    margin:5px 0;
+}
+
+.level{
+    font-size:19px;
+    font-weight:900;
+}
+
+.clock{
+    margin-top:13px;
+    color:var(--blue);
+    font-weight:900;
+}
+
+.bar{
+    height:11px;
+    background:#07111e;
+    border-radius:99px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    margin-top:9px;
+}
+
+.bar span{
+    display:block;
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,var(--blue),var(--accent));
+    border-radius:99px;
+    transition:width .3s;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.statGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.stat{
+    background:var(--panel2);
+    padding:12px;
+    border-radius:14px;
+}
+
+.stat b{
+    display:block;
+    font-size:12px;
+}
+
+.stat strong{
+    font-size:20px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.actions{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+}
+
+.btn{
+    padding:11px 12px;
+    border-radius:12px;
+    background:#182941;
+    border:1px solid #29405d;
+    text-align:left;
+}
+
+.btn:hover{
+    filter:brightness(1.12);
+}
+
+.btn.green{
+    background:rgba(105,229,164,.14);
+    border-color:rgba(105,229,164,.4);
+}
+
+.btn.red{
+    background:rgba(255,101,119,.12);
+    border-color:rgba(255,101,119,.4);
+}
+
+.btn.gold{
+    background:rgba(255,209,102,.12);
+    border-color:rgba(255,209,102,.4);
+}
+
+/* =========================
+   DISCIPLINE
+========================= */
+
+.disciplineNumber{
+    font-size:32px;
+    font-weight:900;
+}
+
+.disciplineText{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:7px;
+}
+
+/* =========================
+   FLAME
+========================= */
+
+.flameCard{
+    text-align:center;
+}
+
+.flameContainer{
+    width:180px;
+    height:205px;
+    margin:5px auto 0;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.flame{
+    position:relative;
+    font-size:115px;
+    line-height:1;
+    user-select:none;
+    transition:.4s;
+}
+
+.flame.active{
+    filter:
+        drop-shadow(0 0 8px rgba(255,170,40,.8))
+        drop-shadow(0 0 25px rgba(255,90,20,.35));
+    animation:flamePulse 1.8s infinite ease-in-out;
+}
+
+@keyframes flamePulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.06);
+    }
+}
+
+/* Frozen flame */
+
+.flameFrozen{
+    position:relative;
+    width:125px;
+    height:155px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.flameFrozen::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border-radius:48% 52% 45% 55%;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(190,245,255,.35),
+            rgba(65,170,255,.12)
+        );
+    border:5px solid rgba(120,220,255,.75);
+    box-shadow:
+        inset 0 0 25px rgba(80,210,255,.35),
+        0 0 25px rgba(60,190,255,.3);
+    transform:rotate(3deg);
+}
+
+.flameFrozen .iceFlame{
+    position:relative;
+    z-index:2;
+    font-size:105px;
+    color:#55d9ff;
+    filter:
+        hue-rotate(155deg)
+        saturate(1.5)
+        drop-shadow(0 0 15px rgba(70,210,255,.9));
+}
+
+.flameFrozen .iceCore{
+    position:absolute;
+    z-index:3;
+    font-size:35px;
+    color:#d8fbff;
+    transform:translateY(18px);
+}
+
+/* Lost flame */
+
+.flameLost{
+    font-size:115px;
+    filter:grayscale(1);
+    opacity:.52;
+}
+
+/* =========================
+   STREAK
+========================= */
+
+.streakNumber{
+    font-size:30px;
+    font-weight:900;
+}
+
+.streakDescription{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+    margin-top:8px;
+}
+
+/* =========================
+   QUESTS
+========================= */
+
 .quest{
- padding:15px 0;
- border-bottom:1px solid var(--line);
+    padding:15px 0;
+    border-bottom:1px solid var(--line);
 }
 
 .quest:last-child{
- border-bottom:0;
+    border-bottom:0;
 }
 
 .questTop{
- display:flex;
- gap:10px;
- align-items:flex-start;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
 }
 
 .questIcon{
- width:42px;
- height:42px;
- border-radius:12px;
- display:grid;
- place-items:center;
- background:var(--panel2);
- font-size:21px;
- flex-shrink:0;
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:var(--panel2);
+    font-size:21px;
+    flex-shrink:0;
 }
 
 .questText{
- flex:1;
+    flex:1;
 }
 
 .questText b{
- font-size:15px;
+    font-size:15px;
 }
 
 .questText small{
- display:block;
- color:var(--muted);
- margin-top:4px;
+    display:block;
+    color:var(--muted);
+    margin-top:4px;
 }
 
 .questDescription{
- margin:10px 0;
- padding:10px;
- border-radius:11px;
- background:rgba(90,169,255,.08);
- color:#cce2ff;
- font-size:13px;
+    margin:10px 0;
+    padding:10px;
+    border-radius:11px;
+    background:rgba(90,169,255,.08);
+    color:#cce2ff;
+    font-size:13px;
 }
 
 .questTimer{
- margin-top:8px;
- padding:8px 10px;
- border-radius:10px;
- background:rgba(255,209,102,.08);
- border:1px solid rgba(255,209,102,.18);
- color:var(--gold);
- font-size:12px;
- font-weight:800;
+    margin-top:8px;
+    padding:8px 10px;
+    border-radius:10px;
+    background:rgba(255,209,102,.08);
+    border:1px solid rgba(255,209,102,.18);
+    color:var(--gold);
+    font-size:12px;
+    font-weight:900;
 }
 
 .questTimer.danger{
- background:rgba(255,101,119,.08);
- border-color:rgba(255,101,119,.25);
- color:var(--danger);
+    background:rgba(255,101,119,.08);
+    border-color:rgba(255,101,119,.25);
+    color:var(--red);
 }
 
 .questTimer.waiting{
- color:var(--accent2);
- background:rgba(90,169,255,.08);
- border-color:rgba(90,169,255,.2);
-}
-
-.quest.failed{
- opacity:.65;
-}
-
-.quest.failed .questTimer{
- color:var(--danger);
-}
-
-.questActions{
- display:flex;
- gap:8px;
- margin-top:8px;
-}
-
-.questActions button{
- padding:9px 12px;
- border-radius:10px;
- background:var(--accent);
- color:#06111c;
- font-weight:800;
+    color:var(--blue);
+    background:rgba(90,169,255,.08);
+    border-color:rgba(90,169,255,.2);
 }
 
 .quest.done{
- opacity:.5;
+    opacity:.5;
 }
 
-.quest.done .questActions button{
- background:#304258;
- color:#aebdd0;
+.quest.failed{
+    opacity:.6;
 }
+
+.questActions{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+}
+
+.questActions button{
+    padding:9px 12px;
+    border-radius:10px;
+    background:var(--accent);
+    color:#06111c;
+    font-weight:900;
+}
+
+.questActions button:disabled{
+    background:#304258;
+    color:#aebdd0;
+    cursor:not-allowed;
+}
+
+/* =========================
+   FORMS
+========================= */
 
 .form{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:10px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
 
 .field label{
- display:block;
- color:var(--muted);
- font-size:12px;
- margin-bottom:5px;
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:5px;
 }
 
 .field input,
 .field select{
- width:100%;
- padding:11px;
- border-radius:11px;
- border:1px solid var(--line);
- background:#081322;
- color:var(--text);
- outline:none;
+    width:100%;
+    padding:11px;
+    border-radius:11px;
+    border:1px solid var(--line);
+    background:#081322;
+    color:var(--text);
+    outline:none;
 }
 
 body.light .field input,
 body.light .field select{
- background:#f5f8fb;
+    background:#f5f8fb;
 }
 
 .form .full{
- grid-column:1/-1;
+    grid-column:1/-1;
 }
 
+/* =========================
+   SHOP / ACHIEVEMENTS
+========================= */
+
 .shopGrid,
-.achGrid,
-.goalGrid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:12px;
+.achGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
 }
 
 .shopItem,
-.achievement,
-.goal{
- background:var(--panel2);
- border:1px solid var(--line);
- border-radius:14px;
- padding:14px;
+.achievement{
+    background:var(--panel2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
 }
 
 .shopItem h3,
-.achievement h3,
-.goal h3{
- margin:0 0 6px;
- font-size:15px;
+.achievement h3{
+    margin:0 0 6px;
+    font-size:15px;
 }
 
 .shopItem p,
-.achievement p,
-.goal p{
- margin:0 0 12px;
- color:var(--muted);
- font-size:13px;
+.achievement p{
+    margin:0 0 12px;
+    color:var(--muted);
+    font-size:13px;
 }
 
 .shopItem button{
- width:100%;
- padding:9px;
- border-radius:10px;
- background:var(--gold);
- color:#17120a;
- font-weight:800;
+    width:100%;
+    padding:9px;
+    border-radius:10px;
+    background:var(--gold);
+    color:#17120a;
+    font-weight:900;
 }
 
 .shopItem button:disabled{
- opacity:.35;
- cursor:not-allowed;
+    opacity:.35;
 }
 
 .achievement.locked{
- opacity:.4;
+    opacity:.4;
 }
 
 .achievement.unlocked{
- border-color:rgba(255,209,102,.5);
+    border-color:rgba(255,209,102,.5);
 }
+
+/* =========================
+   NOTICE
+========================= */
 
 .notice{
- padding:12px;
- border-radius:12px;
- background:rgba(90,169,255,.1);
- border:1px solid rgba(90,169,255,.25);
- color:#cce2ff;
- font-size:13px;
+    padding:12px;
+    border-radius:12px;
+    background:rgba(90,169,255,.1);
+    border:1px solid rgba(90,169,255,.25);
+    color:#cce2ff;
+    font-size:13px;
+    line-height:1.5;
 }
 
-.dangerBox{
- padding:12px;
- border-radius:12px;
- background:rgba(255,101,119,.08);
- border:1px solid rgba(255,101,119,.25);
+/* =========================
+   HISTORY
+========================= */
+
+.tableWrap{
+    overflow:auto;
 }
 
-.toast{
- position:fixed;
- right:18px;
- bottom:18px;
- z-index:100;
- background:#edf7ff;
- color:#081321;
- padding:12px 15px;
- border-radius:13px;
- box-shadow:var(--shadow);
- font-weight:800;
- transform:translateY(120px);
- transition:.25s;
+.historyTable{
+    width:100%;
+    border-collapse:collapse;
 }
 
-.toast.show{
- transform:translateY(0);
+.historyTable th,
+.historyTable td{
+    padding:9px;
+    text-align:left;
+    border-bottom:1px solid var(--line);
 }
+
+/* =========================
+   MODALS
+========================= */
 
 .modal{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.7);
- display:none;
- align-items:center;
- justify-content:center;
- z-index:200;
- padding:18px;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    padding:18px;
 }
 
 .modal.show{
- display:flex;
+    display:flex;
 }
 
 .modalBox{
- width:min(620px,100%);
- max-height:90vh;
- overflow:auto;
- background:var(--panel);
- border:1px solid var(--line);
- border-radius:20px;
- padding:20px;
- box-shadow:0 30px 80px rgba(0,0,0,.5);
+    width:min(620px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
 }
 
 .modalBox h2{
- margin-top:0;
+    margin-top:0;
 }
 
 .choiceGrid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:10px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
 
 .choice{
- padding:15px;
- border-radius:14px;
- border:1px solid var(--line);
- background:var(--panel2);
- cursor:pointer;
- text-align:center;
+    padding:15px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:var(--panel2);
+    cursor:pointer;
+    text-align:center;
 }
 
 .choice.selected{
- border-color:var(--accent);
- background:rgba(105,229,164,.12);
+    border-color:var(--accent);
+    background:rgba(105,229,164,.12);
 }
 
 .wizardStep{
- display:none;
+    display:none;
 }
 
 .wizardStep.active{
- display:block;
+    display:block;
 }
 
 .modalActions{
- display:flex;
- justify-content:space-between;
- gap:10px;
- margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:18px;
 }
 
 .modalActions button{
- padding:11px 15px;
- border-radius:11px;
+    padding:11px 15px;
+    border-radius:11px;
 }
 
 .primary{
- background:var(--accent);
- color:#06111c;
- font-weight:900;
+    background:var(--accent);
+    color:#06111c;
+    font-weight:900;
 }
 
 .secondary{
- background:#182941;
+    background:#182941;
 }
 
-.characterWrap{
- display:flex;
- justify-content:center;
- align-items:center;
- padding:15px;
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:2000;
+    background:#edf7ff;
+    color:#081321;
+    padding:12px 15px;
+    border-radius:13px;
+    box-shadow:var(--shadow);
+    font-weight:900;
+    transform:translateY(120px);
+    transition:.25s;
 }
 
-.character{
- position:relative;
- width:180px;
- height:250px;
+.toast.show{
+    transform:translateY(0);
 }
 
-.charShadow{
- position:absolute;
- width:120px;
- height:20px;
- background:rgba(0,0,0,.3);
- border-radius:50%;
- bottom:3px;
- left:30px;
- filter:blur(5px);
-}
-
-.charHead{
- position:absolute;
- width:72px;
- height:80px;
- border-radius:45% 45% 48% 48%;
- background:#d89a72;
- left:54px;
- top:20px;
- z-index:4;
- border:3px solid rgba(0,0,0,.18);
-}
-
-.charHair{
- position:absolute;
- width:78px;
- height:48px;
- left:51px;
- top:12px;
- border-radius:50% 50% 35% 35%;
- background:#34251e;
- z-index:5;
-}
-
-.character.female .charHair{
- height:75px;
- width:92px;
- left:44px;
- top:8px;
- border-radius:48%;
-}
-
-.character.female .charHead{
- left:54px;
-}
-
-.eye{
- position:absolute;
- width:7px;
- height:7px;
- background:#151515;
- border-radius:50%;
- top:47px;
- z-index:6;
-}
-
-.eye.left{left:72px}
-.eye.right{left:101px}
-
-.nose{
- position:absolute;
- width:8px;
- height:8px;
- border-right:2px solid #a76f50;
- border-bottom:2px solid #a76f50;
- transform:rotate(45deg);
- left:87px;
- top:57px;
- z-index:6;
-}
-
-.mouth{
- position:absolute;
- width:20px;
- height:8px;
- border-bottom:2px solid #7d3e3e;
- border-radius:50%;
- left:80px;
- top:68px;
- z-index:6;
-}
-
-.bodyChar{
- position:absolute;
- width:96px;
- height:95px;
- left:42px;
- top:94px;
- border-radius:24px 24px 15px 15px;
- background:linear-gradient(135deg,#263e62,#17263d);
- z-index:2;
-}
-
-.character.female .bodyChar{
- background:linear-gradient(135deg,#6e3e72,#3d284f);
- border-radius:28px 28px 15px 15px;
-}
-
-.arm{
- position:absolute;
- width:25px;
- height:85px;
- border-radius:20px;
- background:#d89a72;
- top:101px;
- z-index:1;
-}
-
-.arm.left{
- left:24px;
- transform:rotate(12deg);
-}
-
-.arm.right{
- right:24px;
- transform:rotate(-12deg);
-}
-
-.leg{
- position:absolute;
- width:32px;
- height:75px;
- border-radius:14px;
- background:#202b3b;
- top:177px;
- z-index:1;
-}
-
-.leg.left{left:54px}
-.leg.right{left:94px}
-
-.character.female .leg{
- background:#2c2540;
-}
-
-.sword{
- position:absolute;
- width:8px;
- height:80px;
- background:linear-gradient(#eee,#9cb3ca);
- right:8px;
- top:105px;
- transform:rotate(-25deg);
- z-index:8;
- border-radius:5px;
-}
-
-.sword:after{
- content:"";
- position:absolute;
- width:30px;
- height:7px;
- background:#d6a842;
- top:70px;
- left:-11px;
-}
-
-.charLabel{
- text-align:center;
- font-weight:900;
- margin-top:5px;
-}
-
-.ageBadge{
- text-align:center;
- color:var(--muted);
- font-size:12px;
-}
-
-.empty{
- text-align:center;
- padding:25px;
- color:var(--muted);
-}
-
-.timeProgress{
- margin-top:10px;
-}
-
-.calendarDay{
- font-size:12px;
- color:var(--muted);
- margin-top:5px;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:850px){
- .grid{grid-template-columns:1fr}
- .shopGrid,.achGrid,.goalGrid{
-  grid-template-columns:repeat(2,1fr);
- }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .shopGrid,
+    .achGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
 }
 
 @media(max-width:560px){
- .app{padding:12px 10px 30px}
- .top{align-items:flex-start}
- .brand h1{font-size:18px}
- .statGrid{grid-template-columns:repeat(2,1fr)}
- .actions{grid-template-columns:1fr}
- .shopGrid,.achGrid,.goalGrid{grid-template-columns:1fr}
- .form{grid-template-columns:1fr}
- .form .full{grid-column:auto}
- .gm{font-size:31px}
- .card{padding:14px}
- .choiceGrid{grid-template-columns:1fr}
+
+    .app{
+        padding:12px 10px 30px;
+    }
+
+    .profileName{
+        font-size:18px;
+    }
+
+    .profileIcon{
+        width:46px;
+        height:46px;
+    }
+
+    .top{
+        align-items:flex-start;
+    }
+
+    .statGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
+
+    .shopGrid,
+    .achGrid{
+        grid-template-columns:1fr;
+    }
+
+    .form{
+        grid-template-columns:1fr;
+    }
+
+    .form .full{
+        grid-column:auto;
+    }
+
+    .gm{
+        font-size:31px;
+    }
+
+    .card{
+        padding:14px;
+    }
+
+    .choiceGrid{
+        grid-template-columns:1fr;
+    }
+
+    .topFlame{
+        font-size:12px;
+    }
 }
 </style>
 </head>
@@ -808,108 +853,398 @@ body.light .field select{
 
 <div class="app">
 
-<header class="top">
-<div class="brand">
-<div class="logo">⚔</div>
-<div>
-<h1>LIFE RPG <span style="color:var(--accent)">4.1</span></h1>
-<small>Прокачуй персонажа. Прокачуй життя.</small>
-</div>
-</div>
+<!-- =========================
+     TOP PROFILE
+========================= -->
 
-<div class="streak" id="topStreak">🔥 0 DAYS</div>
+<header class="top">
+
+    <div class="profile">
+
+        <div class="profileIcon">
+            🔥
+        </div>
+
+        <div>
+
+            <h1
+                class="profileName"
+                id="profileName"
+            >
+                Yevhenii
+            </h1>
+
+            <div class="profileInfo">
+
+                <span id="profileLevel">
+                    LVL 1
+                </span>
+
+                ·
+
+                <span id="profileStreak">
+                    0 днів
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="topFlame"
+        id="topFlame"
+    >
+        🔥 0 DAYS
+    </div>
+
 </header>
 
-<nav class="nav" id="nav">
-<button data-page="home" class="active">🏠 Головна</button>
-<button data-page="quests">🎯 Квести</button>
-<button data-page="stats">🧬 Стати</button>
-<button data-page="character">🧙 Персонаж</button>
-<button data-page="shop">🎁 Магазин</button>
-<button data-page="ach">🏆 Досягнення</button>
-<button data-page="history">📊 Історія</button>
-<button data-page="settings">⚙️ Налаштування</button>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="nav">
+
+    <button
+        class="active"
+        data-page="home"
+    >
+        🏠 Головна
+    </button>
+
+    <button data-page="quests">
+        🎯 Квести
+    </button>
+
+    <button data-page="stats">
+        📊 Стати
+    </button>
+
+    <button data-page="shop">
+        🎁 Магазин
+    </button>
+
+    <button data-page="achievements">
+        🏆 Досягнення
+    </button>
+
+    <button data-page="history">
+        📜 Історія
+    </button>
+
+    <button data-page="settings">
+        ⚙️ Налаштування
+    </button>
+
 </nav>
+
 
 <main>
 
-<section id="home" class="page active">
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<section
+    id="home"
+    class="page active"
+>
 
 <div class="grid">
 
-<div>
-
-<div class="card hero">
-
-<div class="heroRow">
-
-<div>
-<div class="eyebrow">GLOBAL MASTERY</div>
-<div class="gm" id="gm">0 GM</div>
-<div class="level" id="level">LEVEL 1</div>
-</div>
-
-<div style="text-align:right">
-<div class="eyebrow">HP</div>
-<div style="font-size:28px;font-weight:900" id="hp">100/100</div>
-<div class="streak" id="streak">🔥 0 DAYS</div>
-</div>
-
-</div>
-
-<div class="clock" id="clock">00:00:00</div>
-
-<div class="timeProgress">
-<div class="muted" style="font-size:12px">Прогрес сьогодні</div>
-<div class="bar"><span id="dayBar"></span></div>
-</div>
-
-<div class="bar"><span id="xpBar"></span></div>
-
-<div class="muted" id="xpText" style="margin-top:7px;font-size:12px">
-0 / 100 GM
-</div>
-
-<div class="statGrid" id="miniStats"></div>
-
-</div>
-
-<div class="card" style="margin-top:16px">
-
-<div class="sectionTitle">
-<h2>⚡ Швидкі дії</h2>
-<span class="pill">фарм GM</span>
-</div>
-
-<div class="actions" id="quickActions"></div>
-
-</div>
-
-</div>
+<!-- LEFT -->
 
 <div>
 
-<div class="card">
+    <!-- MAIN PROGRESS -->
 
-<div class="sectionTitle">
-<h2>🎯 Сьогодні</h2>
-<span class="pill" id="dailyCount">0/0</span>
+    <div class="card">
+
+        <div class="eyebrow">
+            GLOBAL MASTERY
+        </div>
+
+        <div
+            class="gm"
+            id="gm"
+        >
+            0 GM
+        </div>
+
+        <div
+            class="level"
+            id="level"
+        >
+            LEVEL 1
+        </div>
+
+        <div
+            class="clock"
+            id="clock"
+        >
+            00:00:00
+        </div>
+
+        <div
+            style="
+                font-size:12px;
+                color:var(--muted);
+                margin-top:10px;
+            "
+        >
+            Прогрес дня
+        </div>
+
+        <div class="bar">
+            <span id="dayBar"></span>
+        </div>
+
+        <div
+            style="
+                font-size:12px;
+                color:var(--muted);
+                margin-top:15px;
+            "
+        >
+            До наступного рівня
+        </div>
+
+        <div class="bar">
+            <span id="xpBar"></span>
+        </div>
+
+        <div
+            id="xpText"
+            style="
+                margin-top:7px;
+                font-size:12px;
+                color:var(--muted);
+            "
+        >
+            0 / 100 GM
+        </div>
+
+        <div
+            class="statGrid"
+            id="miniStats"
+        ></div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div
+        class="card"
+        style="margin-top:16px"
+    >
+
+        <div class="sectionTitle">
+
+            <h2>
+                ⚡ Швидкі дії
+            </h2>
+
+            <span class="pill">
+                фарм GM
+            </span>
+
+        </div>
+
+        <div
+            class="actions"
+            id="quickActions"
+        ></div>
+
+    </div>
+
+
+    <!-- DISCIPLINE -->
+
+    <div
+        class="card"
+        style="margin-top:16px"
+    >
+
+        <div class="sectionTitle">
+
+            <h2>
+                ⚔️ Дисципліна
+            </h2>
+
+            <span
+                class="pill"
+                id="disciplinePercent"
+            >
+                0%
+            </span>
+
+        </div>
+
+        <div
+            class="disciplineNumber"
+            id="disciplineNumber"
+        >
+            0%
+        </div>
+
+        <div class="bar">
+
+            <span
+                id="disciplineBar"
+            ></span>
+
+        </div>
+
+        <div
+            class="disciplineText"
+            id="disciplineText"
+        >
+            Сьогодні ще нічого не виконано.
+        </div>
+
+    </div>
+
 </div>
 
-<div id="dailyHome"></div>
 
-</div>
+<!-- RIGHT -->
 
-<div class="card" style="margin-top:16px">
+<div>
 
-<div class="sectionTitle">
-<h2>🧙 Герой</h2>
-<span class="pill" id="heroAge">17 років</span>
-</div>
+    <!-- FLAME -->
 
-<div id="smallCharacter"></div>
+    <div class="card flameCard">
 
-</div>
+        <div class="sectionTitle">
+
+            <h2>
+                🔥 Вогник
+            </h2>
+
+            <span
+                class="pill"
+                id="flameStatus"
+            >
+                ACTIVE
+            </span>
+
+        </div>
+
+        <div
+            class="flameContainer"
+            id="flameContainer"
+        ></div>
+
+        <div
+            style="
+                font-size:18px;
+                font-weight:900;
+            "
+            id="flameLabel"
+        >
+            Вогник горить
+        </div>
+
+        <div
+            style="
+                color:var(--muted);
+                font-size:12px;
+                margin-top:7px;
+                line-height:1.5;
+            "
+            id="flameTimer"
+        >
+            Виконай хоча б 1 завдання сьогодні.
+        </div>
+
+        <div
+            style="
+                margin-top:20px;
+                font-size:30px;
+                font-weight:900;
+            "
+            id="homeStreak"
+        >
+            0 днів
+        </div>
+
+        <div
+            style="
+                color:var(--muted);
+                font-size:12px;
+            "
+        >
+            поточна серія
+        </div>
+
+        <div
+            class="notice"
+            style="margin-top:15px;text-align:left"
+        >
+            🔥 <b>Горить:</b> виконано хоча б 1 завдання.<br><br>
+
+            🧊 <b>Заморожений:</b> за день не виконано жодного завдання.<br><br>
+
+            🩶 <b>Сірий:</b> минуло 24 години замороження без виконання.
+        </div>
+
+    </div>
+
+
+    <!-- TODAY -->
+
+    <div
+        class="card"
+        style="margin-top:16px"
+    >
+
+        <div class="sectionTitle">
+
+            <h2>
+                🎯 Сьогодні
+            </h2>
+
+            <span
+                class="pill"
+                id="dailyCount"
+            >
+                0/0
+            </span>
+
+        </div>
+
+        <div
+            id="dailyHome"
+        ></div>
+
+    </div>
+
+
+    <!-- DAY STATUS -->
+
+    <div
+        class="card"
+        style="margin-top:16px"
+    >
+
+        <div class="sectionTitle">
+
+            <h2>
+                📌 Статус дня
+            </h2>
+
+        </div>
+
+        <div
+            class="statGrid"
+            id="daySummary"
+        ></div>
+
+    </div>
 
 </div>
 
@@ -918,212 +1253,372 @@ body.light .field select{
 </section>
 
 
-<section id="quests" class="page">
+<!-- =====================================================
+     QUESTS
+===================================================== -->
+
+<section
+    id="quests"
+    class="page"
+>
 
 <div class="card">
 
-<div class="sectionTitle">
-<h2>🎯 Твої завдання</h2>
+    <div class="sectionTitle">
 
-<button class="btn green" onclick="openTaskModal()">
-➕ Додати
-</button>
-</div>
+        <h2>
+            🎯 Твої завдання
+        </h2>
 
-<div class="notice" style="margin-bottom:15px">
+        <button
+            class="btn green"
+            onclick="openTaskModal()"
+        >
+            ➕ Додати
+        </button>
 
-📅 Нові квести генеруються кожного реального дня.
-<br>
-🌅 Перші квести відкриваються не о 00:00, а протягом дня.
-<br>
-⏳ Після відкриття кожного квесту є <b>4 години</b> на виконання.
-<br>
-❌ Якщо пропустив дедлайн — отримуєш <b>штраф XP</b>.
+    </div>
 
-</div>
+    <div
+        class="notice"
+        style="margin-bottom:15px"
+    >
 
-<div id="questList"></div>
+        📅 Нові щоденні квести генеруються кожного дня.
+
+        <br><br>
+
+        ⏳ Після відкриття квесту є час на виконання.
+
+        <br><br>
+
+        ❌ Якщо пропустити дедлайн — втрачається GM.
+
+        <br><br>
+
+        🔥 Для вогника достатньо виконати
+        <b>хоча б 1 завдання</b>.
+
+    </div>
+
+    <div
+        id="questList"
+    ></div>
 
 </div>
 
 </section>
 
 
-<section id="stats" class="page">
+<!-- =====================================================
+     STATS
+===================================================== -->
+
+<section
+    id="stats"
+    class="page"
+>
 
 <div class="card">
 
-<div class="sectionTitle">
-<h2>🧬 Character Stats</h2>
-<span class="pill">розвиток</span>
-</div>
+    <div class="sectionTitle">
 
-<div id="fullStats"></div>
+        <h2>
+            📊 Стати
+        </h2>
+
+        <span class="pill">
+            розвиток
+        </span>
+
+    </div>
+
+    <div
+        id="fullStats"
+    ></div>
 
 </div>
 
 </section>
 
 
-<section id="character" class="page">
+<!-- =====================================================
+     SHOP
+===================================================== -->
+
+<section
+    id="shop"
+    class="page"
+>
 
 <div class="card">
 
-<div class="sectionTitle">
-<h2>🧙 Твій персонаж</h2>
-<span class="pill" id="characterLevel">LEVEL 1</span>
-</div>
+    <div class="sectionTitle">
 
-<div id="bigCharacter"></div>
+        <h2>
+            🎁 Reward Shop
+        </h2>
+
+        <span
+            class="pill"
+            id="shopGM"
+        >
+            0 GM
+        </span>
+
+    </div>
+
+    <div
+        class="notice"
+        style="margin-bottom:15px"
+    >
+        Купуй реальні нагороди за зароблений GM.
+    </div>
+
+    <div
+        class="shopGrid"
+        id="shopList"
+    ></div>
 
 </div>
 
 </section>
 
 
-<section id="shop" class="page">
+<!-- =====================================================
+     ACHIEVEMENTS
+===================================================== -->
+
+<section
+    id="achievements"
+    class="page"
+>
 
 <div class="card">
 
-<div class="sectionTitle">
-<h2>🎁 Reward Shop</h2>
-<span class="pill" id="shopGM">0 GM</span>
-</div>
+    <div class="sectionTitle">
 
-<div class="notice" style="margin-bottom:12px">
-Купуй реальні нагороди за зароблений GM.
-</div>
+        <h2>
+            🏆 Досягнення
+        </h2>
 
-<div class="shopGrid" id="shopList"></div>
+        <span
+            class="pill"
+            id="achCount"
+        >
+            0/0
+        </span>
+
+    </div>
+
+    <div
+        class="achGrid"
+        id="achList"
+    ></div>
 
 </div>
 
 </section>
 
 
-<section id="ach" class="page">
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<section
+    id="history"
+    class="page"
+>
 
 <div class="card">
 
-<div class="sectionTitle">
-<h2>🏆 Achievements</h2>
-<span class="pill" id="achCount">0/0</span>
-</div>
+    <div class="sectionTitle">
 
-<div class="achGrid" id="achList"></div>
+        <h2>
+            📜 Історія
+        </h2>
+
+        <button
+            class="btn red"
+            onclick="clearHistory()"
+        >
+            Очистити
+        </button>
+
+    </div>
+
+    <div class="tableWrap">
+
+        <table class="historyTable">
+
+            <thead>
+
+                <tr>
+                    <th>Дата</th>
+                    <th>GM</th>
+                    <th>Стата</th>
+                    <th>Причина</th>
+                </tr>
+
+            </thead>
+
+            <tbody
+                id="historyBody"
+            ></tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
 </section>
 
 
-<section id="history" class="page">
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<section
+    id="settings"
+    class="page"
+>
 
 <div class="card">
 
-<div class="sectionTitle">
-<h2>📊 Activity Log</h2>
+    <div class="sectionTitle">
 
-<button class="btn red" onclick="clearHistory()">
-Очистити
-</button>
+        <h2>
+            ⚙️ Налаштування
+        </h2>
 
-</div>
+    </div>
 
-<div style="overflow:auto">
+    <div class="form">
 
-<table style="width:100%;border-collapse:collapse">
+        <div class="field">
 
-<thead>
-<tr>
-<th style="padding:9px;text-align:left">Дата</th>
-<th style="padding:9px;text-align:left">GM</th>
-<th style="padding:9px;text-align:left">Стата</th>
-<th style="padding:9px;text-align:left">Причина</th>
-</tr>
-</thead>
+            <label>
+                Нікнейм
+            </label>
 
-<tbody id="historyBody"></tbody>
+            <input
+                id="playerName"
+                placeholder="Твій нікнейм"
+            >
 
-</table>
+        </div>
 
-</div>
+        <div class="field">
 
-</div>
+            <label>
+                Email
+            </label>
 
-</section>
+            <input
+                id="playerEmail"
+                type="email"
+                placeholder="you@email.com"
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Рік народження
+            </label>
+
+            <input
+                id="birthYear"
+                type="number"
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Вік
+            </label>
+
+            <input
+                id="playerAge"
+                readonly
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Тема
+            </label>
+
+            <select id="themeSelect">
+
+                <option value="dark">
+                    🌙 Темна
+                </option>
+
+                <option value="light">
+                    ☀️ Світла
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
 
 
-<section id="settings" class="page">
+    <div
+        class="notice"
+        style="margin-top:16px"
+    >
 
-<div class="card">
+        👤 <b>Персонажа більше немає.</b>
 
-<div class="sectionTitle">
-<h2>⚙️ Налаштування</h2>
-</div>
+        <br>
 
-<div class="form">
+        Life RPG тепер будується навколо
+        твого профілю, квестів, дисципліни,
+        статистики та вогника.
 
-<div class="field">
-<label>Ім'я персонажа</label>
-<input id="playerName">
-</div>
+    </div>
 
-<div class="field">
-<label>Email</label>
-<input id="playerEmail" type="email" placeholder="you@email.com">
-</div>
 
-<div class="field">
-<label>Рік народження</label>
-<input id="birthYear" type="number">
-</div>
+    <div
+        style="
+            margin-top:20px;
+            padding:14px;
+            border-radius:14px;
+            background:rgba(255,101,119,.08);
+            border:1px solid rgba(255,101,119,.25);
+        "
+    >
 
-<div class="field">
-<label>Вік</label>
-<input id="playerAge" type="number" readonly>
-</div>
+        <b>
+            Небезпечна зона
+        </b>
 
-<div class="field">
-<label>Стать</label>
+        <p
+            style="
+                color:var(--muted);
+                font-size:13px;
+            "
+        >
+            Це повністю видалить локальний прогрес.
+        </p>
 
-<select id="playerGender">
-<option value="male">👨 Чоловік</option>
-<option value="female">👩 Жінка</option>
-</select>
+        <button
+            class="btn red"
+            onclick="resetGame()"
+        >
+            🗑 Скинути гру
+        </button>
 
-</div>
-
-<div class="field">
-<label>Тема</label>
-
-<select id="themeSelect">
-<option value="dark">🌙 Темна</option>
-<option value="light">☀️ Світла</option>
-</select>
-
-</div>
-
-</div>
-
-<div style="margin-top:18px">
-<b>🎯 Мої напрямки</b>
-<div id="goalList" style="margin-top:10px"></div>
-</div>
-
-<div class="dangerBox" style="margin-top:18px">
-
-<b>⚠️ Скидання</b>
-
-<p class="muted">
-Видалить весь прогрес на цьому пристрої.
-</p>
-
-<button class="btn red" onclick="resetGame()">
-☠️ RESET EVERYTHING
-</button>
-
-</div>
+    </div>
 
 </div>
 
@@ -1134,2685 +1629,3433 @@ body.light .field select{
 </div>
 
 
-<!-- FIRST START -->
+<!-- =====================================================
+     SETUP MODAL
+===================================================== -->
 
-<div class="modal" id="setupModal">
+<div
+    class="modal"
+    id="setupModal"
+>
 
 <div class="modalBox">
 
-<div id="setup1" class="wizardStep active">
+    <div
+        id="setup1"
+        class="wizardStep active"
+    >
 
-<h2>👋 Ласкаво просимо в Life RPG 4.1</h2>
+        <h2>
+            👋 Ласкаво просимо в Life RPG
+        </h2>
 
-<p class="muted">
-Створимо твого персонажа.
-</p>
+        <p style="color:var(--muted)">
+            Спочатку введи свій нікнейм.
+        </p>
 
-<h3>Яка твоя стать?</h3>
+        <div class="field">
 
-<div class="choiceGrid">
+            <label>
+                Нікнейм
+            </label>
 
-<div class="choice" onclick="chooseGender('male',this)">
-👨<br>Чоловік
+            <input
+                id="setupName"
+                value="Yevhenii"
+            >
+
+        </div>
+
+        <div class="modalActions">
+
+            <span></span>
+
+            <button
+                class="primary"
+                onclick="setupNext(2)"
+            >
+                Далі →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="setup2"
+        class="wizardStep"
+    >
+
+        <h2>
+            🎂 Рік народження
+        </h2>
+
+        <p style="color:var(--muted)">
+            Це використовується для профілю.
+        </p>
+
+        <input
+            id="setupBirthYear"
+            type="number"
+            placeholder="Наприклад: 2009"
+            style="
+                width:100%;
+                padding:13px;
+                border-radius:12px;
+                border:1px solid var(--line);
+                background:#081322;
+                color:white;
+            "
+        >
+
+        <div class="modalActions">
+
+            <button
+                class="secondary"
+                onclick="setupNext(1)"
+            >
+                ← Назад
+            </button>
+
+            <button
+                class="primary"
+                onclick="setupNext(3)"
+            >
+                Далі →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="setup3"
+        class="wizardStep"
+    >
+
+        <h2>
+            🎯 Що хочеш прокачувати?
+        </h2>
+
+        <p style="color:var(--muted)">
+            Вибери напрямки для своїх квестів.
+        </p>
+
+        <div
+            class="choiceGrid"
+            id="goalChoices"
+        >
+
+            <div
+                class="choice"
+                data-goal="sport"
+                onclick="toggleGoal(this)"
+            >
+                💪<br>
+                Спорт
+            </div>
+
+            <div
+                class="choice"
+                data-goal="development"
+                onclick="toggleGoal(this)"
+            >
+                🧠<br>
+                Розвиток
+            </div>
+
+            <div
+                class="choice"
+                data-goal="work"
+                onclick="toggleGoal(this)"
+            >
+                💼<br>
+                Робота / навчання
+            </div>
+
+            <div
+                class="choice"
+                data-goal="selfcare"
+                onclick="toggleGoal(this)"
+            >
+                🧼<br>
+                Догляд
+            </div>
+
+            <div
+                class="choice"
+                data-goal="reading"
+                onclick="toggleGoal(this)"
+            >
+                📚<br>
+                Читання
+            </div>
+
+            <div
+                class="choice"
+                data-goal="creativity"
+                onclick="toggleGoal(this)"
+            >
+                🎨<br>
+                Творчість
+            </div>
+
+            <div
+                class="choice"
+                data-goal="discipline"
+                onclick="toggleGoal(this)"
+            >
+                ⚔️<br>
+                Дисципліна
+            </div>
+
+            <div
+                class="choice"
+                data-goal="music"
+                onclick="toggleGoal(this)"
+            >
+                🎵<br>
+                Музика
+            </div>
+
+        </div>
+
+        <div class="modalActions">
+
+            <button
+                class="secondary"
+                onclick="setupNext(2)"
+            >
+                ← Назад
+            </button>
+
+            <button
+                class="primary"
+                onclick="finishSetup()"
+            >
+                🚀 Почати
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="choice" onclick="chooseGender('female',this)">
-👩<br>Жінка
-</div>
-
-</div>
-
-<div class="modalActions">
-<span></span>
-
-<button class="primary" onclick="setupNext(2)">
-Далі →
-</button>
-</div>
-
 </div>
 
 
-<div id="setup2" class="wizardStep">
+<!-- =====================================================
+     TASK MODAL
+===================================================== -->
 
-<h2>🎂 Рік народження</h2>
-
-<p class="muted">
-Вік буде впливати на складність квестів.
-</p>
-
-<input
-id="setupBirthYear"
-type="number"
-min="1920"
-max="2026"
-placeholder="Наприклад: 2009"
-style="width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#081322;color:white"
+<div
+    class="modal"
+    id="taskModal"
 >
-
-<div class="modalActions">
-
-<button class="secondary" onclick="setupNext(1)">
-← Назад
-</button>
-
-<button class="primary" onclick="setupNext(3)">
-Далі →
-</button>
-
-</div>
-
-</div>
-
-
-<div id="setup3" class="wizardStep">
-
-<h2>🎯 Що хочеш прокачувати?</h2>
-
-<p class="muted">
-Вибери один або декілька напрямків.
-</p>
-
-<div class="choiceGrid">
-
-<div class="choice goalChoice" data-goal="sport" onclick="toggleGoal(this)">
-💪<br>Спорт
-</div>
-
-<div class="choice goalChoice" data-goal="development" onclick="toggleGoal(this)">
-🧠<br>Розвиток
-</div>
-
-<div class="choice goalChoice" data-goal="work" onclick="toggleGoal(this)">
-💼<br>Робота / навчання
-</div>
-
-<div class="choice goalChoice" data-goal="selfcare" onclick="toggleGoal(this)">
-🧼<br>Догляд
-</div>
-
-<div class="choice goalChoice" data-goal="reading" onclick="toggleGoal(this)">
-📚<br>Читання
-</div>
-
-<div class="choice goalChoice" data-goal="creativity" onclick="toggleGoal(this)">
-🎨<br>Творчість
-</div>
-
-<div class="choice goalChoice" data-goal="discipline" onclick="toggleGoal(this)">
-⚔️<br>Дисципліна
-</div>
-
-<div class="choice goalChoice" data-goal="music" onclick="toggleGoal(this)">
-🎵<br>Музика
-</div>
-
-</div>
-
-<div class="modalActions">
-
-<button class="secondary" onclick="setupNext(2)">
-← Назад
-</button>
-
-<button class="primary" onclick="finishSetup()">
-🚀 Почати
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- CREATE TASK -->
-
-<div class="modal" id="taskModal">
 
 <div class="modalBox">
 
-<h2>➕ Нове завдання</h2>
+    <h2>
+        ➕ Нове завдання
+    </h2>
 
-<div class="field">
+    <div class="field">
 
-<label>Яке завдання?</label>
+        <label>
+            Назва завдання
+        </label>
 
-<input
-id="taskName"
-placeholder="Наприклад: Вивчити 20 німецьких слів"
->
+        <input
+            id="taskName"
+            placeholder="Наприклад: Вивчити 20 німецьких слів"
+        >
+
+    </div>
+
+    <div
+        class="form"
+        style="margin-top:10px"
+    >
+
+        <div class="field">
+
+            <label>
+                Стата
+            </label>
+
+            <select id="taskStat">
+
+                <option value="STR">
+                    💪 STR
+                </option>
+
+                <option value="INT">
+                    🧠 INT
+                </option>
+
+                <option value="LANG">
+                    🇩🇪 LANG
+                </option>
+
+                <option value="TECH">
+                    💻 TECH
+                </option>
+
+                <option value="WIS">
+                    📖 WIS
+                </option>
+
+                <option value="DISC">
+                    ⚔️ DISC
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="field">
+
+            <label>
+                Час, хв
+            </label>
+
+            <input
+                id="taskDuration"
+                type="number"
+                value="30"
+                min="1"
+            >
+
+        </div>
+
+    </div>
+
+    <div class="modalActions">
+
+        <button
+            class="secondary"
+            onclick="closeTaskModal()"
+        >
+            ✕ Скасувати
+        </button>
+
+        <button
+            class="primary"
+            onclick="createTask()"
+        >
+            ➕ Створити
+        </button>
+
+    </div>
 
 </div>
 
-<div class="form" style="margin-top:10px">
-
-<div class="field">
-
-<label>🧬 Стата</label>
-
-<select id="taskStat">
-
-<option value="STR">💪 STR</option>
-<option value="INT">🧠 INT</option>
-<option value="LANG">🇩🇪 LANG</option>
-<option value="TECH">💻 TECH</option>
-<option value="WIS">📖 WIS</option>
-<option value="DISC">⚔️ DISC</option>
-
-</select>
-
-</div>
-
-<div class="field">
-
-<label>⏱ Хвилини</label>
-
-<input id="taskDuration" type="number" value="30" min="1">
-
-</div>
-
-</div>
-
-<div class="modalActions">
-
-<button class="secondary" onclick="closeTaskModal()">
-✕ Скасувати
-</button>
-
-<button class="primary" onclick="createTask()">
-➕ Створити
-</button>
-
-</div>
-
-</div>
-
 </div>
 
 
-<div class="toast" id="toast"></div>
+<div
+    class="toast"
+    id="toast"
+></div>
 
 
 <script>
 
-'use strict';
+/* ==========================================================
+   LIFE RPG 5.0
+   ========================================================== */
 
-const KEY='life_rpg_v41';
+"use strict";
 
-const STATS={
- STR:'💪 STR',
- INT:'🧠 INT',
- LANG:'🇩🇪 LANG',
- TECH:'💻 TECH',
- WIS:'📖 WIS',
- DISC:'⚔️ DISC'
+
+/* ==========================================================
+   CONSTANTS
+   ========================================================== */
+
+const STORAGE_KEY = "life_rpg_v41";
+
+const STATS = {
+    STR:"💪 STR",
+    INT:"🧠 INT",
+    LANG:"🇩🇪 LANG",
+    TECH:"💻 TECH",
+    WIS:"📖 WIS",
+    DISC:"⚔️ DISC"
 };
 
-const GOALS={
- sport:'💪 Спорт',
- development:'🧠 Розвиток',
- work:'💼 Робота / навчання',
- selfcare:'🧼 Догляд',
- reading:'📚 Читання',
- creativity:'🎨 Творчість',
- discipline:'⚔️ Дисципліна',
- music:'🎵 Музика'
+
+/* ==========================================================
+   DEFAULT STATE
+   ========================================================== */
+
+const DEFAULT_STATE = {
+
+    setupDone:false,
+
+    name:"Yevhenii",
+
+    email:"",
+
+    birthYear:2009,
+
+    age:17,
+
+    goals:[],
+
+    theme:"dark",
+
+    gm:0,
+
+    hp:100,
+
+    streak:0,
+
+    bestStreak:0,
+
+    lastStreakDate:null,
+
+    lastDate:null,
+
+    questsDate:null,
+
+    flameState:"active",
+
+    frozenAt:null,
+
+    dayHadCompletion:false,
+
+    stats:{
+        STR:0,
+        INT:0,
+        LANG:0,
+        TECH:0,
+        WIS:0,
+        DISC:0
+    },
+
+    quests:[],
+
+    completed:{},
+
+    failed:{},
+
+    history:[],
+
+    shopPurchases:[],
+
+    penaltyLog:{}
+
 };
 
-const DEFAULT={
- setupDone:false,
- name:'Yevhenii',
- email:'',
- birthYear:2009,
- age:17,
- gender:null,
- goals:[],
- theme:'dark',
 
- gm:0,
- hp:100,
- streak:0,
+let state = loadState();
 
- lastDate:null,
- questsDate:null,
 
- stats:{
-  STR:0,
-  INT:0,
-  LANG:0,
-  TECH:0,
-  WIS:0,
-  DISC:0
- },
+/* ==========================================================
+   HELPERS
+   ========================================================== */
 
- quests:[],
- completed:{},
- failed:{},
- history:[],
- shopPurchases:[],
-
- penaltyLog:{}
-};
-
-let state=loadState();
-
-function clone(x){
- return JSON.parse(JSON.stringify(x));
-}
-
-function merge(base,src){
-
- Object.keys(src||{}).forEach(k=>{
-
-  if(
-   src[k] &&
-   typeof src[k]==='object' &&
-   !Array.isArray(src[k]) &&
-   base[k] &&
-   typeof base[k]==='object' &&
-   !Array.isArray(base[k])
-  ){
-   base[k]=merge(base[k],src[k]);
-  }else{
-   base[k]=src[k];
-  }
-
- });
-
- return base;
-}
-
-function loadState(){
-
- try{
-
-  const raw=localStorage.getItem(KEY);
-
-  if(!raw)return clone(DEFAULT);
-
-  return merge(
-   clone(DEFAULT),
-   JSON.parse(raw)
-  );
-
- }catch(e){
-
-  return clone(DEFAULT);
-
- }
-
-}
-
-function save(){
- localStorage.setItem(KEY,JSON.stringify(state));
-}
-
-function today(){
-
- const d=new Date();
-
- const y=d.getFullYear();
- const m=String(d.getMonth()+1).padStart(2,'0');
- const day=String(d.getDate()).padStart(2,'0');
-
- return `${y}-${m}-${day}`;
-}
-
-function nowTime(){
-
- const d=new Date();
-
- return String(d.getHours()).padStart(2,'0')
-  +':'+
-  String(d.getMinutes()).padStart(2,'0')
-  +':'+
-  String(d.getSeconds()).padStart(2,'0');
-
-}
-
-function currentAge(){
-
- const now=new Date();
-
- const year=now.getFullYear();
-
- return Math.max(
-  1,
-  year-Number(state.birthYear||year)
- );
-
-}
-
-function fmt(n){
-
- return Math.round(n)
-  .toLocaleString('uk-UA');
-
-}
-
-function toast(msg){
-
- const el=document.getElementById('toast');
-
- el.textContent=msg;
-
- el.classList.add('show');
-
- clearTimeout(window.__toast);
-
- window.__toast=setTimeout(()=>{
-  el.classList.remove('show');
- },2400);
-
-}
-
-function levelForGM(gm){
-
- return Math.max(
-  1,
-  Math.floor(Math.sqrt(Math.max(0,gm)/100))+1
- );
-
-}
-
-function levelStart(level){
-
- return level<=1
-  ?0
-  :100*(level-1)*(level-1);
-
-}
-
-function nextLevelGM(level){
-
- return 100*level*level;
-
+function clone(obj){
+    return JSON.parse(JSON.stringify(obj));
 }
 
 
-/* =====================================================
-   REAL DAY
-===================================================== */
+function merge(base,source){
 
-function normalizeDay(){
+    Object.keys(source || {}).forEach(key=>{
 
- const t=today();
+        if(
+            source[key] &&
+            typeof source[key] === "object" &&
+            !Array.isArray(source[key]) &&
+            base[key] &&
+            typeof base[key] === "object" &&
+            !Array.isArray(base[key])
+        ){
 
- const previous=state.lastDate;
+            merge(base[key],source[key]);
 
- if(previous && previous!==t){
+        }else{
 
-  const a=new Date(previous);
-  const b=new Date(t);
+            base[key] = source[key];
 
-  const diff=Math.round(
-   (b-a)/86400000
-  );
-
-  if(diff>1){
-   state.streak=0;
-  }
-
-  if(diff===1){
-   state.streak++;
-  }
-
-  state.completed={};
-  state.failed={};
-  state.penaltyLog={};
-
-  state.age=currentAge();
-
-  generateDailyQuests();
- }
-
- if(!state.lastDate){
-  state.lastDate=t;
- }
-
- if(state.questsDate!==t){
-
-  state.completed={};
-  state.failed={};
-  state.penaltyLog={};
-
-  state.age=currentAge();
-
-  generateDailyQuests();
-
-  state.questsDate=t;
- }
-
- state.lastDate=t;
-
- state.age=currentAge();
-
- processExpiredQuests();
-
- save();
-
-}
-
-
-/* =====================================================
-   GENDER
-===================================================== */
-
-function chooseGender(gender,el){
-
- state.gender=gender;
-
- document
-  .querySelectorAll('#setup1 .choice')
-  .forEach(x=>x.classList.remove('selected'));
-
- el.classList.add('selected');
-
-}
-
-
-/* =====================================================
-   SETUP
-===================================================== */
-
-function setupNext(step){
-
- document
-  .querySelectorAll('.wizardStep')
-  .forEach(x=>x.classList.remove('active'));
-
- document
-  .getElementById('setup'+step)
-  .classList.add('active');
-
-}
-
-function toggleGoal(el){
-
- el.classList.toggle('selected');
-
-}
-
-function selectedGoals(){
-
- return [
-  ...document.querySelectorAll('.goalChoice.selected')
- ]
- .map(x=>x.dataset.goal);
-
-}
-
-function finishSetup(){
-
- const birthYear=Number(
-  document.getElementById('setupBirthYear').value
- );
-
- const thisYear=new Date().getFullYear();
-
- if(!state.gender){
-
-  toast('Вибери стать');
-
-  setupNext(1);
-
-  return;
-
- }
-
- if(
-  !birthYear ||
-  birthYear<1920 ||
-  birthYear>thisYear
- ){
-
-  toast('Введи правильний рік народження');
-
-  setupNext(2);
-
-  return;
-
- }
-
- const goals=selectedGoals();
-
- if(!goals.length){
-
-  toast('Вибери хоча б один напрямок');
-
-  setupNext(3);
-
-  return;
-
- }
-
- state.birthYear=birthYear;
-
- state.age=currentAge();
-
- state.goals=goals;
-
- state.setupDone=true;
-
- state.lastDate=today();
-
- state.questsDate=today();
-
- generateDailyQuests();
-
- save();
-
- document
-  .getElementById('setupModal')
-  .classList.remove('show');
-
- render();
-
- toast('🚀 Твоя Life RPG створена!');
-
-}
-
-
-/* =====================================================
-   AGE
-===================================================== */
-
-function ageGroup(){
-
- const age=state.age;
-
- if(age<=9)return'child';
-
- if(age<=12)return'young';
-
- if(age<=15)return'teen';
-
- if(age<=17)return'youth';
-
- if(age<=25)return'adult';
-
- if(age<=40)return'mature';
-
- if(age<=60)return'older';
-
- return'senior';
-
-}
-
-function ageScale(){
-
- return {
-  child:.45,
-  young:.58,
-  teen:.72,
-  youth:.88,
-  adult:1,
-  mature:.92,
-  older:.78,
-  senior:.62
- }[ageGroup()]||1;
-
-}
-
-
-/*
- Відмінності статі.
- Це не означає, що одна стать "краща".
- Просто система трохи змінює акцент завдань.
-*/
-
-function genderSportBonus(){
-
- if(state.gender==='male'){
-  return 1.12;
- }
-
- return .88;
-
-}
-
-function genderMindBonus(){
-
- if(state.gender==='female'){
-  return 1.08;
- }
-
- return .94;
-
-}
-
-
-/* =====================================================
-   QUEST TIME SYSTEM
-===================================================== */
-
-/*
- День = 00:00 -> 24:00.
-
- Квести відкриваються поступово:
- 05:00
- 06:30
- 08:00
- 09:30
- 11:00
- 12:30
- 14:00
- 15:30
- 17:00
- 18:30
- 20:00
-
- Після появи є 4 години.
-*/
-
-const UNLOCK_HOURS=[
-  5,
-  6.5,
-  8,
-  9.5,
-  11,
-  12.5,
-  14,
-  15.5,
-  17,
-  18.5,
-  20
-];
-
-function dateAtToday(hourFloat){
-
- const [h,m]=String(hourFloat)
-  .split('.');
-
- const hour=Number(h);
-
- let minute=0;
-
- if(m){
-  minute=Number(m)*6;
- }
-
- const d=new Date();
-
- d.setHours(hour,minute,0,0);
-
- return d.getTime();
-
-}
-
-function getUnlockTime(index){
-
- const hour=
-  UNLOCK_HOURS[
-   index%UNLOCK_HOURS.length
-  ];
-
- return dateAtToday(hour);
-
-}
-
-function getDeadline(q){
-
- return q.availableAt+(4*60*60*1000);
-
-}
-
-function isQuestAvailable(q){
-
- return Date.now()>=q.availableAt;
-
-}
-
-function isQuestExpired(q){
-
- return Date.now()>=getDeadline(q);
-
-}
-
-function formatDuration(ms){
-
- if(ms<=0)return'00:00:00';
-
- const total=Math.floor(ms/1000);
-
- const h=Math.floor(total/3600);
-
- const m=Math.floor((total%3600)/60);
-
- const s=total%60;
-
- return String(h).padStart(2,'0')
-  +':'+
-  String(m).padStart(2,'0')
-  +':'+
-  String(s).padStart(2,'0');
-
-}
-
-
-/* =====================================================
-   DAILY QUEST GENERATOR
-===================================================== */
-
-function generateDailyQuests(){
-
- const dayNumber=
-  Math.floor(
-   new Date(today()).getTime()/86400000
-  );
-
- const age=state.age;
- const scale=ageScale();
-
- const quests=[];
-
- let questIndex=0;
-
- function add(
-  id,
-  name,
-  description,
-  gm,
-  stat,
-  category
- ){
-
-  const availableAt=
-   getUnlockTime(questIndex++);
-
-  const finalGM=
-   Math.max(
-    5,
-    Math.round(gm*scale)
-   );
-
-  quests.push({
-
-   id:id+'_'+dayNumber,
-
-   name,
-   description,
-
-   gm:finalGM,
-
-   penalty:Math.max(
-    3,
-    Math.round(finalGM*.35)
-   ),
-
-   stat,
-   category,
-
-   daily:true,
-
-   availableAt,
-
-   deadlineAt:
-    availableAt+(4*60*60*1000)
-
-  });
-
- }
-
-
- /* =================================================
-    SPORT
- ================================================= */
-
- if(state.goals.includes('sport')){
-
-  if(state.gender==='male'){
-
-   if(age<=9){
-
-    add(
-     'sport1',
-     '💪 Рух героя',
-     '10 легких присідань + 5 рухів руками + 5 хвилин активної гри.',
-     14*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🏃 Маленький бігун',
-     '10 хвилин спокійної прогулянки або активної гри.',
-     12*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }else if(age<=12){
-
-    add(
-     'sport1',
-     '💪 Сила героя',
-     '15 присідань + 5 віджимань від стіни/лавки + 20 секунд планки.',
-     18*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🏃 Рух',
-     '15 хвилин активної прогулянки, велосипеда або гри.',
-     16*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }else if(age<=17){
-
-    add(
-     'sport1',
-     '💪 Тренування героя',
-     '20 присідань + 10 віджимань + 30 секунд планки.',
-     26*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🏃 Кардіо-квест',
-     '20 хвилин швидкої ходьби, велосипеда або іншої помірної активності.',
-     25*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport3',
-     '⚔️ Сила',
-     '3 підходи: 10 присідань + 5 віджимань. Відпочинок між підходами.',
-     28*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }else{
-
-    add(
-     'sport1',
-     '💪 Силове тренування',
-     '30 присідань + 15 віджимань + 30 секунд планки. За потреби використовуй полегшений варіант.',
-     32*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🏃 Кардіо',
-     '30 хвилин швидкої ходьби, велосипеда або іншої помірної активності.',
-     30*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }
-
-  }else{
-
-   if(age<=9){
-
-    add(
-     'sport1',
-     '🌸 Легка активність',
-     '10 легких присідань + 5 хвилин рухливої гри.',
-     14*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🌸 Прогулянка',
-     '10 хвилин спокійної прогулянки або активної гри.',
-     12*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }else if(age<=12){
-
-    add(
-     'sport1',
-     '🌸 Легкий фітнес',
-     '12 присідань + 5 віджимань від стіни + 20 секунд легкої планки.',
-     18*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🌸 Активність',
-     '15 хвилин прогулянки, танців, велосипеда або гри.',
-     16*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }else if(age<=17){
-
-    add(
-     'sport1',
-     '🌸 Фітнес-квест',
-     '15 присідань + 8 віджимань від зручної опори + 30 секунд планки.',
-     24*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🌸 Активний день',
-     '20 хвилин прогулянки, танців, велосипеда або іншої помірної активності.',
-     23*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }else{
-
-    add(
-     'sport1',
-     '🌸 Фітнес і сила',
-     '20 присідань + 10 віджимань або їх полегшений варіант + 30 секунд планки.',
-     28*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-    add(
-     'sport2',
-     '🌸 Кардіо',
-     '25 хвилин помірної фізичної активності.',
-     27*genderSportBonus(),
-     'STR',
-     'sport'
-    );
-
-   }
-
-  }
-
- }
-
-
- /* =================================================
-    DEVELOPMENT
- ================================================= */
-
- if(state.goals.includes('development')){
-
-  const tasks=[
-   'Вивчи 5 нових фактів про тему, яка тебе цікавить, і запиши їх.',
-   'Подивись навчальний матеріал 20 хвилин та запиши 3 головні думки.',
-   'Розв’яжи 5 логічних задач.',
-   'Вивчи одну нову навичку протягом 20 хвилин.',
-   'Напиши план своєї цілі на найближчий місяць.',
-   'Дізнайся щось нове про професію, яка тебе цікавить.',
-   'Вивчи 10 нових слів іноземною мовою.'
-  ];
-
-  add(
-   'development1',
-   '🧠 Розвиток мозку',
-   tasks[dayNumber%tasks.length],
-   22*genderMindBonus(),
-   'INT',
-   'development'
-  );
-
-  add(
-   'development2',
-   '🧩 Логічний квест',
-   `Розв’яжи ${age<=12?3:age<=17?5:7} логічних задач.`,
-   20*genderMindBonus(),
-   'INT',
-   'development'
-  );
-
- }
-
-
- /* =================================================
-    WORK
- ================================================= */
-
- if(state.goals.includes('work')){
-
-  const tasks=[
-   '45 хвилин зосередженої роботи або навчання.',
-   'Виконай одну складну справу, яку давно відкладав.',
-   'Наведи порядок у своїх навчальних або робочих файлах.',
-   '30 хвилин навчання без телефону.',
-   'Заплануй завдання на завтра.',
-   'Закрий одну маленьку справу, яку постійно переносиш.'
-  ];
-
-  const minutes=
-   age<=12?20:
-   age<=17?35:
-   45;
-
-  add(
-   'work1',
-   '💼 Productivity Quest',
-   tasks[dayNumber%tasks.length],
-   25,
-   'TECH',
-   'work'
-  );
-
-  add(
-   'work2',
-   '📋 Фокус',
-   `Працюй над однією корисною справою ${minutes} хвилин без соціальних мереж.`,
-   22,
-   'DISC',
-   'work'
-  );
-
- }
-
-
- /* =================================================
-    SELFCARE
- ================================================= */
-
- if(state.goals.includes('selfcare')){
-
-  const tasks=[
-   'Повний догляд: душ + зуби + чистий одяг.',
-   '10 хвилин привести кімнату до порядку.',
-   'Догляд за волоссям та обличчям.',
-   'Підготуй одяг і речі на завтра.',
-   '15 хвилин прибирання свого простору.',
-   'Помий пляшку для води та наведи порядок біля робочого місця.'
-  ];
-
-  add(
-   'selfcare1',
-   '🧼 Self Care',
-   tasks[dayNumber%tasks.length],
-   15,
-   'DISC',
-   'selfcare'
-  );
-
-  add(
-   'selfcare2',
-   '🧹 Чистий простір',
-   `${age<=12?10:15} хвилин прибирай свою кімнату або робоче місце.`,
-   16,
-   'DISC',
-   'selfcare'
-  );
-
- }
-
-
- /* =================================================
-    READING
- ================================================= */
-
- if(state.goals.includes('reading')){
-
-  const mins=
-   age<=9?10:
-   age<=12?12:
-   age<=17?20:
-   age<=40?30:
-   25;
-
-  add(
-   'reading1',
-   '📚 Читання',
-   `Прочитай книгу ${mins} хвилин і запам’ятай щонайменше 1 цікаву думку.`,
-   20,
-   'WIS',
-   'reading'
-  );
-
-  add(
-   'reading2',
-   '📖 Переказ',
-   `Прочитай ${age<=12?3:5} сторінок та коротко розкажи собі, що нового дізнався.`,
-   18,
-   'WIS',
-   'reading'
-  );
-
- }
-
-
- /* =================================================
-    CREATIVITY
- ================================================= */
-
- if(state.goals.includes('creativity')){
-
-  const creative=[
-   '🎨 Намалюй чашку, пляшку або інший предмет, який лежить поруч.',
-   '🎨 Намалюй свого RPG-персонажа у новому одязі.',
-   '🎨 Створи маленьку сцену у Blender: кімната, стіл і лампа.',
-   '📸 Зроби 3 фотографії одного предмета з різних ракурсів.',
-   '✍️ Напиши коротку історію на 10 речень.',
-   '🎨 Намалюй фантастичний будинок майбутнього.',
-   '💻 Створи маленький дизайн логотипу для вигаданої компанії.',
-   '🎵 Створи нову коротку музичну мелодію.',
-   '🎨 Намалюй тварину, використовуючи тільки прості геометричні форми.',
-   '🧊 Змоделюй простий предмет у Blender.'
-  ];
-
-  add(
-   'creativity1',
-   '🎨 Творчий квест',
-   creative[dayNumber%creative.length],
-   22*genderMindBonus(),
-   'INT',
-   'creativity'
-  );
-
-  add(
-   'creativity2',
-   '✨ Міні-творчість',
-   creative[(dayNumber+3)%creative.length],
-   18*genderMindBonus(),
-   'INT',
-   'creativity'
-  );
-
- }
-
-
- /* =================================================
-    DISCIPLINE
- ================================================= */
-
- if(state.goals.includes('discipline')){
-
-  const mins=
-   age<=12?15:
-   age<=17?25:
-   30;
-
-  add(
-   'discipline1',
-   '⚔️ Дисципліна',
-   `${mins} хвилин працюй над однією справою без TikTok, YouTube Shorts та інших відволікань.`,
-   22,
-   'DISC',
-   'discipline'
-  );
-
-  add(
-   'discipline2',
-   '⏰ Порядок',
-   'Виконай одну справу одразу після того, як згадав про неї. Не відкладай.',
-   18,
-   'DISC',
-   'discipline'
-  );
-
- }
-
-
- /* =================================================
-    MUSIC
- ================================================= */
-
- if(state.goals.includes('music')){
-
-  const musicTasks=[
-   '15 хвилин відпрацюй базовий ритм.',
-   'Вивчи 5 нових акордів або рудиментів.',
-   '15 хвилин зіграй під метроном.',
-   'Розбери маленьку частину нової пісні.',
-   'Запиши себе і знайди 1 помилку для виправлення.',
-   '20 хвилин тренуй слабке місце у своїй грі.'
-  ];
-
-  add(
-   'music1',
-   '🎵 Music Quest',
-   musicTasks[dayNumber%musicTasks.length],
-   22,
-   'INT',
-   'music'
-  );
-
-  add(
-   'music2',
-   '🥁 Ритм',
-   `10 хвилин тренуй ритм під метроном.`,
-   18,
-   'INT',
-   'music'
-  );
-
- }
-
-
- /* =================================================
-    UNIVERSAL
- ================================================= */
-
- add(
-  'water',
-  '💧 Турбота про себе',
-  'Випий достатньо води протягом дня та зроби коротку перерву від екрана.',
-  10,
-  'DISC',
-  'selfcare'
- );
-
- add(
-  'sleep',
-  '😴 Сон',
-  age<=12
-   ?'Підготуйся до сну вчасно та постарайся спати достатню кількість годин.'
-   :'Підготуйся до сну без телефону хоча б 30 хвилин до сну.',
-  12,
-  'DISC',
-  'selfcare'
- );
-
- state.quests=quests;
-
-}
-
-
-/* =====================================================
-   EXPIRED QUESTS / XP PENALTY
-===================================================== */
-
-function processExpiredQuests(){
-
- if(!state.quests || !state.quests.length)return;
-
- const now=Date.now();
-
- state.quests.forEach(q=>{
-
-  if(
-   !q.daily ||
-   state.completed[q.id]===today() ||
-   state.failed[q.id]===today()
-  ){
-   return;
-  }
-
-  if(
-   now>=q.deadlineAt
-  ){
-
-   state.failed[q.id]=today();
-
-   /*
-    Один штраф на один квест.
-   */
-
-   if(!state.penaltyLog[q.id]){
-
-    state.penaltyLog[q.id]=true;
-
-    const penalty=
-     Math.max(
-      3,
-      Number(q.penalty||Math.round(q.gm*.35))
-     );
-
-    state.gm=
-     Math.max(
-      0,
-      state.gm-penalty
-     );
-
-    state.history.unshift({
-
-     date:today(),
-
-     amount:-penalty,
-
-     stat:q.stat||'-',
-
-     reason:'❌ ПРОПУЩЕНО: '+q.name
+        }
 
     });
 
-    toast(
-     '❌ Квест пропущено: -'+
-     penalty+
-     ' GM'
+    return base;
+}
+
+
+function loadState(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(STORAGE_KEY);
+
+        if(!raw){
+
+            return clone(DEFAULT_STATE);
+
+        }
+
+        return merge(
+            clone(DEFAULT_STATE),
+            JSON.parse(raw)
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        return clone(DEFAULT_STATE);
+
+    }
+
+}
+
+
+function save(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(state)
     );
 
-   }
+}
 
-  }
 
- });
+function today(){
+
+    const d = new Date();
+
+    return (
+        d.getFullYear() +
+        "-" +
+        String(d.getMonth()+1).padStart(2,"0") +
+        "-" +
+        String(d.getDate()).padStart(2,"0")
+    );
 
 }
 
 
-/* =====================================================
-   CUSTOM TASK
-===================================================== */
+function nowTime(){
 
-function openTaskModal(){
+    const d = new Date();
 
- document
-  .getElementById('taskModal')
-  .classList.add('show');
-
-}
-
-function closeTaskModal(){
-
- document
-  .getElementById('taskModal')
-  .classList.remove('show');
-
-}
-
-function createTask(){
-
- const name=
-  document
-   .getElementById('taskName')
-   .value
-   .trim();
-
- const stat=
-  document
-   .getElementById('taskStat')
-   .value;
-
- const duration=
-  Number(
-   document
-    .getElementById('taskDuration')
-    .value
-  )||1;
-
- if(!name){
-
-  toast('Напиши завдання');
-
-  return;
-
- }
-
- const gm=Math.min(
-  100,
-  Math.max(
-   5,
-   Math.round(duration*.5)
-  )
- );
-
- const availableAt=Date.now();
-
- state.quests.push({
-
-  id:'custom_'+Date.now(),
-
-  name,
-
-  description:
-   `Виконай: ${name}`,
-
-  gm,
-
-  penalty:
-   Math.max(3,Math.round(gm*.35)),
-
-  stat,
-
-  category:'custom',
-
-  daily:true,
-
-  custom:true,
-
-  availableAt,
-
-  deadlineAt:
-   availableAt+
-   (duration*60*1000)
-
- });
-
- save();
-
- closeTaskModal();
-
- render();
-
- toast('🎯 Завдання додано');
+    return [
+        d.getHours(),
+        d.getMinutes(),
+        d.getSeconds()
+    ]
+    .map(x=>String(x).padStart(2,"0"))
+    .join(":");
 
 }
 
 
-/* =====================================================
-   XP
-===================================================== */
+function escapeHTML(text){
 
-function addXP(amount,stat,reason){
+    return String(text).replace(
+        /[&<>'"]/g,
+        char=>({
 
- const old=levelForGM(state.gm);
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            "'":"&#39;",
+            '"':"&quot;"
 
- state.gm=Math.max(
-  0,
-  state.gm+amount
- );
-
- if(stat && amount>0){
-
-  state.stats[stat]=
-   (state.stats[stat]||0)+amount;
-
- }
-
- state.history.unshift({
-
-  date:today(),
-
-  amount,
-
-  stat:stat||'-',
-
-  reason
-
- });
-
- const nw=levelForGM(state.gm);
-
- save();
-
- render();
-
- if(nw>old){
-
-  toast('🆙 LEVEL UP! Рівень '+nw);
-
- }else{
-
-  toast(
-   (amount>=0?'+':'')+
-   fmt(amount)+
-   ' GM · '+
-   reason
-  );
-
- }
+        }[char])
+    );
 
 }
 
 
-/* =====================================================
-   COMPLETE
-===================================================== */
+function toast(message){
 
-function completeQuest(id){
+    const el =
+        document.getElementById("toast");
 
- normalizeDay();
+    el.textContent = message;
 
- const q=
-  state.quests.find(
-   x=>x.id===id
-  );
+    el.classList.add("show");
 
- if(!q)return;
+    clearTimeout(window.toastTimer);
 
- if(
-  state.completed[id]===today()
- ){
-
-  toast('Це завдання вже виконано');
-
-  return;
-
- }
-
- if(
-  state.failed[id]===today() ||
-  isQuestExpired(q)
- ){
-
-  processExpiredQuests();
-
-  render();
-
-  toast('❌ Час цього квесту вже закінчився');
-
-  return;
-
- }
-
- if(!isQuestAvailable(q)){
-
-  toast(
-   '⏰ Цей квест ще не відкрився'
-  );
-
-  return;
-
- }
-
- state.completed[id]=today();
-
- addXP(
-  q.gm,
-  q.stat,
-  q.name
- );
+    window.toastTimer =
+        setTimeout(
+            ()=>el.classList.remove("show"),
+            2500
+        );
 
 }
 
 
-/* =====================================================
+function currentAge(){
+
+    return Math.max(
+        1,
+        new Date().getFullYear() -
+        Number(state.birthYear || new Date().getFullYear())
+    );
+
+}
+
+
+function levelForGM(gm){
+
+    return Math.max(
+        1,
+        Math.floor(
+            Math.sqrt(
+                Math.max(0,gm) / 100
+            )
+        ) + 1
+    );
+
+}
+
+
+function levelStart(level){
+
+    if(level <= 1){
+
+        return 0;
+
+    }
+
+    return 100 * (level-1) * (level-1);
+
+}
+
+
+function nextLevelGM(level){
+
+    return 100 * level * level;
+
+}
+
+
+function formatNumber(number){
+
+    return Math.round(
+        Number(number) || 0
+    ).toLocaleString("uk-UA");
+
+}
+
+
+function daysBetween(a,b){
+
+    if(!a || !b){
+
+        return 0;
+
+    }
+
+    return Math.round(
+        (new Date(b)-new Date(a)) /
+        86400000
+    );
+
+}
+
+
+function formatDuration(milliseconds){
+
+    milliseconds =
+        Math.max(0,milliseconds);
+
+    const seconds =
+        Math.floor(milliseconds/1000);
+
+    const hours =
+        Math.floor(seconds/3600);
+
+    const minutes =
+        Math.floor(
+            (seconds%3600)/60
+        );
+
+    const secs =
+        seconds%60;
+
+    return (
+        String(hours).padStart(2,"0") +
+        ":" +
+        String(minutes).padStart(2,"0") +
+        ":" +
+        String(secs).padStart(2,"0")
+    );
+
+}
+
+
+/* ==========================================================
+   DAILY SYSTEM
+   ========================================================== */
+
+function normalizeDay(){
+
+    const current = today();
+
+    const previous = state.lastDate;
+
+    if(
+        previous &&
+        previous !== current
+    ){
+
+        const difference =
+            daysBetween(
+                previous,
+                current
+            );
+
+        state.completed = {};
+
+        state.failed = {};
+
+        state.penaltyLog = {};
+
+        state.dayHadCompletion = false;
+
+        state.questsDate = current;
+
+        state.age = currentAge();
+
+        generateDailyQuests();
+
+        if(difference > 1){
+
+            state.streak = 0;
+
+        }
+
+    }
+
+
+    if(
+        state.questsDate !== current
+    ){
+
+        state.completed = {};
+
+        state.failed = {};
+
+        state.penaltyLog = {};
+
+        state.dayHadCompletion = false;
+
+        state.questsDate = current;
+
+        state.age = currentAge();
+
+        generateDailyQuests();
+
+    }
+
+
+    state.lastDate = current;
+
+    state.age = currentAge();
+
+
+    updateFlameState();
+
+    processExpiredQuests();
+
+    save();
+
+}
+
+
+/* ==========================================================
+   FLAME SYSTEM
+   ==========================================================
+
+   ACTIVE:
+   хоча б 1 завдання виконано.
+
+   FROZEN:
+   сьогодні не виконано жодного.
+
+   LOST:
+   минуло 24 години замороження.
+
+   Важливо:
+   тільки streak скидається.
+   GM / рівень / стати не скидаються.
+========================================================== */
+
+function updateFlameState(){
+
+    const completedToday =
+        Object.values(
+            state.completed || {}
+        )
+        .some(
+            date=>date === today()
+        );
+
+
+    if(completedToday){
+
+        state.dayHadCompletion = true;
+
+    }
+
+
+    if(state.flameState === "lost"){
+
+        return;
+
+    }
+
+
+    if(state.dayHadCompletion){
+
+        state.flameState = "active";
+
+        state.frozenAt = null;
+
+        return;
+
+    }
+
+
+    if(!state.frozenAt){
+
+        state.flameState = "frozen";
+
+        state.frozenAt = Date.now();
+
+        return;
+
+    }
+
+
+    const frozenTime =
+        Date.now() -
+        Number(state.frozenAt);
+
+
+    if(frozenTime >= 86400000){
+
+        state.flameState = "lost";
+
+        state.streak = 0;
+
+        state.frozenAt = null;
+
+    }
+
+}
+
+
+/* ==========================================================
+   QUEST GENERATION
+========================================================== */
+
+function addQuest(
+    quests,
+    id,
+    name,
+    description,
+    gm,
+    stat,
+    category
+){
+
+    const availableAt =
+        Date.now() +
+        quests.length * 1500;
+
+    const deadlineAt =
+        availableAt +
+        4 * 60 * 60 * 1000;
+
+
+    quests.push({
+
+        id,
+
+        name,
+
+        description,
+
+        gm,
+
+        penalty:
+            Math.max(
+                3,
+                Math.round(gm*.35)
+            ),
+
+        stat,
+
+        category,
+
+        daily:true,
+
+        custom:false,
+
+        availableAt,
+
+        deadlineAt
+
+    });
+
+}
+
+
+function generateDailyQuests(){
+
+    const quests = [];
+
+    const dayNumber =
+        Math.floor(
+            (
+                new Date(today()) -
+                new Date("2026-01-01")
+            ) /
+            86400000
+        );
+
+
+    const add =
+        (...args)=>
+            addQuest(
+                quests,
+                ...args
+            );
+
+
+    if(state.goals.includes("sport")){
+
+        const sportTasks = [
+
+            "10 хвилин розминки та розтяжки.",
+
+            "20 присідань + 10 віджимань у комфортному темпі.",
+
+            "15 хвилин активної прогулянки.",
+
+            "10 хвилин легкої фізичної активності."
+
+        ];
+
+        add(
+            "sport1",
+            "💪 Рух",
+            sportTasks[
+                dayNumber %
+                sportTasks.length
+            ],
+            20,
+            "STR",
+            "sport"
+        );
+
+        add(
+            "sport2",
+            "🏃 Активність",
+            "15 хвилин активності без соцмереж.",
+            18,
+            "STR",
+            "sport"
+        );
+
+    }
+
+
+    if(state.goals.includes("development")){
+
+        add(
+            "dev1",
+            "🧠 Розвиток",
+            "Вивчи щось нове протягом 20 хвилин і запиши одну цікаву думку.",
+            22,
+            "INT",
+            "development"
+        );
+
+        add(
+            "dev2",
+            "💡 Міні-навчання",
+            "Знайди відповідь на одне питання, яке давно тебе цікавить.",
+            18,
+            "INT",
+            "development"
+        );
+
+    }
+
+
+    if(state.goals.includes("work")){
+
+        add(
+            "work1",
+            "💼 Робота / навчання",
+            "25 хвилин зосереджено попрацюй над важливою справою.",
+            22,
+            "TECH",
+            "work"
+        );
+
+        add(
+            "work2",
+            "📚 План",
+            "Склади план із трьох важливих справ на сьогодні.",
+            16,
+            "DISC",
+            "work"
+        );
+
+    }
+
+
+    if(state.goals.includes("selfcare")){
+
+        add(
+            "self1",
+            "🧼 Self Care",
+            "Повний догляд: душ + зуби + чистий одяг.",
+            15,
+            "DISC",
+            "selfcare"
+        );
+
+        add(
+            "self2",
+            "🧹 Чистий простір",
+            "15 хвилин прибирай кімнату або робоче місце.",
+            16,
+            "DISC",
+            "selfcare"
+        );
+
+    }
+
+
+    if(state.goals.includes("reading")){
+
+        add(
+            "read1",
+            "📚 Читання",
+            "Прочитай книгу 20 хвилин і запам'ятай одну цікаву думку.",
+            20,
+            "WIS",
+            "reading"
+        );
+
+        add(
+            "read2",
+            "📖 Переказ",
+            "Прочитай 5 сторінок та коротко перекази собі прочитане.",
+            18,
+            "WIS",
+            "reading"
+        );
+
+    }
+
+
+    if(state.goals.includes("creativity")){
+
+        const tasks = [
+
+            "🎨 Намалюй предмет поруч.",
+
+            "📸 Зроби 3 фото одного предмета з різних ракурсів.",
+
+            "💻 Створи маленький дизайн.",
+
+            "🎵 Створи коротку музичну мелодію.",
+
+            "🧊 Змоделюй простий предмет у Blender."
+
+        ];
+
+        add(
+            "creative1",
+            "🎨 Творчий квест",
+            tasks[
+                dayNumber %
+                tasks.length
+            ],
+            22,
+            "INT",
+            "creativity"
+        );
+
+        add(
+            "creative2",
+            "✨ Міні-творчість",
+            tasks[
+                (dayNumber+2) %
+                tasks.length
+            ],
+            18,
+            "INT",
+            "creativity"
+        );
+
+    }
+
+
+    if(state.goals.includes("discipline")){
+
+        add(
+            "disc1",
+            "⚔️ Дисципліна",
+            "25 хвилин працюй над однією справою без TikTok, Shorts та інших відволікань.",
+            22,
+            "DISC",
+            "discipline"
+        );
+
+        add(
+            "disc2",
+            "⏰ Порядок",
+            "Виконай одну справу одразу після того, як згадав про неї.",
+            18,
+            "DISC",
+            "discipline"
+        );
+
+    }
+
+
+    if(state.goals.includes("music")){
+
+        add(
+            "music1",
+            "🎵 Music Quest",
+            "15 хвилин відпрацьовуй базовий ритм або техніку.",
+            22,
+            "INT",
+            "music"
+        );
+
+        add(
+            "music2",
+            "🥁 Ритм",
+            "10 хвилин тренуй ритм під метроном.",
+            18,
+            "INT",
+            "music"
+        );
+
+    }
+
+
+    /* universal quests */
+
+    add(
+        "water",
+        "💧 Турбота про себе",
+        "Пий достатньо води протягом дня та зроби коротку перерву від екрана.",
+        10,
+        "DISC",
+        "selfcare"
+    );
+
+
+    add(
+        "sleep",
+        "😴 Сон",
+        "Підготуйся до сну без телефону хоча б 30 хвилин до сну.",
+        12,
+        "DISC",
+        "selfcare"
+    );
+
+
+    state.quests = quests;
+
+}
+
+
+/* ==========================================================
+   QUEST HELPERS
+========================================================== */
+
+function isQuestAvailable(q){
+
+    return Date.now() >= q.availableAt;
+
+}
+
+
+function isQuestExpired(q){
+
+    return Date.now() >= q.deadlineAt;
+
+}
+
+
+function processExpiredQuests(){
+
+    state.quests.forEach(q=>{
+
+        if(
+            state.completed[q.id] === today()
+        ){
+
+            return;
+
+        }
+
+        if(
+            state.failed[q.id] === today()
+        ){
+
+            return;
+
+        }
+
+        if(
+            Date.now() >= q.deadlineAt
+        ){
+
+            state.failed[q.id] = today();
+
+
+            if(!state.penaltyLog[q.id]){
+
+                state.penaltyLog[q.id] = true;
+
+
+                const penalty =
+                    Math.max(
+                        3,
+                        Number(
+                            q.penalty || 0
+                        )
+                    );
+
+
+                state.gm =
+                    Math.max(
+                        0,
+                        state.gm - penalty
+                    );
+
+
+                state.history.unshift({
+
+                    date:today(),
+
+                    amount:-penalty,
+
+                    stat:q.stat,
+
+                    reason:
+                        "❌ ПРОПУЩЕНО: " +
+                        q.name
+
+                });
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* ==========================================================
    QUEST HTML
-===================================================== */
+========================================================== */
 
 function questHTML(q){
 
- const done=
-  state.completed[q.id]===today();
+    const done =
+        state.completed[q.id] === today();
 
- const failed=
-  state.failed[q.id]===today();
+    const failed =
+        state.failed[q.id] === today();
 
- const available=
-  isQuestAvailable(q);
+    const available =
+        isQuestAvailable(q);
 
- const expired=
-  isQuestExpired(q);
+    const expired =
+        isQuestExpired(q);
 
- const icon=
-  q.name.substring(0,2);
 
- let timer='';
+    let timerHTML = "";
 
- if(done){
 
-  timer=`
-   <div class="questTimer">
-   ✅ Виконано
-   </div>
-  `;
+    if(done){
 
- }else if(failed || expired){
+        timerHTML = `
+            <div class="questTimer">
+                ✅ Виконано
+            </div>
+        `;
 
-  timer=`
-   <div class="questTimer danger">
-   ❌ ПРОПУЩЕНО · -${q.penalty||0} GM
-   </div>
-  `;
+    }else if(failed || expired){
 
- }else if(!available){
+        timerHTML = `
+            <div class="questTimer danger">
+                ❌ ПРОПУЩЕНО · -${q.penalty} GM
+            </div>
+        `;
 
-  timer=`
-   <div class="questTimer waiting">
-   🔒 Відкриється через
-   <span data-unlock="${q.id}">
-   ${formatDuration(q.availableAt-Date.now())}
-   </span>
-   </div>
-  `;
+    }else if(!available){
 
- }else{
+        timerHTML = `
+            <div class="questTimer waiting">
+                🔒 Відкриється через
+                <span data-unlock="${q.id}">
+                    ${formatDuration(q.availableAt-Date.now())}
+                </span>
+            </div>
+        `;
 
-  const remaining=
-   Math.max(
-    0,
-    q.deadlineAt-Date.now()
-   );
+    }else{
 
-  timer=`
-   <div class="questTimer ${remaining<60*60*1000?'danger':''}">
-   ⏳ Залишилось:
-   <span data-deadline="${q.id}">
-   ${formatDuration(remaining)}
-   </span>
-   </div>
-  `;
+        timerHTML = `
+            <div class="questTimer">
+                ⏳ Залишилось:
+                <span data-deadline="${q.id}">
+                    ${formatDuration(q.deadlineAt-Date.now())}
+                </span>
+            </div>
+        `;
 
- }
+    }
 
- return `
-
- <div class="quest
-  ${done?'done':''}
-  ${failed||expired?'failed':''}">
-
- <div class="questTop">
-
- <div class="questIcon">
- ${icon}
- </div>
-
- <div class="questText">
-
- <b>${escapeHTML(q.name)}</b>
-
- <small>
- +${q.gm} GM · ${STATS[q.stat]||q.stat}
- · штраф -${q.penalty||0} GM
- </small>
-
- </div>
-
- </div>
-
- <div class="questDescription">
-
- 📋 <b>Що потрібно зробити:</b><br>
-
- ${escapeHTML(q.description)}
-
- </div>
-
- ${timer}
-
- <div class="questActions">
-
- <button
-  ${done||failed||expired||!available?'disabled':''}
-  onclick="completeQuest('${q.id}')">
-
- ${done?'✓ ВИКОНАНО':
-   failed||expired?'❌ ПРОПУЩЕНО':
-   !available?'🔒 ЩЕ НЕ ВІДКРИТО':
-   'ВИКОНАТИ КВЕСТ'}
-
- </button>
-
- ${q.custom?`
-
- <button
-  class="btn red"
-  onclick="deleteQuest('${q.id}')">
-  🗑
- </button>
-
- `:''}
-
- </div>
-
- </div>
-
- `;
-
-}
-
-function deleteQuest(id){
-
- state.quests=
-  state.quests.filter(
-   q=>q.id!==id
-  );
-
- delete state.completed[id];
- delete state.failed[id];
-
- save();
-
- render();
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function render(){
-
- normalizeDay();
-
- const lvl=
-  levelForGM(state.gm);
-
- const start=
-  levelStart(lvl);
-
- const next=
-  nextLevelGM(lvl);
-
- const pct=Math.max(
-  0,
-  Math.min(
-   100,
-   ((state.gm-start)/
-   (next-start))*100
-  )
- );
-
- document.getElementById('gm')
-  .textContent=
-  fmt(state.gm)+' GM';
-
- document.getElementById('level')
-  .textContent=
-  'LEVEL '+lvl;
-
- document.getElementById('streak')
-  .textContent=
-  '🔥 '+state.streak+' DAYS';
-
- document.getElementById('topStreak')
-  .textContent=
-  '🔥 '+state.streak+' DAYS';
-
- document.getElementById('hp')
-  .textContent=
-  Math.round(state.hp)+'/100';
-
- document.getElementById('xpBar')
-  .style.width=
-  pct+'%';
-
- document.getElementById('xpText')
-  .textContent=
-  fmt(Math.max(0,state.gm-start))+
-  ' / '+
-  fmt(next-start)+
-  ' GM до наступного рівня';
-
- renderClock();
- renderStats();
- renderQuests();
- renderHistory();
- renderGoals();
- renderCharacter();
- renderShop();
- renderQuickActions();
- applyTheme();
-
-}
-
-
-/* =====================================================
-   CLOCK
-===================================================== */
-
-function renderClock(){
-
- const d=new Date();
-
- const seconds=
-  d.getHours()*3600+
-  d.getMinutes()*60+
-  d.getSeconds();
-
- const total=24*60*60;
-
- const pct=
-  seconds/total*100;
-
- document.getElementById('clock')
-  .textContent=
-  nowTime();
-
- document.getElementById('dayBar')
-  .style.width=
-  pct+'%';
-
-}
-
-
-/* =====================================================
-   STATS
-===================================================== */
-
-function renderStats(){
-
- const mini=
-  document.getElementById('miniStats');
-
- mini.innerHTML='';
-
- Object.entries(STATS).forEach(
-  ([k,v])=>{
-
-   mini.insertAdjacentHTML(
-    'beforeend',
-
-    `<div class="stat">
-      <b>${v}</b>
-      <strong>${fmt(state.stats[k])}</strong>
-     </div>`
-   );
-
-  }
- );
-
- const full=
-  document.getElementById('fullStats');
-
- full.innerHTML=
-  Object.entries(STATS)
-   .map(([k,v])=>{
-
-    const val=
-     state.stats[k];
-
-    const pct=
-     Math.min(
-      100,
-      (val/1000)*100
-     );
 
     return `
 
-     <div style="margin:13px 0">
+        <div class="
+            quest
+            ${done ? "done":""}
+            ${failed || expired ? "failed":""}
+        ">
 
-      <div style="
-       display:flex;
-       justify-content:space-between
-      ">
+            <div class="questTop">
 
-       <b>${v}</b>
+                <div class="questIcon">
+                    ${escapeHTML(
+                        q.name.substring(0,2)
+                    )}
+                </div>
 
-       <b>${fmt(val)} XP</b>
+                <div class="questText">
 
-      </div>
+                    <b>
+                        ${escapeHTML(q.name)}
+                    </b>
 
-      <div class="bar">
+                    <small>
+                        +${q.gm} GM ·
+                        ${STATS[q.stat]} ·
+                        штраф -${q.penalty} GM
+                    </small>
 
-       <span style="width:${pct}%"></span>
+                </div>
 
-      </div>
+            </div>
 
-     </div>
+
+            <div class="questDescription">
+
+                📋
+
+                <b>
+                    Що потрібно зробити:
+                </b>
+
+                <br>
+
+                ${escapeHTML(q.description)}
+
+            </div>
+
+
+            ${timerHTML}
+
+
+            <div class="questActions">
+
+                <button
+                    ${
+                        done ||
+                        failed ||
+                        expired ||
+                        !available
+                        ? "disabled"
+                        : ""
+                    }
+                    onclick="
+                        completeQuest('${q.id}')
+                    "
+                >
+
+                    ${
+                        done
+                        ? "✓ ВИКОНАНО"
+                        : failed || expired
+                        ? "❌ ПРОПУЩЕНО"
+                        : !available
+                        ? "🔒 ЩЕ НЕ ВІДКРИТО"
+                        : "ВИКОНАТИ КВЕСТ"
+                    }
+
+                </button>
+
+
+                ${
+                    q.custom
+                    ?
+                    `
+                    <button
+                        class="btn red"
+                        onclick="
+                            deleteQuest('${q.id}')
+                        "
+                    >
+                        🗑
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+        </div>
 
     `;
 
-   })
-   .join('');
-
 }
 
 
-/* =====================================================
-   QUESTS
-===================================================== */
+/* ==========================================================
+   COMPLETE QUEST
+========================================================== */
 
-function renderQuests(){
+function completeQuest(id){
 
- processExpiredQuests();
-
- const list=
-  document.getElementById('questList');
-
- const daily=
-  state.quests.filter(
-   q=>q.daily
-  );
-
- if(!daily.length){
-
-  list.innerHTML=
-   '<div class="empty">На сьогодні немає завдань.</div>';
-
- }else{
-
-  list.innerHTML=
-   daily
-    .map(questHTML)
-    .join('');
-
- }
-
- const done=
-  daily.filter(
-   q=>state.completed[q.id]===today()
-  ).length;
-
- document.getElementById('dailyCount')
-  .textContent=
-  done+'/'+daily.length;
-
- const visible=
-  daily
-   .filter(q=>isQuestAvailable(q))
-   .slice(0,4);
-
- document.getElementById('dailyHome')
-  .innerHTML=
-   (visible.length
-    ?visible.map(questHTML).join('')
-    :`
-     <div class="empty">
-      🔒 Поки що квести не відкрилися.<br>
-      Нові завдання з'являються протягом дня.
-     </div>
-    `)+
-
-   `<button
-    class="btn green"
-    style="width:100%;margin-top:10px;text-align:center"
-    onclick="document.querySelector('[data-page=quests]').click()">
-
-    🎯 Всі завдання
-
-   </button>`;
-
-}
+    normalizeDay();
 
 
-/* =====================================================
-   QUICK ACTIONS
-===================================================== */
-
-function renderQuickActions(){
-
- const el=
-  document.getElementById('quickActions');
-
- if(!el)return;
-
- el.innerHTML=`
-
- <button
-  class="btn green"
-  onclick="quickXP(5,'DISC','Маленька корисна справа')">
-  ⚡ Маленька справа
- </button>
-
- <button
-  class="btn"
-  onclick="quickXP(5,'WIS','Прочитав щось корисне')">
-  📖 Корисне читання
- </button>
-
- <button
-  class="btn"
-  onclick="quickXP(5,'STR','Рух')">
-  🏃 Рух
- </button>
-
- <button
-  class="btn gold"
-  onclick="quickXP(5,'INT','Саморозвиток')">
-  🧠 Саморозвиток
- </button>
-
- `;
-
-}
-
-function quickXP(amount,stat,reason){
-
- addXP(amount,stat,reason);
-
-}
+    const q =
+        state.quests.find(
+            x=>x.id === id
+        );
 
 
-/* =====================================================
-   GOALS
-===================================================== */
+    if(!q){
 
-function renderGoals(){
+        return;
 
- const el=
-  document.getElementById('goalList');
-
- el.innerHTML=
-  state.goals
-   .map(
-    g=>`
-
-    <span
-     class="pill"
-     style="
-      display:inline-block;
-      margin:3px
-     ">
-
-     ${GOALS[g]}
-
-    </span>
-
-    `
-   )
-   .join('');
-
-}
-
-
-/* =====================================================
-   CHARACTER
-===================================================== */
-
-function characterHTML(big=false){
-
- const gender=
-  state.gender==='female'
-   ?'female'
-   :'male';
-
- const genderText=
-  gender==='female'
-   ?'👩 Дівчина'
-   :'👨 Хлопець';
-
- const lvl=
-  levelForGM(state.gm);
-
- return `
-
- <div class="characterWrap">
-
-  <div>
-
-   <div class="character ${gender}">
-
-    <div class="charShadow"></div>
-
-    <div class="charHair"></div>
-
-    <div class="charHead">
-
-     <div class="eye left"></div>
-     <div class="eye right"></div>
-
-     <div class="nose"></div>
-
-     <div class="mouth"></div>
-
-    </div>
-
-    <div class="arm left"></div>
-    <div class="arm right"></div>
-
-    <div class="bodyChar"></div>
-
-    <div class="leg left"></div>
-    <div class="leg right"></div>
-
-    ${
-     gender==='male'
-     ?`<div class="sword"></div>`
-     :''
     }
 
-   </div>
 
-   <div class="charLabel">
-    ${escapeHTML(state.name)}
-   </div>
+    if(
+        state.completed[id] === today()
+    ){
 
-   <div class="ageBadge">
-    ${genderText} · ${state.age} років · LEVEL ${lvl}
-   </div>
+        toast(
+            "Це завдання вже виконано."
+        );
 
-  </div>
+        return;
 
- </div>
+    }
 
- `;
+
+    if(
+        state.failed[id] === today() ||
+        isQuestExpired(q)
+    ){
+
+        processExpiredQuests();
+
+        save();
+
+        render();
+
+        toast(
+            "❌ Час цього квесту закінчився."
+        );
+
+        return;
+
+    }
+
+
+    if(!isQuestAvailable(q)){
+
+        toast(
+            "⏰ Цей квест ще не відкрився."
+        );
+
+        return;
+
+    }
+
+
+    /* mark completed */
+
+    state.completed[id] = today();
+
+    state.dayHadCompletion = true;
+
+    state.flameState = "active";
+
+    state.frozenAt = null;
+
+
+    /* streak */
+
+    if(
+        state.lastStreakDate !== today()
+    ){
+
+        state.streak++;
+
+        state.lastStreakDate =
+            today();
+
+        state.bestStreak =
+            Math.max(
+                state.bestStreak,
+                state.streak
+            );
+
+    }
+
+
+    /* reward */
+
+    addXP(
+        q.gm,
+        q.stat,
+        q.name
+    );
 
 }
 
-function renderCharacter(){
 
- document.getElementById('bigCharacter')
-  .innerHTML=
-  characterHTML(true);
+/* ==========================================================
+   ADD XP
+========================================================== */
 
- document.getElementById('smallCharacter')
-  .innerHTML=
-  characterHTML(false);
+function addXP(
+    amount,
+    stat,
+    reason
+){
 
- document.getElementById('heroAge')
-  .textContent=
-  state.age+' років';
+    const oldLevel =
+        levelForGM(state.gm);
 
- document.getElementById('characterLevel')
-  .textContent=
-  'LEVEL '+levelForGM(state.gm);
+
+    state.gm =
+        Math.max(
+            0,
+            state.gm + amount
+        );
+
+
+    if(
+        stat &&
+        amount > 0
+    ){
+
+        state.stats[stat] =
+            (state.stats[stat] || 0) +
+            amount;
+
+    }
+
+
+    state.history.unshift({
+
+        date:today(),
+
+        amount,
+
+        stat:stat || "-",
+
+        reason
+
+    });
+
+
+    save();
+
+    render();
+
+
+    const newLevel =
+        levelForGM(state.gm);
+
+
+    if(newLevel > oldLevel){
+
+        toast(
+            "🆙 LEVEL UP! LEVEL " +
+            newLevel
+        );
+
+    }else{
+
+        toast(
+            "+" +
+            formatNumber(amount) +
+            " GM · " +
+            reason
+        );
+
+    }
 
 }
 
 
-/* =====================================================
+/* ==========================================================
+   DISCIPLINE
+========================================================== */
+
+function disciplineData(){
+
+    const quests =
+        state.quests.filter(
+            q=>q.daily
+        );
+
+
+    const completed =
+        quests.filter(
+            q=>
+                state.completed[q.id] ===
+                today()
+        );
+
+
+    const total =
+        quests.length;
+
+
+    const done =
+        completed.length;
+
+
+    const percent =
+        total
+        ? Math.round(
+            done/total*100
+        )
+        : 0;
+
+
+    return {
+        total,
+        done,
+        percent
+    };
+
+}
+
+
+/* ==========================================================
+   SETUP
+========================================================== */
+
+function setupNext(step){
+
+    document
+        .querySelectorAll(".wizardStep")
+        .forEach(
+            el=>el.classList.remove("active")
+        );
+
+
+    document
+        .getElementById(
+            "setup"+step
+        )
+        .classList.add("active");
+
+}
+
+
+function toggleGoal(element){
+
+    element.classList.toggle(
+        "selected"
+    );
+
+}
+
+
+function finishSetup(){
+
+    const name =
+        document
+        .getElementById("setupName")
+        .value
+        .trim() ||
+        "Yevhenii";
+
+
+    const birthYear =
+        Number(
+            document
+            .getElementById("setupBirthYear")
+            .value
+        );
+
+
+    if(
+        !birthYear ||
+        birthYear < 1920 ||
+        birthYear > new Date().getFullYear()
+    ){
+
+        toast(
+            "Введи правильний рік народження."
+        );
+
+        setupNext(2);
+
+        return;
+
+    }
+
+
+    const goals =
+        [
+            ...document
+            .querySelectorAll(
+                ".choice.selected"
+            )
+        ]
+        .map(
+            el=>el.dataset.goal
+        );
+
+
+    if(!goals.length){
+
+        toast(
+            "Вибери хоча б один напрямок."
+        );
+
+        setupNext(3);
+
+        return;
+
+    }
+
+
+    state.name = name;
+
+    state.birthYear =
+        birthYear;
+
+    state.age =
+        currentAge();
+
+    state.goals =
+        goals;
+
+    state.setupDone =
+        true;
+
+    state.lastDate =
+        today();
+
+    state.questsDate =
+        today();
+
+    state.flameState =
+        "active";
+
+    state.frozenAt =
+        null;
+
+    state.dayHadCompletion =
+        false;
+
+
+    generateDailyQuests();
+
+    save();
+
+
+    document
+        .getElementById("setupModal")
+        .classList.remove("show");
+
+
+    render();
+
+
+    toast(
+        "🚀 Life RPG створена!"
+    );
+
+}
+
+
+/* ==========================================================
+   CUSTOM QUESTS
+========================================================== */
+
+function openTaskModal(){
+
+    document
+        .getElementById("taskModal")
+        .classList.add("show");
+
+}
+
+
+function closeTaskModal(){
+
+    document
+        .getElementById("taskModal")
+        .classList.remove("show");
+
+}
+
+
+function createTask(){
+
+    const name =
+        document
+        .getElementById("taskName")
+        .value
+        .trim();
+
+
+    const stat =
+        document
+        .getElementById("taskStat")
+        .value;
+
+
+    const duration =
+        Number(
+            document
+            .getElementById("taskDuration")
+            .value
+        ) || 1;
+
+
+    if(!name){
+
+        toast(
+            "Напиши назву завдання."
+        );
+
+        return;
+
+    }
+
+
+    const gm =
+        Math.max(
+            5,
+            Math.round(
+                duration*.5
+            )
+        );
+
+
+    const availableAt =
+        Date.now();
+
+
+    state.quests.push({
+
+        id:
+            "custom_"+Date.now(),
+
+        name,
+
+        description:
+            "Виконай: "+name,
+
+        gm,
+
+        penalty:
+            Math.max(
+                3,
+                Math.round(gm*.35)
+            ),
+
+        stat,
+
+        category:"custom",
+
+        daily:true,
+
+        custom:true,
+
+        availableAt,
+
+        deadlineAt:
+            availableAt +
+            duration*60000
+
+    });
+
+
+    save();
+
+    closeTaskModal();
+
+    render();
+
+    toast(
+        "🎯 Завдання додано."
+    );
+
+}
+
+
+function deleteQuest(id){
+
+    state.quests =
+        state.quests.filter(
+            q=>q.id !== id
+        );
+
+
+    delete state.completed[id];
+
+    delete state.failed[id];
+
+    save();
+
+    render();
+
+}
+
+
+/* ==========================================================
+   QUICK ACTIONS
+========================================================== */
+
+function quickXP(
+    amount,
+    stat,
+    reason
+){
+
+    addXP(
+        amount,
+        stat,
+        reason
+    );
+
+}
+
+
+/* ==========================================================
    SHOP
-===================================================== */
+========================================================== */
 
-const SHOP=[
- {
-  id:'sweet',
-  name:'🍫 Солодке',
-  desc:'Маленька реальна нагорода.',
-  price:100
- },
- {
-  id:'game',
-  name:'🎮 30 хв гри',
-  desc:'Дозволь собі додатковий gaming time.',
-  price:150
- },
- {
-  id:'movie',
-  name:'🎬 Фільм',
-  desc:'Один вечір для відпочинку.',
-  price:250
- },
- {
-  id:'big',
-  name:'🏆 Велика нагорода',
-  desc:'Купи або зроби щось, що давно хотів.',
-  price:500
- }
-];
+function buyReward(
+    id,
+    name,
+    cost
+){
 
-function renderShop(){
+    if(
+        state.gm < cost
+    ){
 
- const el=
-  document.getElementById('shopList');
+        return;
 
- document.getElementById('shopGM')
-  .textContent=
-  fmt(state.gm)+' GM';
+    }
 
- el.innerHTML=
-  SHOP.map(item=>`
 
-   <div class="shopItem">
+    state.gm -= cost;
 
-    <h3>${item.name}</h3>
 
-    <p>${item.desc}</p>
+    state.shopPurchases.push({
 
-    <button
-     ${state.gm<item.price?'disabled':''}
-     onclick="buyReward('${item.id}')">
+        id,
 
-     💰 ${item.price} GM
+        date:today(),
 
-    </button>
+        cost
 
-   </div>
+    });
 
-  `).join('');
 
-}
+    state.history.unshift({
 
-function buyReward(id){
+        date:today(),
 
- const item=
-  SHOP.find(
-   x=>x.id===id
-  );
+        amount:-cost,
 
- if(!item)return;
+        stat:"-",
 
- if(state.gm<item.price){
+        reason:
+            "🎁 Нагорода: " +
+            name
 
-  toast('❌ Недостатньо GM');
+    });
 
-  return;
 
- }
+    save();
 
- state.gm-=item.price;
+    render();
 
- state.history.unshift({
-
-  date:today(),
-
-  amount:-item.price,
-
-  stat:'-',
-
-  reason:'🎁 '+item.name
-
- });
-
- save();
-
- render();
-
- toast('🎉 Нагороду куплено!');
+    toast(
+        "🎁 Нагороду куплено!"
+    );
 
 }
 
 
-/* =====================================================
+/* ==========================================================
    HISTORY
-===================================================== */
-
-function renderHistory(){
-
- const body=
-  document.getElementById('historyBody');
-
- body.innerHTML=
-  state.history
-   .slice(0,100)
-   .map(h=>`
-
-    <tr>
-
-     <td style="padding:9px">
-      ${escapeHTML(h.date)}
-     </td>
-
-     <td style="padding:9px">
-      ${h.amount>=0?'+':''}${fmt(h.amount)}
-     </td>
-
-     <td style="padding:9px">
-      ${escapeHTML(h.stat)}
-     </td>
-
-     <td style="padding:9px">
-      ${escapeHTML(h.reason)}
-     </td>
-
-    </tr>
-
-   `)
-   .join('')||
-
-   `<tr>
-    <td colspan="4"
-     class="muted"
-     style="padding:20px">
-     Ще немає активності.
-    </td>
-   </tr>`;
-
-}
+========================================================== */
 
 function clearHistory(){
 
- if(confirm('Очистити історію?')){
+    if(
+        !confirm(
+            "Очистити історію?"
+        )
+    ){
 
-  state.history=[];
+        return;
 
-  save();
-
-  render();
-
- }
-
-}
+    }
 
 
-/* =====================================================
-   SETTINGS
-===================================================== */
+    state.history = [];
 
-function setupSettings(){
+    save();
 
- const name=
-  document.getElementById('playerName');
-
- const email=
-  document.getElementById('playerEmail');
-
- const birth=
-  document.getElementById('birthYear');
-
- const age=
-  document.getElementById('playerAge');
-
- const gender=
-  document.getElementById('playerGender');
-
- const theme=
-  document.getElementById('themeSelect');
-
- name.value=
-  state.name;
-
- email.value=
-  state.email||'';
-
- birth.value=
-  state.birthYear;
-
- age.value=
-  state.age;
-
- gender.value=
-  state.gender||'male';
-
- theme.value=
-  state.theme||'dark';
-
- name.onchange=()=>{
-
-  state.name=
-   name.value.trim()||
-   'Yevhenii';
-
-  save();
-
-  render();
-
- };
-
- email.onchange=()=>{
-
-  state.email=
-   email.value.trim();
-
-  save();
-
- };
-
- birth.onchange=()=>{
-
-  const year=
-   Number(birth.value);
-
-  if(
-   year>=1920 &&
-   year<=new Date().getFullYear()
-  ){
-
-   state.birthYear=
-    year;
-
-   state.age=
-    currentAge();
-
-   age.value=
-    state.age;
-
-   /*
-    Після зміни віку майбутні
-    квести отримають нову складність.
-   */
-
-   save();
-
-   toast(
-    '🎂 Вік оновлено: '+
-    state.age
-   );
-
-   render();
-
-  }
-
- };
-
- gender.onchange=()=>{
-
-  state.gender=
-   gender.value;
-
-  save();
-
-  render();
-
-  toast(
-   gender.value==='female'
-   ?'👩 Персонаж змінений на дівчину'
-   :'👨 Персонаж змінений на хлопця'
-  );
-
- };
-
- theme.onchange=()=>{
-
-  state.theme=
-   theme.value;
-
-  save();
-
-  applyTheme();
-
- };
-
-}
-
-function applyTheme(){
-
- document.body.classList.toggle(
-  'light',
-  state.theme==='light'
- );
-
- const theme=
-  document.getElementById('themeSelect');
-
- if(theme){
-  theme.value=
-   state.theme||'dark';
- }
+    render();
 
 }
 
 
-/* =====================================================
+/* ==========================================================
    RESET
-===================================================== */
+========================================================== */
 
 function resetGame(){
 
- if(
-  confirm(
-   'Точно видалити весь прогрес?'
-  )
- ){
+    if(
+        !confirm(
+            "Точно видалити весь прогрес?"
+        )
+    ){
 
-  localStorage.removeItem(KEY);
+        return;
 
-  state=clone(DEFAULT);
-
-  save();
-
-  location.reload();
-
- }
-
-}
+    }
 
 
-/* =====================================================
-   ESCAPE
-===================================================== */
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
 
-function escapeHTML(s){
 
- return String(s).replace(
-  /[&<>'"]/g,
-  c=>({
-   '&':'&amp;',
-   '<':'&lt;',
-   '>':'&gt;',
-   "'":'&#39;',
-   '"':'&quot;'
-  }[c])
- );
+    location.reload();
 
 }
 
 
-/* =====================================================
+/* ==========================================================
+   RENDER
+========================================================== */
+
+function render(){
+
+    normalizeDay();
+
+
+    const level =
+        levelForGM(
+            state.gm
+        );
+
+
+    const start =
+        levelStart(level);
+
+
+    const next =
+        nextLevelGM(level);
+
+
+    const xpPercent =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                (
+                    (state.gm-start) /
+                    (next-start)
+                ) * 100
+            )
+        );
+
+
+    const discipline =
+        disciplineData();
+
+
+    /* profile */
+
+    document
+        .getElementById("profileName")
+        .textContent =
+            state.name;
+
+
+    document
+        .getElementById("profileLevel")
+        .textContent =
+            "LVL "+level;
+
+
+    document
+        .getElementById("profileStreak")
+        .textContent =
+            state.streak+
+            " днів";
+
+
+    document
+        .getElementById("gm")
+        .textContent =
+            formatNumber(state.gm)+
+            " GM";
+
+
+    document
+        .getElementById("level")
+        .textContent =
+            "LEVEL "+level;
+
+
+    document
+        .getElementById("xpBar")
+        .style.width =
+            xpPercent+"%";
+
+
+    document
+        .getElementById("xpText")
+        .textContent =
+            formatNumber(
+                Math.max(
+                    0,
+                    state.gm-start
+                )
+            )+
+            " / "+
+            formatNumber(
+                next-start
+            )+
+            " GM до наступного рівня";
+
+
+    /* day */
+
+    const now =
+        new Date();
+
+
+    const seconds =
+        now.getHours()*3600 +
+        now.getMinutes()*60 +
+        now.getSeconds();
+
+
+    document
+        .getElementById("dayBar")
+        .style.width =
+            (seconds/86400*100)+
+            "%";
+
+
+    document
+        .getElementById("clock")
+        .textContent =
+            nowTime();
+
+
+    /* discipline */
+
+    document
+        .getElementById("disciplineNumber")
+        .textContent =
+            discipline.percent+
+            "%";
+
+
+    document
+        .getElementById("disciplinePercent")
+        .textContent =
+            discipline.percent+
+            "%";
+
+
+    document
+        .getElementById("disciplineBar")
+        .style.width =
+            discipline.percent+
+            "%";
+
+
+    document
+        .getElementById("disciplineText")
+        .textContent =
+            discipline.done+
+            " / "+
+            discipline.total+
+            " завдань виконано сьогодні";
+
+
+    /* flame */
+
+    renderFlame();
+
+
+    /* other */
+
+    renderStats();
+
+    renderQuests();
+
+    renderHistory();
+
+    renderShop();
+
+    renderAchievements();
+
+    renderQuickActions();
+
+    renderDaySummary();
+
+    setupSettings();
+
+    applyTheme();
+
+}
+
+
+/* ==========================================================
+   FLAME RENDER
+========================================================== */
+
+function renderFlame(){
+
+    const container =
+        document
+        .getElementById(
+            "flameContainer"
+        );
+
+
+    const status =
+        document
+        .getElementById(
+            "flameStatus"
+        );
+
+
+    const label =
+        document
+        .getElementById(
+            "flameLabel"
+        );
+
+
+    const timer =
+        document
+        .getElementById(
+            "flameTimer"
+        );
+
+
+    if(
+        state.flameState ===
+        "active"
+    ){
+
+        container.innerHTML = `
+            <div class="flame active">
+                🔥
+            </div>
+        `;
+
+
+        status.textContent =
+            "ACTIVE";
+
+
+        label.textContent =
+            "Вогник горить";
+
+
+        timer.textContent =
+            "Виконано хоча б 1 завдання. Вогник живий 🔥";
+
+    }
+
+
+    else if(
+        state.flameState ===
+        "frozen"
+    ){
+
+        container.innerHTML = `
+            <div class="flameFrozen">
+
+                <div class="iceFlame">
+                    🔥
+                </div>
+
+                <div class="iceCore">
+                    ❄
+                </div>
+
+            </div>
+        `;
+
+
+        status.textContent =
+            "FROZEN";
+
+
+        label.textContent =
+            "Вогник заморожений";
+
+
+        const remaining =
+            Math.max(
+                0,
+                86400000 -
+                (
+                    Date.now() -
+                    Number(
+                        state.frozenAt ||
+                        Date.now()
+                    )
+                )
+            );
+
+
+        timer.textContent =
+            "До сірого вогника: "+
+            formatDuration(
+                remaining
+            );
+
+    }
+
+
+    else{
+
+        container.innerHTML = `
+            <div class="flameLost">
+                🔥
+            </div>
+        `;
+
+
+        status.textContent =
+            "LOST";
+
+
+        label.textContent =
+            "Вогник згас";
+
+
+        timer.textContent =
+            "Серія скинута. Виконай завдання, щоб почати нову.";
+
+    }
+
+
+    document
+        .getElementById("homeStreak")
+        .textContent =
+            state.streak+
+            " днів";
+
+
+    document
+        .getElementById("topFlame")
+        .textContent =
+            state.flameState === "active"
+            ? "🔥 "+state.streak+" DAYS"
+            : state.flameState === "frozen"
+            ? "🧊 "+state.streak+" DAYS"
+            : "🩶 0 DAYS";
+
+}
+
+
+/* ==========================================================
+   STATS
+========================================================== */
+
+function renderStats(){
+
+    document
+        .getElementById("miniStats")
+        .innerHTML =
+
+        Object
+        .entries(STATS)
+        .map(
+            ([key,name])=>`
+
+                <div class="stat">
+
+                    <b>
+                        ${name}
+                    </b>
+
+                    <strong>
+                        ${formatNumber(
+                            state.stats[key]
+                        )}
+                    </strong>
+
+                </div>
+
+            `
+        )
+        .join("");
+
+
+    document
+        .getElementById("fullStats")
+        .innerHTML =
+
+        Object
+        .entries(STATS)
+        .map(
+            ([key,name])=>{
+
+                const value =
+                    state.stats[key] || 0;
+
+
+                const percent =
+                    Math.min(
+                        100,
+                        value/10
+                    );
+
+
+                return `
+
+                    <div
+                        style="
+                            margin:15px 0;
+                        "
+                    >
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                            "
+                        >
+
+                            <b>
+                                ${name}
+                            </b>
+
+                            <b>
+                                ${formatNumber(value)}
+                                XP
+                            </b>
+
+                        </div>
+
+                        <div class="bar">
+
+                            <span
+                                style="
+                                    width:${percent}%;
+                                "
+                            ></span>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* ==========================================================
+   QUEST RENDER
+========================================================== */
+
+function renderQuests(){
+
+    processExpiredQuests();
+
+
+    const daily =
+        state.quests.filter(
+            q=>q.daily
+        );
+
+
+    const done =
+        daily.filter(
+            q=>
+                state.completed[q.id] ===
+                today()
+        ).length;
+
+
+    document
+        .getElementById("dailyCount")
+        .textContent =
+            done+
+            "/"+
+            daily.length;
+
+
+    document
+        .getElementById("questList")
+        .innerHTML =
+
+        daily.length
+        ?
+        daily.map(
+            questHTML
+        ).join("")
+        :
+        `
+            <div class="empty">
+                На сьогодні немає завдань.
+            </div>
+        `;
+
+
+    const visible =
+        daily
+        .filter(
+            q=>isQuestAvailable(q)
+        )
+        .slice(0,4);
+
+
+    document
+        .getElementById("dailyHome")
+        .innerHTML =
+
+        visible.length
+        ?
+        visible
+        .map(
+            questHTML
+        )
+        .join("")
+        :
+        `
+            <div class="empty">
+                🔒 Квести ще не відкрилися.
+            </div>
+        `;
+
+}
+
+
+/* ==========================================================
+   DAY SUMMARY
+========================================================== */
+
+function renderDaySummary(){
+
+    const discipline =
+        disciplineData();
+
+
+    const flame =
+        state.flameState === "active"
+        ? "🔥 Горить"
+        : state.flameState === "frozen"
+        ? "🧊 Заморожений"
+        : "🩶 Згас";
+
+
+    document
+        .getElementById("daySummary")
+        .innerHTML = `
+
+            <div class="stat">
+
+                <b>
+                    Виконано
+                </b>
+
+                <strong>
+                    ${discipline.done}/
+                    ${discipline.total}
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <b>
+                    Вогник
+                </b>
+
+                <strong>
+                    ${flame}
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <b>
+                    Рекорд
+                </b>
+
+                <strong>
+                    ${state.bestStreak}
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <b>
+                    GM
+                </b>
+
+                <strong>
+                    ${formatNumber(state.gm)}
+                </strong>
+
+            </div>
+
+        `;
+
+}
+
+
+/* ==========================================================
+   QUICK ACTIONS
+========================================================== */
+
+function renderQuickActions(){
+
+    document
+        .getElementById("quickActions")
+        .innerHTML = `
+
+            <button
+                class="btn green"
+                onclick="
+                    quickXP(
+                        10,
+                        'DISC',
+                        '⚡ Маленька дія'
+                    )
+                "
+            >
+                +10 GM · Маленька дія
+            </button>
+
+
+            <button
+                class="btn gold"
+                onclick="
+                    quickXP(
+                        20,
+                        'WIS',
+                        '📖 Навчання'
+                    )
+                "
+            >
+                +20 GM · Навчання
+            </button>
+
+
+            <button
+                class="btn"
+                onclick="
+                    quickXP(
+                        15,
+                        'STR',
+                        '💪 Активність'
+                    )
+                "
+            >
+                +15 GM · Активність
+            </button>
+
+
+            <button
+                class="btn"
+                onclick="
+                    quickXP(
+                        15,
+                        'TECH',
+                        '💻 Робота'
+                    )
+                "
+            >
+                +15 GM · Робота
+            </button>
+
+        `;
+
+}
+
+
+/* ==========================================================
+   SHOP
+========================================================== */
+
+function renderShop(){
+
+    const items = [
+
+        [
+            "coffee",
+            "☕ Кава / напій",
+            100,
+            "Маленька нагорода за роботу."
+        ],
+
+        [
+            "game",
+            "🎮 1 година гри",
+            250,
+            "Час для улюбленої гри."
+        ],
+
+        [
+            "movie",
+            "🎬 Фільм",
+            350,
+            "Вечір відпочинку."
+        ],
+
+        [
+            "big",
+            "🏆 Велика нагорода",
+            1000,
+            "Нагорода за великий прогрес."
+        ]
+
+    ];
+
+
+    document
+        .getElementById("shopGM")
+        .textContent =
+            formatNumber(state.gm)+
+            " GM";
+
+
+    document
+        .getElementById("shopList")
+        .innerHTML =
+
+        items.map(
+            item=>{
+
+                const [
+                    id,
+                    name,
+                    cost,
+                    description
+                ] = item;
+
+
+                return `
+
+                    <div class="shopItem">
+
+                        <h3>
+                            ${name}
+                        </h3>
+
+                        <p>
+                            ${description}
+                        </p>
+
+                        <b>
+                            ${cost} GM
+                        </b>
+
+                        <br>
+
+                        <button
+                            style="
+                                margin-top:10px;
+                            "
+                            ${
+                                state.gm < cost
+                                ? "disabled"
+                                : ""
+                            }
+                            onclick="
+                                buyReward(
+                                    '${id}',
+                                    '${name}',
+                                    ${cost}
+                                )
+                            "
+                        >
+                            Купити
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* ==========================================================
+   ACHIEVEMENTS
+========================================================== */
+
+function renderAchievements(){
+
+    const achievements = [
+
+        [
+            "first",
+            "🌱 Перший крок",
+            "Виконай перше завдання.",
+            state.history.some(
+                h=>h.amount>0
+            )
+        ],
+
+        [
+            "streak7",
+            "🔥 7 днів",
+            "Досягни серії 7 днів.",
+            state.bestStreak >= 7
+        ],
+
+        [
+            "streak30",
+            "🔥 30 днів",
+            "Досягни серії 30 днів.",
+            state.bestStreak >= 30
+        ],
+
+        [
+            "gm1000",
+            "💰 1000 GM",
+            "Зароби 1000 GM.",
+            state.gm >= 1000
+        ],
+
+        [
+            "quests50",
+            "🎯 50 квестів",
+            "Виконай 50 завдань.",
+            Object.keys(
+                state.completed
+            ).length >= 50
+        ],
+
+        [
+            "discipline500",
+            "⚔️ Дисципліна 500",
+            "Набери 500 DISC XP.",
+            state.stats.DISC >= 500
+        ]
+
+    ];
+
+
+    const unlocked =
+        achievements.filter(
+            x=>x[3]
+        ).length;
+
+
+    document
+        .getElementById("achCount")
+        .textContent =
+            unlocked+
+            "/"+
+            achievements.length;
+
+
+    document
+        .getElementById("achList")
+        .innerHTML =
+
+        achievements
+        .map(
+            x=>`
+
+                <div
+                    class="
+                        achievement
+                        ${
+                            x[3]
+                            ? "unlocked"
+                            : "locked"
+                        }
+                    "
+                >
+
+                    <h3>
+                        ${x[1]}
+                    </h3>
+
+                    <p>
+                        ${x[2]}
+                    </p>
+
+                    <b>
+                        ${
+                            x[3]
+                            ? "🏆 Відкрито"
+                            : "🔒 Закрито"
+                        }
+                    </b>
+
+                </div>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* ==========================================================
+   HISTORY
+========================================================== */
+
+function renderHistory(){
+
+    document
+        .getElementById("historyBody")
+        .innerHTML =
+
+        state.history.length
+
+        ?
+
+        state.history
+        .slice(0,100)
+        .map(
+            h=>`
+
+                <tr>
+
+                    <td>
+                        ${escapeHTML(h.date)}
+                    </td>
+
+                    <td>
+                        ${
+                            h.amount >= 0
+                            ? "+"
+                            : ""
+                        }
+                        ${formatNumber(h.amount)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(h.stat)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(h.reason)}
+                    </td>
+
+                </tr>
+
+            `
+        )
+        .join("")
+
+        :
+
+        `
+            <tr>
+
+                <td
+                    colspan="4"
+                    style="
+                        text-align:center;
+                        color:var(--muted);
+                        padding:30px;
+                    "
+                >
+                    Історія порожня.
+                </td>
+
+            </tr>
+        `;
+
+}
+
+
+/* ==========================================================
+   SETTINGS
+========================================================== */
+
+function setupSettings(){
+
+    const name =
+        document.getElementById(
+            "playerName"
+        );
+
+
+    const email =
+        document.getElementById(
+            "playerEmail"
+        );
+
+
+    const birth =
+        document.getElementById(
+            "birthYear"
+        );
+
+
+    const age =
+        document.getElementById(
+            "playerAge"
+        );
+
+
+    const theme =
+        document.getElementById(
+            "themeSelect"
+        );
+
+
+    name.value =
+        state.name;
+
+
+    email.value =
+        state.email;
+
+
+    birth.value =
+        state.birthYear;
+
+
+    age.value =
+        state.age;
+
+
+    theme.value =
+        state.theme;
+
+
+    name.onchange = ()=>{
+
+        state.name =
+            name.value.trim() ||
+            "Yevhenii";
+
+        save();
+
+        render();
+
+    };
+
+
+    email.onchange = ()=>{
+
+        state.email =
+            email.value.trim();
+
+        save();
+
+    };
+
+
+    birth.onchange = ()=>{
+
+        const year =
+            Number(
+                birth.value
+            );
+
+
+        if(
+            year >= 1920 &&
+            year <= new Date().getFullYear()
+        ){
+
+            state.birthYear =
+                year;
+
+            state.age =
+                currentAge();
+
+            save();
+
+            render();
+
+        }
+
+    };
+
+
+    theme.onchange = ()=>{
+
+        state.theme =
+            theme.value;
+
+        save();
+
+        applyTheme();
+
+    };
+
+}
+
+
+function applyTheme(){
+
+    document
+        .body
+        .classList
+        .toggle(
+            "light",
+            state.theme === "light"
+        );
+
+}
+
+
+/* ==========================================================
    NAVIGATION
-===================================================== */
+========================================================== */
 
 document
- .querySelectorAll('#nav button')
- .forEach(btn=>{
+.querySelectorAll(
+    ".nav button"
+)
+.forEach(
+    button=>{
 
-  btn.addEventListener(
-   'click',
-   ()=>{
+        button.addEventListener(
+            "click",
+            ()=>{
 
-    document
-     .querySelectorAll('.nav button')
-     .forEach(
-      b=>b.classList.remove('active')
-     );
-
-    btn.classList.add('active');
-
-    document
-     .querySelectorAll('.page')
-     .forEach(
-      p=>p.classList.remove('active')
-     );
-
-    document
-     .getElementById(
-      btn.dataset.page
-     )
-     .classList.add('active');
-
-   }
-  );
-
- });
+                document
+                .querySelectorAll(
+                    ".nav button"
+                )
+                .forEach(
+                    btn=>
+                        btn.classList.remove(
+                            "active"
+                        )
+                );
 
 
-/* =====================================================
-   CLOCK / QUEST TIMER
-===================================================== */
-
-setInterval(()=>{
-
- renderClock();
-
- /*
-  Оновлюємо таймери без повного
-  перемальовування сторінки.
- */
-
- document
-  .querySelectorAll('[data-unlock]')
-  .forEach(el=>{
-
-   const id=el.dataset.unlock;
-
-   const q=
-    state.quests.find(
-     x=>x.id===id
-    );
-
-   if(q){
-
-    const remaining=
-     Math.max(
-      0,
-      q.availableAt-Date.now()
-     );
-
-    el.textContent=
-     formatDuration(remaining);
-
-   }
-
-  });
-
- document
-  .querySelectorAll('[data-deadline]')
-  .forEach(el=>{
-
-   const id=el.dataset.deadline;
-
-   const q=
-    state.quests.find(
-     x=>x.id===id
-    );
-
-   if(q){
-
-    const remaining=
-     Math.max(
-      0,
-      q.deadlineAt-Date.now()
-     );
-
-    el.textContent=
-     formatDuration(remaining);
-
-   }
-
-  });
-
-},1000);
+                button.classList.add(
+                    "active"
+                );
 
 
-/* =====================================================
-   CHECK NEW DAY + EXPIRED QUESTS
-===================================================== */
-
-setInterval(()=>{
-
- const oldDate=
-  state.lastDate;
-
- const newDate=
-  today();
-
- if(oldDate!==newDate){
-
-  normalizeDay();
-
-  render();
-
-  toast(
-   '🌅 Новий день! Нові квести заплановані!'
-  );
-
- }else{
-
-  const before=
-   JSON.stringify(state.failed);
-
-  processExpiredQuests();
-
-  if(
-   before!==JSON.stringify(state.failed)
-  ){
-
-   save();
-
-   render();
-
-  }
-
- }
-
-},10000);
+                document
+                .querySelectorAll(
+                    ".page"
+                )
+                .forEach(
+                    page=>
+                        page.classList.remove(
+                            "active"
+                        )
+                );
 
 
-/* =====================================================
+                document
+                .getElementById(
+                    button.dataset.page
+                )
+                .classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* ==========================================================
+   REAL-TIME CLOCK / FLAME
+========================================================== */
+
+setInterval(
+    ()=>{
+
+        const clock =
+            document.getElementById(
+                "clock"
+            );
+
+
+        if(clock){
+
+            clock.textContent =
+                nowTime();
+
+        }
+
+
+        const d =
+            new Date();
+
+
+        const seconds =
+            d.getHours()*3600 +
+            d.getMinutes()*60 +
+            d.getSeconds();
+
+
+        const dayBar =
+            document.getElementById(
+                "dayBar"
+            );
+
+
+        if(dayBar){
+
+            dayBar.style.width =
+                (
+                    seconds/86400*100
+                )+"%";
+
+        }
+
+
+        updateFlameState();
+
+
+        if(
+            state.flameState ===
+            "frozen"
+        ){
+
+            const timer =
+                document.getElementById(
+                    "flameTimer"
+                );
+
+
+            if(timer){
+
+                const remaining =
+                    Math.max(
+                        0,
+                        86400000 -
+                        (
+                            Date.now() -
+                            Number(
+                                state.frozenAt ||
+                                Date.now()
+                            )
+                        )
+                    );
+
+
+                timer.textContent =
+                    "До сірого вогника: "+
+                    formatDuration(
+                        remaining
+                    );
+
+            }
+
+        }
+
+
+        document
+        .querySelectorAll(
+            "[data-unlock]"
+        )
+        .forEach(
+            el=>{
+
+                const q =
+                    state.quests.find(
+                        x=>
+                            x.id ===
+                            el.dataset.unlock
+                    );
+
+
+                if(q){
+
+                    el.textContent =
+                        formatDuration(
+                            q.availableAt -
+                            Date.now()
+                        );
+
+                }
+
+            }
+        );
+
+
+        document
+        .querySelectorAll(
+            "[data-deadline]"
+        )
+        .forEach(
+            el=>{
+
+                const q =
+                    state.quests.find(
+                        x=>
+                            x.id ===
+                            el.dataset.deadline
+                    );
+
+
+                if(q){
+
+                    el.textContent =
+                        formatDuration(
+                            q.deadlineAt -
+                            Date.now()
+                        );
+
+                }
+
+            }
+        );
+
+
+        save();
+
+    },
+    1000
+);
+
+
+/* ==========================================================
+   NEW DAY CHECK
+========================================================== */
+
+setInterval(
+    ()=>{
+
+        if(
+            state.lastDate !==
+            today()
+        ){
+
+            normalizeDay();
+
+            render();
+
+            toast(
+                "🌅 Новий день! Нові квести!"
+            );
+
+        }
+
+
+        const before =
+            JSON.stringify(
+                state.failed
+            );
+
+
+        processExpiredQuests();
+
+
+        if(
+            before !==
+            JSON.stringify(
+                state.failed
+            )
+        ){
+
+            save();
+
+            render();
+
+        }
+
+    },
+    10000
+);
+
+
+/* ==========================================================
    START
-===================================================== */
+========================================================== */
 
-state.age=currentAge();
+state.age =
+    currentAge();
 
-if(!state.setupDone){
 
- document
-  .getElementById('setupModal')
-  .classList.add('show');
+if(
+    !state.setupDone
+){
+
+    document
+        .getElementById(
+            "setupModal"
+        )
+        .classList.add(
+            "show"
+        );
 
 }else{
 
- normalizeDay();
+    normalizeDay();
 
 }
 
-setupSettings();
 
 render();
 
