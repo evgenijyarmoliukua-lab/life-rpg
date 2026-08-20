@@ -1,425 +1,2797 @@
-/* ============================================================
-   LIFE RPG — НОВА СИСТЕМА ВОГНИКА
-   🔥 = виконано хоча б 1 квест сьогодні
-   🧊 = день закінчився з 0 виконаних квестів
-   🩶 = заморожений вогник прожив 24 години
-   ============================================================ */
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07101d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Life RPG</title>
 
-if (!state.flameState) {
-    state.flameState = "normal";
+<style>
+:root{
+  --bg:#07101d;
+  --panel:#0d1828;
+  --panel2:#111f33;
+  --panel3:#16263d;
+  --text:#eef5ff;
+  --muted:#91a3bb;
+  --accent:#69e5a4;
+  --accent2:#5aa9ff;
+  --danger:#ff6577;
+  --gold:#ffd166;
+  --ice:#69d9ff;
+  --line:#21334b;
+  --shadow:0 18px 50px rgba(0,0,0,.28);
 }
 
-if (!state.flameFrozenSince) {
-    state.flameFrozenSince = null;
+*{
+  box-sizing:border-box;
 }
 
-if (!state.flameLastCompletedDay) {
-    state.flameLastCompletedDay = null;
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 15% 0,#14365a 0,transparent 32%),
+    radial-gradient(circle at 100% 0,#25451d 0,transparent 28%),
+    var(--bg);
+  color:var(--text);
 }
 
-
-/* Перевірка: чи є сьогодні хоча б 1 виконаний квест */
-
-function flameCompletedToday() {
-
-    const t = today();
-
-    return Object.keys(state.completed || {}).some(id => {
-        return state.completed[id] === t;
-    });
-
+body.light{
+  --bg:#edf3f8;
+  --panel:#fff;
+  --panel2:#f1f5f9;
+  --panel3:#e8eef5;
+  --text:#132033;
+  --muted:#607086;
+  --line:#d5dee8;
+  --shadow:0 12px 35px rgba(0,0,0,.12);
 }
 
-
-/* Оновлення стану вогника */
-
-function updateLifeFlame() {
-
-    const t = today();
-
-    const completedToday = flameCompletedToday();
-
-
-    /* ==========================================
-       1. Сьогодні виконано хоча б 1 завдання
-       ========================================== */
-
-    if (completedToday) {
-
-        state.flameState = "normal";
-
-        state.flameFrozenSince = null;
-
-        state.flameLastCompletedDay = t;
-
-        save();
-
-        return;
-    }
-
-
-    /* ==========================================
-       2. Якщо сьогодні ще не закінчився —
-          вогник НЕ заморожуємо.
-       ========================================== */
-
-    if (state.lastDate === t) {
-        return;
-    }
-
-
-    /* ==========================================
-       3. Новий день, а вчора було 0 виконаних
-       ========================================== */
-
-    if (
-        state.flameState === "normal" &&
-        state.flameLastCompletedDay !== state.lastDate
-    ) {
-
-        state.flameState = "frozen";
-
-        state.flameFrozenSince = Date.now();
-
-        save();
-
-        return;
-    }
-
-
-    /* ==========================================
-       4. Заморожений 24 години → сірий
-       ========================================== */
-
-    if (
-        state.flameState === "frozen" &&
-        state.flameFrozenSince
-    ) {
-
-        const frozenTime =
-            Date.now() - state.flameFrozenSince;
-
-
-        if (frozenTime >= 24 * 60 * 60 * 1000) {
-
-            state.flameState = "dead";
-
-            state.flameFrozenSince = null;
-
-            /* Скидається ТІЛЬКИ серія днів */
-
-            state.streak = 0;
-
-            save();
-
-        }
-
-    }
-
+button,input,select{
+  font:inherit;
 }
 
-
-/* ==========================================
-   Відображення маленького вогника
-   ========================================== */
-
-function renderLifeFlame() {
-
-    const old =
-        document.getElementById("lifeFlameHeader");
-
-    if (!old) return;
-
-
-    old.classList.remove(
-        "flame-normal",
-        "flame-frozen",
-        "flame-dead"
-    );
-
-
-    const icon =
-        old.querySelector(".lifeFlameIcon");
-
-    const day =
-        old.querySelector(".lifeFlameDay");
-
-    const status =
-        old.querySelector(".lifeFlameStatus");
-
-
-    if (state.flameState === "normal") {
-
-        old.classList.add("flame-normal");
-
-        icon.textContent = "🔥";
-
-        day.textContent =
-            "День " + state.streak;
-
-        status.textContent =
-            "Горить";
-
-    }
-
-
-    else if (state.flameState === "frozen") {
-
-        old.classList.add("flame-frozen");
-
-        icon.textContent = "🧊";
-
-        day.textContent =
-            "День " + state.streak;
-
-        status.textContent =
-            "Заморожений";
-
-    }
-
-
-    else {
-
-        old.classList.add("flame-dead");
-
-        icon.textContent = "🩶";
-
-        day.textContent =
-            "День 0";
-
-        status.textContent =
-            "Серія скинута";
-
-    }
-
+button{
+  border:0;
+  cursor:pointer;
+  color:var(--text);
 }
 
+.app{
+  max-width:1200px;
+  margin:auto;
+  padding:18px 18px 50px;
+}
 
-/* ==========================================
-   Верхній блок
-   ========================================== */
+/* TOP */
 
-function createLifeFlameHeader() {
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:16px;
+}
 
-    const old =
-        document.getElementById("topStreak");
+.profileTop{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
 
-    if (!old) return;
+.avatar{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  font-size:25px;
+  background:linear-gradient(135deg,#69e5a4,#5aa9ff);
+  color:#06111c;
+  box-shadow:0 8px 25px rgba(90,169,255,.18);
+}
 
+.username{
+  font-size:22px;
+  font-weight:900;
+  margin:0;
+}
 
-    old.outerHTML = `
+.userMeta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
 
-        <div id="lifeFlameHeader">
+.topFlame{
+  min-width:125px;
+  padding:10px 13px;
+  border:1px solid var(--line);
+  background:rgba(13,24,40,.82);
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-weight:900;
+}
 
-            <div class="lifeFlameIcon">
-                🔥
-            </div>
+.topFlameIcon{
+  font-size:26px;
+  line-height:1;
+}
 
-            <div>
+/* NAV */
 
-                <div class="lifeFlameDay">
-                    День ${state.streak}
-                </div>
+.nav{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding-bottom:7px;
+  margin-bottom:17px;
+}
 
-                <div class="lifeFlameStatus">
-                    Горить
-                </div>
+.nav button{
+  background:rgba(255,255,255,.05);
+  padding:10px 13px;
+  border-radius:11px;
+  color:var(--muted);
+  white-space:nowrap;
+}
 
-            </div>
+.nav button.active{
+  background:var(--accent);
+  color:#06111c;
+  font-weight:900;
+}
+
+/* PAGES */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+/* CARDS */
+
+.card{
+  background:rgba(13,24,40,.93);
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+
+body.light .card{
+  background:rgba(255,255,255,.92);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.35fr .65fr;
+  gap:16px;
+}
+
+.sectionTitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.sectionTitle h2{
+  margin:0;
+  font-size:18px;
+}
+
+.pill{
+  font-size:12px;
+  padding:5px 9px;
+  border-radius:99px;
+  background:var(--panel3);
+  color:var(--muted);
+}
+
+/* HOME HERO */
+
+.homeHero{
+  position:relative;
+  overflow:hidden;
+}
+
+.homeHero:after{
+  content:"";
+  position:absolute;
+  width:250px;
+  height:250px;
+  border-radius:50%;
+  background:rgba(105,229,164,.07);
+  filter:blur(30px);
+  right:-100px;
+  top:-120px;
+  pointer-events:none;
+}
+
+.heroHeader{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+}
+
+.eyebrow{
+  color:var(--muted);
+  font-size:12px;
+  letter-spacing:.8px;
+  font-weight:800;
+}
+
+.levelText{
+  font-size:38px;
+  font-weight:950;
+  margin:5px 0;
+}
+
+.gmText{
+  color:var(--accent2);
+  font-weight:800;
+}
+
+.heroRight{
+  text-align:right;
+}
+
+.heroRight .label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.heroRight strong{
+  display:block;
+  font-size:26px;
+  margin-top:3px;
+}
+
+/* FLAME */
+
+.flameArea{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px 10px 25px;
+}
+
+.flame{
+  position:relative;
+  width:150px;
+  height:180px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.35s;
+}
+
+.flameShape{
+  position:absolute;
+  width:92px;
+  height:130px;
+  transform:rotate(45deg);
+  border-radius:65% 35% 65% 35%;
+  background:linear-gradient(135deg,#fff3a1 0%,#ffb52e 42%,#ff5d25 75%,#ef233c 100%);
+  box-shadow:
+    0 0 25px rgba(255,125,35,.7),
+    0 0 60px rgba(255,89,25,.35);
+  animation:flamePulse 1.6s ease-in-out infinite;
+}
+
+.flameShape:before{
+  content:"";
+  position:absolute;
+  width:47px;
+  height:70px;
+  left:20px;
+  top:28px;
+  border-radius:65% 35% 65% 35%;
+  background:#fff6bc;
+}
+
+.flameShape:after{
+  content:"";
+  position:absolute;
+  width:26px;
+  height:48px;
+  left:31px;
+  top:41px;
+  border-radius:70% 30% 70% 30%;
+  background:#fff;
+  opacity:.75;
+}
+
+.flameNumber{
+  position:relative;
+  z-index:3;
+  font-size:24px;
+  font-weight:950;
+  margin-top:4px;
+  color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+
+@keyframes flamePulse{
+  0%,100%{
+    transform:rotate(45deg) scale(1);
+  }
+  50%{
+    transform:rotate(45deg) scale(1.06);
+  }
+}
+
+/* ICE FLAME */
+
+.flame.frozen .flameShape{
+  background:
+    linear-gradient(135deg,#d9fbff 0%,#65dcff 40%,#238bd1 75%,#174d9d 100%);
+  box-shadow:
+    0 0 20px rgba(74,210,255,.75),
+    0 0 55px rgba(54,170,255,.4);
+  animation:icePulse 2.5s ease-in-out infinite;
+}
+
+.flame.frozen .flameShape:before{
+  background:#eaffff;
+}
+
+.flame.frozen .flameShape:after{
+  background:#b8f3ff;
+}
+
+@keyframes icePulse{
+  0%,100%{
+    transform:rotate(45deg) scale(1);
+  }
+  50%{
+    transform:rotate(45deg) scale(1.03);
+  }
+}
+
+/* GREY FLAME */
+
+.flame.dead .flameShape{
+  background:linear-gradient(135deg,#bfc5cc,#7e8792,#515b66);
+  box-shadow:
+    0 0 10px rgba(170,180,190,.25);
+  animation:none;
+}
+
+.flame.dead .flameShape:before{
+  background:#d4d9de;
+}
+
+.flame.dead .flameShape:after{
+  background:#eef1f4;
+  opacity:.4;
+}
+
+/* FLAME STATUS */
+
+.flameStatus{
+  text-align:center;
+  margin-top:-10px;
+}
+
+.flameStatusTitle{
+  font-size:18px;
+  font-weight:900;
+}
+
+.flameStatusText{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.frozenTimer{
+  margin-top:8px;
+  color:var(--ice);
+  font-weight:900;
+}
+
+/* PROGRESS */
+
+.progressBlock{
+  margin-top:22px;
+}
+
+.progressHeader{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.bar{
+  height:11px;
+  background:#07111e;
+  border-radius:99px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  margin-top:9px;
+}
+
+.bar span{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+  border-radius:99px;
+  transition:width .35s;
+}
+
+/* STATS */
+
+.statGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:17px;
+}
+
+.stat{
+  background:var(--panel2);
+  padding:13px;
+  border-radius:14px;
+}
+
+.stat small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.stat strong{
+  display:block;
+  font-size:20px;
+  margin-top:3px;
+}
+
+/* DISCIPLINE */
+
+.discipline{
+  text-align:center;
+  padding:8px 0 4px;
+}
+
+.disciplineCircle{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  margin:20px auto;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle at center,var(--panel) 56%,transparent 57%),
+    conic-gradient(var(--accent) var(--discipline),var(--panel3) 0);
+}
+
+.disciplineValue{
+  font-size:35px;
+  font-weight:950;
+}
+
+.disciplineLabel{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* DAILY INFO */
+
+.infoList{
+  display:grid;
+  gap:10px;
+}
+
+.infoItem{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px;
+  background:var(--panel2);
+  border-radius:13px;
+}
+
+.infoItem span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.infoItem strong{
+  font-size:14px;
+}
+
+/* QUESTS */
+
+.quest{
+  padding:15px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.quest:last-child{
+  border-bottom:0;
+}
+
+.questTop{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.questIcon{
+  width:43px;
+  height:43px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:var(--panel2);
+  font-size:21px;
+  flex-shrink:0;
+}
+
+.questText{
+  flex:1;
+}
+
+.questText b{
+  font-size:15px;
+}
+
+.questText small{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.quest.done{
+  opacity:.55;
+}
+
+.questActions{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+
+.questActions button{
+  padding:9px 12px;
+  border-radius:10px;
+  background:var(--accent);
+  color:#06111c;
+  font-weight:900;
+}
+
+.questActions .delete{
+  background:rgba(255,101,119,.12);
+  color:var(--danger);
+  border:1px solid rgba(255,101,119,.3);
+}
+
+.questDescription{
+  margin-top:9px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.empty{
+  text-align:center;
+  padding:30px 15px;
+  color:var(--muted);
+}
+
+/* BUTTONS */
+
+.btn{
+  padding:10px 13px;
+  border-radius:11px;
+  background:#182941;
+  border:1px solid #29405d;
+  text-align:left;
+}
+
+.btn.green{
+  background:rgba(105,229,164,.14);
+  border-color:rgba(105,229,164,.4);
+}
+
+.btn.gold{
+  background:rgba(255,209,102,.12);
+  border-color:rgba(255,209,102,.35);
+}
+
+/* SHOP / ACHIEVEMENTS / GOALS */
+
+.shopGrid,
+.achGrid,
+.goalGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.shopItem,
+.achievement,
+.goal{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+}
+
+.shopItem h3,
+.achievement h3,
+.goal h3{
+  margin:0 0 6px;
+  font-size:15px;
+}
+
+.shopItem p,
+.achievement p,
+.goal p{
+  margin:0 0 12px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.shopItem button{
+  width:100%;
+  padding:9px;
+  border-radius:10px;
+  background:var(--gold);
+  color:#17120a;
+  font-weight:900;
+}
+
+.shopItem button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+}
+
+.achievement.locked{
+  opacity:.4;
+}
+
+.achievement.unlocked{
+  border-color:rgba(255,209,102,.5);
+}
+
+/* FORMS */
+
+.form{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.field input,
+.field select{
+  width:100%;
+  padding:11px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  background:#081322;
+  color:var(--text);
+  outline:none;
+}
+
+body.light .field input,
+body.light .field select{
+  background:#f5f8fb;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:18px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modalBox{
+  width:min(580px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+
+.modalBox h2{
+  margin-top:0;
+}
+
+.modalActions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+}
+
+.modalActions button{
+  padding:11px 15px;
+  border-radius:11px;
+}
+
+.primary{
+  background:var(--accent);
+  color:#06111c;
+  font-weight:900;
+}
+
+.secondary{
+  background:#182941;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:200;
+  background:#edf7ff;
+  color:#081321;
+  padding:12px 15px;
+  border-radius:13px;
+  box-shadow:var(--shadow);
+  font-weight:900;
+  transform:translateY(120px);
+  transition:.25s;
+}
+
+.toast.show{
+  transform:translateY(0);
+}
+
+/* NOTICE */
+
+.notice{
+  padding:12px;
+  border-radius:12px;
+  background:rgba(90,169,255,.1);
+  border:1px solid rgba(90,169,255,.25);
+  color:#cce2ff;
+  font-size:13px;
+  margin-bottom:15px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .shopGrid,
+  .achGrid,
+  .goalGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:560px){
+  .app{
+    padding:12px 10px 30px;
+  }
+
+  .top{
+    align-items:flex-start;
+  }
+
+  .username{
+    font-size:18px;
+  }
+
+  .avatar{
+    width:46px;
+    height:46px;
+  }
+
+  .topFlame{
+    min-width:90px;
+    padding:9px;
+  }
+
+  .topFlameText{
+    display:none;
+  }
+
+  .levelText{
+    font-size:31px;
+  }
+
+  .statGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .shopGrid,
+  .achGrid,
+  .goalGrid{
+    grid-template-columns:1fr;
+  }
+
+  .form{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .card{
+    padding:14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+
+  <div class="profileTop">
+    <div class="avatar">⚔️</div>
+
+    <div>
+      <div class="username" id="topUsername">Гравець</div>
+      <div class="userMeta">
+        <span id="topLevel">Lv. 1</span>
+        <span> • </span>
+        <span id="topRecord">🔥 0 днів</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="topFlame">
+    <span class="topFlameIcon" id="topFlameIcon">🔥</span>
+    <span class="topFlameText" id="topFlameText">День 0</span>
+  </div>
+
+</header>
+
+<nav class="nav">
+
+  <button class="active" data-page="home">🏠 Головна</button>
+  <button data-page="quests">🎯 Квести</button>
+  <button data-page="stats">🧬 Стати</button>
+  <button data-page="shop">🎁 Магазин</button>
+  <button data-page="ach">🏆 Досягнення</button>
+  <button data-page="history">📊 Історія</button>
+  <button data-page="settings">⚙️ Налаштування</button>
+
+</nav>
+
+<main>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+  <div class="grid">
+
+    <div>
+
+      <div class="card homeHero">
+
+        <div class="heroHeader">
+
+          <div>
+            <div class="eyebrow">LIFE MASTERY</div>
+            <div class="levelText" id="homeLevel">LEVEL 1</div>
+            <div class="gmText" id="homeGM">0 GM</div>
+          </div>
+
+          <div class="heroRight">
+            <div class="label">Рекорд</div>
+            <strong id="heroRecord">0 🔥</strong>
+          </div>
 
         </div>
 
-    `;
+        <div class="flameArea">
+
+          <div class="flame" id="mainFlame">
+
+            <div class="flameShape"></div>
+
+            <div class="flameNumber" id="flameNumber">
+              0
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="flameStatus">
+
+          <div class="flameStatusTitle" id="flameStatusTitle">
+            Вогник горить
+          </div>
+
+          <div class="flameStatusText" id="flameStatusText">
+            Виконай хоча б одне завдання сьогодні.
+          </div>
+
+          <div class="frozenTimer" id="frozenTimer"></div>
+
+        </div>
+
+        <div class="progressBlock">
+
+          <div class="progressHeader">
+            <span>Прогрес сьогодні</span>
+            <strong id="dailyProgressText">0%</strong>
+          </div>
+
+          <div class="bar">
+            <span id="dailyProgressBar"></span>
+          </div>
+
+        </div>
+
+        <div class="progressBlock">
+
+          <div class="progressHeader">
+            <span>До наступного рівня</span>
+            <strong id="xpText">0 / 100 GM</strong>
+          </div>
+
+          <div class="bar">
+            <span id="xpBar"></span>
+          </div>
+
+        </div>
+
+        <div class="statGrid">
+
+          <div class="stat">
+            <small>GM</small>
+            <strong id="miniGM">0</strong>
+          </div>
+
+          <div class="stat">
+            <small>Завдання</small>
+            <strong id="miniTasks">0</strong>
+          </div>
+
+          <div class="stat">
+            <small>Виконано</small>
+            <strong id="miniDone">0</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <div class="card">
+
+        <div class="sectionTitle">
+          <h2>🔥 Дисципліна</h2>
+          <span class="pill">сьогодні</span>
+        </div>
+
+        <div class="discipline">
+
+          <div class="disciplineCircle" id="disciplineCircle">
+
+            <div>
+              <div class="disciplineValue" id="disciplineValue">0%</div>
+              <div class="disciplineLabel">дисципліна</div>
+            </div>
+
+          </div>
+
+          <div class="infoList">
+
+            <div class="infoItem">
+              <span>Завдань</span>
+              <strong id="infoTasks">0</strong>
+            </div>
+
+            <div class="infoItem">
+              <span>Виконано</span>
+              <strong id="infoDone">0</strong>
+            </div>
+
+            <div class="infoItem">
+              <span>Рекорд</span>
+              <strong id="infoRecord">0 днів</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- QUESTS -->
+
+<section id="quests" class="page">
+
+  <div class="card">
+
+    <div class="sectionTitle">
+
+      <h2>🎯 Твої завдання</h2>
+
+      <button class="btn green" onclick="openTaskModal()">
+        ➕ Додати
+      </button>
+
+    </div>
+
+    <div class="notice">
+
+      🔥 Щоб підтримати вогник, сьогодні потрібно виконати
+      хоча б <b>одне</b> завдання.
+
+      <br><br>
+
+      🧊 Якщо за весь день не виконано жодного завдання,
+      вогник заморожується.
+
+      <br><br>
+
+      🩶 Якщо заморожений вогник залишається таким повні
+      24 години — серія днів скидається.
+
+    </div>
+
+    <div id="questList"></div>
+
+  </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section id="stats" class="page">
+
+  <div class="card">
+
+    <div class="sectionTitle">
+      <h2>🧬 Стати</h2>
+    </div>
+
+    <div class="statGrid">
+
+      <div class="stat">
+        <small>Сила</small>
+        <strong id="statStrength">1</strong>
+      </div>
+
+      <div class="stat">
+        <small>Інтелект</small>
+        <strong id="statIntelligence">1</strong>
+      </div>
+
+      <div class="stat">
+        <small>Дисципліна</small>
+        <strong id="statDiscipline">1</strong>
+      </div>
+
+      <div class="stat">
+        <small>Енергія</small>
+        <strong id="statEnergy">1</strong>
+      </div>
+
+      <div class="stat">
+        <small>Здоров'я</small>
+        <strong id="statHealth">1</strong>
+      </div>
+
+      <div class="stat">
+        <small>Фокус</small>
+        <strong id="statFocus">1</strong>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SHOP -->
+
+<section id="shop" class="page">
+
+  <div class="card">
+
+    <div class="sectionTitle">
+      <h2>🎁 Магазин</h2>
+      <span class="pill" id="shopGM">0 GM</span>
+    </div>
+
+    <div class="shopGrid">
+
+      <div class="shopItem">
+        <h3>🍫 Солодощі</h3>
+        <p>Нагорода за хорошу роботу.</p>
+        <button onclick="buyReward(100,'🍫 Солодощі')">
+          100 GM
+        </button>
+      </div>
+
+      <div class="shopItem">
+        <h3>🎮 Година гри</h3>
+        <p>Дозволь собі відпочити.</p>
+        <button onclick="buyReward(250,'🎮 Година гри')">
+          250 GM
+        </button>
+      </div>
+
+      <div class="shopItem">
+        <h3>🎬 Фільм</h3>
+        <p>Вечір без почуття провини.</p>
+        <button onclick="buyReward(400,'🎬 Фільм')">
+          400 GM
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ACHIEVEMENTS -->
+
+<section id="ach" class="page">
+
+  <div class="card">
+
+    <div class="sectionTitle">
+      <h2>🏆 Досягнення</h2>
+    </div>
+
+    <div class="achGrid" id="achievementList"></div>
+
+  </div>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section id="history" class="page">
+
+  <div class="card">
+
+    <div class="sectionTitle">
+      <h2>📊 Історія</h2>
+    </div>
+
+    <div id="historyList"></div>
+
+  </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+  <div class="card">
+
+    <div class="sectionTitle">
+      <h2>⚙️ Налаштування</h2>
+    </div>
+
+    <div class="form">
+
+      <div class="field full">
+
+        <label>Твій нікнейм</label>
+
+        <input
+          id="usernameInput"
+          placeholder="Наприклад: Evgen"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Тема</label>
+
+        <select id="themeSelect">
+
+          <option value="dark">Темна</option>
+          <option value="light">Світла</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div style="margin-top:15px">
+
+      <button class="btn green" onclick="saveSettings()">
+        💾 Зберегти
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="card" style="margin-top:16px">
+
+    <div class="sectionTitle">
+      <h2>⚠️ Дані</h2>
+    </div>
+
+    <p style="color:var(--muted);font-size:13px">
+      Скидання видалить усі локальні дані Life RPG.
+    </p>
+
+    <button
+      class="btn"
+      style="color:var(--danger)"
+      onclick="resetGame()"
+    >
+      🗑️ Скинути прогрес
+    </button>
+
+  </div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- TASK MODAL -->
+
+<div class="modal" id="taskModal">
+
+  <div class="modalBox">
+
+    <h2>➕ Нове завдання</h2>
+
+    <div class="form">
+
+      <div class="field full">
+
+        <label>Назва</label>
+
+        <input id="taskTitle" placeholder="Наприклад: тренування">
+
+      </div>
+
+      <div class="field">
+
+        <label>Нагорода GM</label>
+
+        <input
+          id="taskReward"
+          type="number"
+          min="1"
+          value="20"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Категорія</label>
+
+        <select id="taskCategory">
+
+          <option value="💪">💪 Фізичне</option>
+          <option value="🧠">🧠 Навчання</option>
+          <option value="🎵">🎵 Хобі</option>
+          <option value="🧹">🧹 Побут</option>
+          <option value="❤️">❤️ Здоров'я</option>
+          <option value="⭐">⭐ Інше</option>
+
+        </select>
+
+      </div>
+
+      <div class="field full">
+
+        <label>Опис</label>
+
+        <input
+          id="taskDescription"
+          placeholder="Короткий опис завдання"
+        >
+
+      </div>
+
+    </div>
+
+    <div class="modalActions">
+
+      <button
+        class="secondary"
+        onclick="closeTaskModal()"
+      >
+        Скасувати
+      </button>
+
+      <button
+        class="primary"
+        onclick="createTask()"
+      >
+        Створити
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   LIFE RPG
+   Основна система
+========================================================= */
+
+const STORAGE_KEY = "life_rpg_new_v1";
+
+const DAY = 24 * 60 * 60 * 1000;
+
+let state = loadState();
+
+
+function defaultState(){
+
+  return {
+
+    username:"Гравець",
+
+    gm:0,
+
+    level:1,
+
+    totalCompleted:0,
+
+    totalTasks:0,
+
+    record:0,
+
+    streak:0,
+
+    flameState:"normal",
+
+    frozenSince:null,
+
+    lastActiveDay:null,
+
+    currentDay:null,
+
+    tasks:[],
+
+    history:[],
+
+    theme:"dark",
+
+    stats:{
+      strength:1,
+      intelligence:1,
+      discipline:1,
+      energy:1,
+      health:1,
+      focus:1
+    }
+
+  };
 
 }
 
 
-/* ==========================================
-   CSS
-   ========================================== */
+function loadState(){
 
-function addLifeFlameCSS() {
+  try{
 
-    if (
-        document.getElementById(
-            "lifeFlameCSS"
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if(!saved){
+      return defaultState();
+    }
+
+    const data = JSON.parse(saved);
+
+    return Object.assign(
+      defaultState(),
+      data,
+      {
+        stats:Object.assign(
+          defaultState().stats,
+          data.stats || {}
         )
-    ) return;
+      }
+    );
 
+  }catch(e){
 
-    const style =
-        document.createElement("style");
+    console.error(e);
 
+    return defaultState();
 
-    style.id =
-        "lifeFlameCSS";
-
-
-    style.textContent = `
-
-        #lifeFlameHeader {
-
-            display:flex;
-
-            align-items:center;
-
-            gap:8px;
-
-            padding:8px 12px;
-
-            border-radius:14px;
-
-            border:1px solid var(--line);
-
-            background:rgba(13,24,40,.85);
-
-            min-width:115px;
-
-        }
-
-
-        .lifeFlameIcon {
-
-            width:36px;
-
-            height:36px;
-
-            display:grid;
-
-            place-items:center;
-
-            font-size:26px;
-
-        }
-
-
-        .lifeFlameDay {
-
-            font-size:13px;
-
-            font-weight:900;
-
-        }
-
-
-        .lifeFlameStatus {
-
-            color:var(--muted);
-
-            font-size:11px;
-
-            margin-top:2px;
-
-        }
-
-
-        #lifeFlameHeader.flame-frozen {
-
-            border-color:
-                rgba(80,210,255,.45);
-
-        }
-
-
-        #lifeFlameHeader.flame-frozen
-        .lifeFlameIcon {
-
-            filter:
-                drop-shadow(
-                    0 0 8px
-                    rgba(80,210,255,.7)
-                );
-
-        }
-
-
-        #lifeFlameHeader.flame-dead {
-
-            filter:grayscale(1);
-
-            opacity:.7;
-
-        }
-
-
-        @media(max-width:560px) {
-
-            #lifeFlameHeader {
-
-                min-width:auto;
-
-                padding:7px 9px;
-
-            }
-
-
-            .lifeFlameIcon {
-
-                font-size:23px;
-
-                width:31px;
-
-                height:31px;
-
-            }
-
-
-            .lifeFlameStatus {
-
-                display:none;
-
-            }
-
-        }
-
-    `;
-
-
-    document.head.appendChild(style);
+  }
 
 }
 
 
-/* ==========================================
-   Оновлюємо старий render
-   ========================================== */
+function save(){
 
-const originalRender =
-    window.render;
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state)
+  );
 
-
-window.render = function() {
-
-    originalRender();
-
-    updateLifeFlame();
-
-    renderLifeFlame();
-
-};
+}
 
 
-/* ==========================================
-   Перевірка кожну секунду
-   ========================================== */
+/* =========================================================
+   DATE
+========================================================= */
 
-setInterval(() => {
+function todayKey(){
 
-    updateLifeFlame();
+  const d = new Date();
 
-    renderLifeFlame();
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
 
-}, 1000);
+}
 
 
-/* ==========================================
-   Запуск
-   ========================================== */
+function startOfToday(){
 
-addLifeFlameCSS();
+  const d = new Date();
 
-createLifeFlameHeader();
+  d.setHours(0,0,0,0);
 
-updateLifeFlame();
+  return d.getTime();
 
-renderLifeFlame();
+}
+
+
+function ensureDay(){
+
+  const today = todayKey();
+
+  if(!state.currentDay){
+
+    state.currentDay = today;
+
+    save();
+
+    return;
+
+  }
+
+  if(state.currentDay !== today){
+
+    finishPreviousDay();
+
+    state.currentDay = today;
+
+    createDailyTasks();
+
+    save();
+
+  }
+
+}
+
+
+/* =========================================================
+   FLAME SYSTEM
+=========================================================
+
+   NORMAL:
+   хоча б 1 виконане завдання сьогодні.
+
+   FROZEN:
+   день завершився з 0 виконаних.
+
+   DEAD:
+   frozen тривав 24 години.
+
+========================================================= */
+
+function updateFlame(){
+
+  const now = Date.now();
+
+  const today = todayKey();
+
+  const todayTasks = getTodayTasks();
+
+  const completed = todayTasks.filter(
+    t => t.done
+  ).length;
+
+  /*
+    Якщо сьогодні виконано хоча б одне —
+    вогник завжди звичайний.
+  */
+
+  if(completed > 0){
+
+    if(state.flameState === "frozen"){
+
+      state.flameState = "normal";
+      state.frozenSince = null;
+
+      showToast("🔥 Вогник розморожено!");
+
+    }
+
+    if(state.flameState === "dead"){
+
+      state.flameState = "normal";
+      state.frozenSince = null;
+
+    }
+
+    state.lastActiveDay = today;
+
+    save();
+
+    return;
+
+  }
+
+
+  /*
+    Якщо сьогодні ще нічого не виконано,
+    але день ще триває —
+    НЕ заморожуємо вогник.
+  */
+
+  if(state.currentDay === today){
+
+    return;
+
+  }
+
+
+  /*
+    День закінчився без виконаних завдань.
+  */
+
+  if(state.flameState === "normal"){
+
+    state.flameState = "frozen";
+
+    state.frozenSince = now;
+
+    save();
+
+    return;
+
+  }
+
+
+  /*
+    Якщо вже frozen —
+    перевіряємо 24 години.
+  */
+
+  if(state.flameState === "frozen" && state.frozenSince){
+
+    if(now - state.frozenSince >= DAY){
+
+      state.flameState = "dead";
+
+      state.streak = 0;
+
+      state.frozenSince = null;
+
+      save();
+
+      showToast("🩶 Вогник згас. Серія починається заново.");
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   PREVIOUS DAY
+========================================================= */
+
+function finishPreviousDay(){
+
+  const previousTasks = state.tasks.filter(
+    t => t.day === state.currentDay
+  );
+
+  const total = previousTasks.length;
+
+  const done = previousTasks.filter(
+    t => t.done
+  ).length;
+
+  const percent = total
+    ? Math.round(done / total * 100)
+    : 0;
+
+
+  state.history.unshift({
+
+    day:state.currentDay,
+
+    total:total,
+
+    done:done,
+
+    percent:percent
+
+  });
+
+
+  if(done > 0){
+
+    state.streak++;
+
+    if(state.streak > state.record){
+
+      state.record = state.streak;
+
+    }
+
+    state.lastActiveDay = state.currentDay;
+
+  }else{
+
+    if(state.flameState === "normal"){
+
+      state.flameState = "frozen";
+
+      state.frozenSince = Date.now();
+
+    }
+
+  }
+
+
+  /*
+    Старі завдання залишаємо для історії,
+    але новий день отримує нові.
+  */
+
+  save();
+
+}
+
+
+/* =========================================================
+   TASKS
+========================================================= */
+
+function getTodayTasks(){
+
+  return state.tasks.filter(
+    t => t.day === todayKey()
+  );
+
+}
+
+
+function createDailyTasks(){
+
+  const exists = getTodayTasks();
+
+  if(exists.length > 0){
+    return;
+  }
+
+  const defaults = [
+
+    {
+      title:"Зробити ранкову зарядку",
+      description:"Розім'яти тіло та почати день.",
+      reward:25,
+      category:"💪"
+    },
+
+    {
+      title:"Навчання 30 хвилин",
+      description:"Приділити час навчанню.",
+      reward:30,
+      category:"🧠"
+    },
+
+    {
+      title:"Навести порядок",
+      description:"Прибрати хоча б одну зону.",
+      reward:20,
+      category:"🧹"
+    }
+
+  ];
+
+
+  defaults.forEach(x => {
+
+    state.tasks.push({
+
+      id:Date.now() + Math.random(),
+
+      day:todayKey(),
+
+      title:x.title,
+
+      description:x.description,
+
+      reward:x.reward,
+
+      category:x.category,
+
+      done:false,
+
+      completedAt:null
+
+    });
+
+  });
+
+}
+
+
+/* =========================================================
+   CREATE TASK
+========================================================= */
+
+function openTaskModal(){
+
+  document.getElementById("taskModal")
+    .classList.add("show");
+
+}
+
+
+function closeTaskModal(){
+
+  document.getElementById("taskModal")
+    .classList.remove("show");
+
+}
+
+
+function createTask(){
+
+  const title =
+    document.getElementById("taskTitle").value.trim();
+
+  const description =
+    document.getElementById("taskDescription").value.trim();
+
+  const reward =
+    Math.max(
+      1,
+      Number(
+        document.getElementById("taskReward").value
+      ) || 20
+    );
+
+  const category =
+    document.getElementById("taskCategory").value;
+
+
+  if(!title){
+
+    showToast("Введи назву завдання.");
+
+    return;
+
+  }
+
+
+  state.tasks.push({
+
+    id:Date.now() + Math.random(),
+
+    day:todayKey(),
+
+    title:title,
+
+    description:description,
+
+    reward:reward,
+
+    category:category,
+
+    done:false,
+
+    completedAt:null
+
+  });
+
+
+  state.totalTasks++;
+
+  save();
+
+  closeTaskModal();
+
+  document.getElementById("taskTitle").value="";
+  document.getElementById("taskDescription").value="";
+
+  render();
+
+  showToast("🎯 Завдання створено!");
+
+}
+
+
+/* =========================================================
+   COMPLETE TASK
+========================================================= */
+
+function completeTask(id){
+
+  const task = state.tasks.find(
+    t => t.id === id
+  );
+
+  if(!task || task.done){
+    return;
+  }
+
+
+  task.done = true;
+
+  task.completedAt = Date.now();
+
+
+  state.gm += Number(task.reward) || 0;
+
+  state.totalCompleted++;
+
+
+  /*
+    Якщо вогник frozen —
+    одне завдання його розморожує.
+  */
+
+  if(state.flameState === "frozen"){
+
+    state.flameState = "normal";
+
+    state.frozenSince = null;
+
+    showToast("🔥 Вогник знову горить!");
+
+  }else{
+
+    showToast("✅ Завдання виконано!");
+
+  }
+
+
+  calculateLevel();
+
+  save();
+
+  render();
+
+}
+
+
+/* =========================================================
+   DELETE TASK
+========================================================= */
+
+function deleteTask(id){
+
+  const task = state.tasks.find(
+    t => t.id === id
+  );
+
+  if(!task){
+    return;
+  }
+
+  if(task.done){
+
+    state.gm = Math.max(
+      0,
+      state.gm - Number(task.reward)
+    );
+
+  }
+
+  state.tasks = state.tasks.filter(
+    t => t.id !== id
+  );
+
+  save();
+
+  render();
+
+  showToast("🗑️ Завдання видалено.");
+
+}
+
+
+/* =========================================================
+   LEVEL
+========================================================= */
+
+function calculateLevel(){
+
+  state.level =
+    Math.max(
+      1,
+      Math.floor(state.gm / 100) + 1
+    );
+
+}
+
+
+/* =========================================================
+   DAILY PROGRESS
+========================================================= */
+
+function getDailyStats(){
+
+  const tasks = getTodayTasks();
+
+  const total = tasks.length;
+
+  const done = tasks.filter(
+    t => t.done
+  ).length;
+
+  const percent = total
+    ? Math.round(done / total * 100)
+    : 0;
+
+  return {
+    total,
+    done,
+    percent
+  };
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render(){
+
+  ensureDay();
+
+  updateFlame();
+
+  calculateLevel();
+
+  renderTop();
+
+  renderHome();
+
+  renderQuests();
+
+  renderStats();
+
+  renderShop();
+
+  renderAchievements();
+
+  renderHistory();
+
+  renderSettings();
+
+  applyTheme();
+
+  save();
+
+}
+
+
+/* =========================================================
+   TOP
+========================================================= */
+
+function renderTop(){
+
+  document.getElementById("topUsername")
+    .textContent = state.username;
+
+  document.getElementById("topLevel")
+    .textContent = "Lv. " + state.level;
+
+  document.getElementById("topRecord")
+    .textContent = "🔥 " + state.record + " днів";
+
+
+  const icon =
+    getFlameIcon();
+
+  document.getElementById("topFlameIcon")
+    .textContent = icon;
+
+  document.getElementById("topFlameText")
+    .textContent =
+      state.flameState === "dead"
+      ? "Серія 0"
+      : "День " + state.streak;
+
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome(){
+
+  const stats = getDailyStats();
+
+  document.getElementById("homeLevel")
+    .textContent =
+      "LEVEL " + state.level;
+
+  document.getElementById("homeGM")
+    .textContent =
+      state.gm + " GM";
+
+  document.getElementById("heroRecord")
+    .textContent =
+      state.record + " 🔥";
+
+
+  document.getElementById("flameNumber")
+    .textContent =
+      state.streak;
+
+
+  const flame =
+    document.getElementById("mainFlame");
+
+  flame.classList.remove(
+    "frozen",
+    "dead"
+  );
+
+
+  if(state.flameState === "frozen"){
+
+    flame.classList.add("frozen");
+
+  }
+
+  if(state.flameState === "dead"){
+
+    flame.classList.add("dead");
+
+  }
+
+
+  document.getElementById("flameStatusTitle")
+    .textContent =
+      getFlameStatusTitle();
+
+
+  document.getElementById("flameStatusText")
+    .textContent =
+      getFlameStatusText();
+
+
+  renderFrozenTimer();
+
+
+  document.getElementById("dailyProgressText")
+    .textContent =
+      stats.percent + "%";
+
+
+  document.getElementById("dailyProgressBar")
+    .style.width =
+      stats.percent + "%";
+
+
+  const levelProgress =
+    state.gm % 100;
+
+  document.getElementById("xpText")
+    .textContent =
+      levelProgress + " / 100 GM";
+
+
+  document.getElementById("xpBar")
+    .style.width =
+      levelProgress + "%";
+
+
+  document.getElementById("miniGM")
+    .textContent =
+      state.gm;
+
+
+  document.getElementById("miniTasks")
+    .textContent =
+      stats.total;
+
+
+  document.getElementById("miniDone")
+    .textContent =
+      stats.done;
+
+
+  document.getElementById("disciplineValue")
+    .textContent =
+      stats.percent + "%";
+
+
+  document.getElementById("disciplineCircle")
+    .style.setProperty(
+      "--discipline",
+      stats.percent + "%"
+    );
+
+
+  document.getElementById("infoTasks")
+    .textContent =
+      stats.total;
+
+
+  document.getElementById("infoDone")
+    .textContent =
+      stats.done;
+
+
+  document.getElementById("infoRecord")
+    .textContent =
+      state.record + " днів";
+
+}
+
+
+/* =========================================================
+   FLAME
+========================================================= */
+
+function getFlameIcon(){
+
+  if(state.flameState === "frozen"){
+    return "🧊";
+  }
+
+  if(state.flameState === "dead"){
+    return "🩶";
+  }
+
+  return "🔥";
+
+}
+
+
+function getFlameStatusTitle(){
+
+  if(state.flameState === "frozen"){
+
+    return "Вогник заморожений";
+
+  }
+
+  if(state.flameState === "dead"){
+
+    return "Вогник згас";
+
+  }
+
+  return "Вогник горить";
+
+}
+
+
+function getFlameStatusText(){
+
+  if(state.flameState === "frozen"){
+
+    return "Виконай хоча б одне завдання, щоб розморозити його.";
+
+  }
+
+  if(state.flameState === "dead"){
+
+    return "Серія днів починається заново. Твій загальний прогрес залишився.";
+
+  }
+
+  return "Виконай хоча б одне завдання сьогодні, щоб зберегти серію.";
+
+}
+
+
+function renderFrozenTimer(){
+
+  const el =
+    document.getElementById("frozenTimer");
+
+  if(
+    state.flameState !== "frozen" ||
+    !state.frozenSince
+  ){
+
+    el.textContent="";
+
+    return;
+
+  }
+
+
+  const remaining =
+    Math.max(
+      0,
+      DAY - (Date.now() - state.frozenSince)
+    );
+
+
+  const hours =
+    Math.floor(remaining / 3600000);
+
+  const minutes =
+    Math.floor(
+      (remaining % 3600000) / 60000
+    );
+
+  const seconds =
+    Math.floor(
+      (remaining % 60000) / 1000
+    );
+
+
+  el.textContent =
+    "До згасання: " +
+    String(hours).padStart(2,"0") + ":" +
+    String(minutes).padStart(2,"0") + ":" +
+    String(seconds).padStart(2,"0");
+
+}
+
+
+/* =========================================================
+   QUEST RENDER
+========================================================= */
+
+function renderQuests(){
+
+  const container =
+    document.getElementById("questList");
+
+  const tasks =
+    getTodayTasks();
+
+
+  if(!tasks.length){
+
+    container.innerHTML =
+      `<div class="empty">
+        Сьогодні завдань немає.
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    tasks.map(task => `
+
+      <div class="quest ${task.done ? "done" : ""}">
+
+        <div class="questTop">
+
+          <div class="questIcon">
+            ${task.category}
+          </div>
+
+          <div class="questText">
+
+            <b>${escapeHTML(task.title)}</b>
+
+            <small>
+              +${task.reward} GM
+            </small>
+
+            ${
+              task.description
+              ?
+              `<div class="questDescription">
+                ${escapeHTML(task.description)}
+              </div>`
+              :
+              ""
+            }
+
+          </div>
+
+        </div>
+
+        <div class="questActions">
+
+          ${
+            task.done
+            ?
+            `<button disabled>
+              ✅ Виконано
+            </button>`
+            :
+            `<button onclick="completeTask(${task.id})">
+              ✅ Виконати
+            </button>`
+          }
+
+          <button
+            class="delete"
+            onclick="deleteTask(${task.id})"
+          >
+            🗑️
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function renderStats(){
+
+  document.getElementById("statStrength")
+    .textContent = state.stats.strength;
+
+  document.getElementById("statIntelligence")
+    .textContent = state.stats.intelligence;
+
+  document.getElementById("statDiscipline")
+    .textContent = state.stats.discipline;
+
+  document.getElementById("statEnergy")
+    .textContent = state.stats.energy;
+
+  document.getElementById("statHealth")
+    .textContent = state.stats.health;
+
+  document.getElementById("statFocus")
+    .textContent = state.stats.focus;
+
+}
+
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+function renderShop(){
+
+  document.getElementById("shopGM")
+    .textContent =
+      state.gm + " GM";
+
+}
+
+
+function buyReward(price,name){
+
+  if(state.gm < price){
+
+    showToast("❌ Недостатньо GM.");
+
+    return;
+
+  }
+
+
+  state.gm -= price;
+
+  calculateLevel();
+
+  save();
+
+  render();
+
+  showToast(
+    "🎁 Отримано: " + name
+  );
+
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
+function renderAchievements(){
+
+  const list =
+    document.getElementById("achievementList");
+
+
+  const achievements = [
+
+    {
+      icon:"🔥",
+      title:"Перший вогник",
+      text:"Виконай перше завдання.",
+      unlocked:state.totalCompleted >= 1
+    },
+
+    {
+      icon:"🔥",
+      title:"7 днів",
+      text:"Досягни серії 7 днів.",
+      unlocked:state.record >= 7
+    },
+
+    {
+      icon:"🔥",
+      title:"30 днів",
+      text:"Досягни серії 30 днів.",
+      unlocked:state.record >= 30
+    },
+
+    {
+      icon:"⭐",
+      title:"100 GM",
+      text:"Зароби 100 GM.",
+      unlocked:state.gm >= 100
+    },
+
+    {
+      icon:"🎯",
+      title:"10 завдань",
+      text:"Виконай 10 завдань.",
+      unlocked:state.totalCompleted >= 10
+    },
+
+    {
+      icon:"🏆",
+      title:"100 завдань",
+      text:"Виконай 100 завдань.",
+      unlocked:state.totalCompleted >= 100
+    }
+
+  ];
+
+
+  list.innerHTML =
+    achievements.map(a => `
+
+      <div class="achievement ${
+        a.unlocked ? "unlocked" : "locked"
+      }">
+
+        <h3>
+          ${a.icon} ${a.title}
+        </h3>
+
+        <p>${a.text}</p>
+
+        <strong>
+          ${a.unlocked ? "✅ Відкрито" : "🔒 Закрито"}
+        </strong>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function renderHistory(){
+
+  const list =
+    document.getElementById("historyList");
+
+
+  if(!state.history.length){
+
+    list.innerHTML =
+      `<div class="empty">
+        Історія ще порожня.
+      </div>`;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    state.history.slice(0,30).map(day => `
+
+      <div class="infoItem" style="margin-bottom:8px">
+
+        <span>
+          ${day.day}
+        </span>
+
+        <strong>
+          ${day.done}/${day.total}
+          • ${day.percent}%
+        </strong>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function renderSettings(){
+
+  document.getElementById("usernameInput")
+    .value =
+      state.username;
+
+  document.getElementById("themeSelect")
+    .value =
+      state.theme;
+
+}
+
+
+function saveSettings(){
+
+  const name =
+    document.getElementById("usernameInput")
+      .value.trim();
+
+
+  state.username =
+    name || "Гравець";
+
+
+  state.theme =
+    document.getElementById("themeSelect")
+      .value;
+
+
+  save();
+
+  render();
+
+  showToast("💾 Налаштування збережено.");
+
+}
+
+
+function applyTheme(){
+
+  document.body.classList.toggle(
+    "light",
+    state.theme === "light"
+  );
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetGame(){
+
+  const answer =
+    confirm(
+      "Точно скинути весь прогрес Life RPG?"
+    );
+
+  if(!answer){
+    return;
+  }
+
+
+  state =
+    defaultState();
+
+  createDailyTasks();
+
+  save();
+
+  render();
+
+  showToast("🗑️ Прогрес скинуто.");
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+document.querySelectorAll(".nav button")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document.querySelectorAll(".nav button")
+        .forEach(b =>
+          b.classList.remove("active")
+        );
+
+      document.querySelectorAll(".page")
+        .forEach(p =>
+          p.classList.remove("active")
+        );
+
+
+      button.classList.add("active");
+
+      document.getElementById(
+        button.dataset.page
+      ).classList.add("active");
+
+    });
+
+  });
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(() => {
+
+      toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock(){
+
+  updateFlame();
+
+  renderFrozenTimer();
+
+}
+
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+ensureDay();
+
+if(getTodayTasks().length === 0){
+
+  createDailyTasks();
+
+}
+
+calculateLevel();
+
+render();
+
+</script>
+
+</body>
+</html>
